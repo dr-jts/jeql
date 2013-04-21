@@ -1,4 +1,4 @@
-jeql
+JEQL
 ====
 A scripting language for spatial processing and ETL
 
