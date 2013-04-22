@@ -1,0 +1,85 @@
+/*================================
+
+Test ORDER BY syntax & semantics
+	
+================================*/
+
+t1 = select * from table ( 
+		(10, "a"), 
+		(11, "c"), 
+		(3, "d"), 
+		(2, "b"), 
+		(2, "a"), 
+		(2, "c") 
+			) tbl(a, b);
+
+//-------------------------------------------------
+ord1 = select a, b from t1 order by a, b;
+
+expected1 = select * from table ( 
+( 2, "a" ),
+( 2, "b" ),
+( 2, "c" ),
+( 3, "d" ),
+( 10, "a" ),
+( 11, "c" ) );
+
+AssertEqual ord1 expected: expected1;
+
+
+//-------------------------------------------------
+ord2 = select a, b from t1 order by a desc, b;
+//Print :from ord2;
+
+expected2 = select * from table ( 
+( 11, "c" ),
+( 10, "a" ),
+( 3, "d" ),
+( 2, "a" ),
+( 2, "b" ),
+( 2, "c" ) );
+
+AssertEqual ord2 expected: expected2;
+
+//-------------------------------------------------
+ord3 = select a, b from t1 order by a;
+//Print :from ord3;
+
+expected3 = select * from table ( 
+( 2, "b" ),
+( 2, "a" ),
+( 2, "c" ),
+( 3, "d" ),
+( 10, "a" ),
+( 11, "c" ) );
+
+AssertEqual ord3 expected: expected3;
+
+//-------------------------------------------------
+// Ordering by boolean values
+
+ord4 = select a, b from table (
+	( 1, true ),
+	( 2, true ),
+	( 1, false ),
+	( 2, false )) tbl(a, b)
+	order by b, a desc;
+//Print ord4;
+
+expected4 = select * from table ( 
+( 2, false ),
+( 1, false ),
+( 2, true ),
+( 1, true ) );
+
+AssertEqual ord4 expected: expected4;
+
+
+
+
+
+
+
+
+
+

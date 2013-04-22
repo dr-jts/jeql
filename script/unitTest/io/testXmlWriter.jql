@@ -1,0 +1,15 @@
+t = select * from table 
+(
+	("Feature <1>", POINT ( -123 49), "Folder1", "0", 1 ), 
+	("Feature& 2", POINT ( -123 50), "Folder1", "0", 1 ), 
+	("Feature]]> 3", POINT ( -123 51), "Folder2", "0", 0 ),
+	("Feature 4", POINT ( -123.123123123 51.99999999999), "Folder2", "0", 0 )
+) 
+	t(name, geom, folderName, folderVis, open);
+
+
+XMLWriter t
+	tableTag: "doc/collection"
+	tableAttr: "xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'"
+	rowTag: "entry/item"
+	file: "test.xml";

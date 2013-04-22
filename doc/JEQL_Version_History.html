@@ -1,0 +1,207 @@
+<html>
+
+<head>
+<title>JEQL Version History</title>
+</head>
+
+<body bgcolor='lightblue'>
+<h1 style='text-align:center;'>
+JEQL Language & Engine
+<br>
+<i>Version History</i>
+</h1>
+
+
+This document lists the change history of versions of the JEQL Language & Engine
+<p>
+
+<!-- ================================================================ -->
+<hr size='4' color='darkblue'>
+<h2>Version 0.10</h2>
+
+<i>Release Date:  February 16 2011</i>
+
+<h4>Standard Library</h4>
+<ul>
+<li><tt>DbReader</tt> provides <tt>table:</tt> parameter
+</ul>
+
+<h3>Standard Library Changes</h3>
+<ul>
+<li><tt>Db</tt> command parameter <tt>class:</tt> renamed to <tt>driver</tt>
+</ul>
+
+
+<!-- ================================================================ -->
+<hr size='4' color='darkblue'>
+<h2>Version 0.9</h2>
+
+<i>Release Date:  February 16 2011</i>
+
+<h3>Functionality Improvements</h3>
+
+<h4>User Interface</h4>
+<ul>
+<li>Now accepts scripts from stdin (using the command 'jeql -stdin')
+</ul>
+
+<h4>Language Syntax & Semantics</h4>
+<ul>
+<li>Multiple JOINs in a SELECT are supported
+<li>Added ability to use "_' as a separator in numeric constants
+</ul>
+
+<h4>Performance</h4>
+<ul>
+<li>Indexing is now supported for JOIN clauses with a simple equality ON condition
+</ul>
+
+<h4>Standard Library</h4>
+<ul>
+<li>Added initial release of <tt>Geodetic</tt> functions
+<li>Added <tt>Union</tt> command
+</ul>
+
+<h3>Standard Library Changes</h3>
+<ul>
+<li><tt>Value</tt> module renamed to <tt>Val</tt>
+<li><tt>Memorize</tt> command renamed to <tt>Mem</tt>
+</ul>
+
+
+<!-- ================================================================ -->
+<hr size='4' color='darkblue'>
+<h2>Version 0.8</h2>
+
+<i>Release Date:  December 12, 2009</i>
+
+<h3>Functionality Improvements</h3>
+
+<h4>User Interface</h4>
+<ul>
+<li>Now accepts scripts from stdin (using the command 'jeql -stdin')
+</ul>
+
+<h4>Language Syntax & Semantics</h4>
+<ul>
+<li>Allowed expressions to be used in LIMIT and OFFSET clauses
+</ul>
+
+<h4>Standard Library</h4>
+<ul>
+<li>Added Proj functions for coordinate system reprojection
+<li>Added <tt>prj:</tt> parameter to <tt>ShapefileWriter</tt>
+<li>Added <tt>KMLReader</tt>
+<li>Some Readers now support reading from URL sources (in particular, <tt>KMLReader</tt>)
+<li>Added support to <tt>KMLWriter</tt> for writing KMZ files
+</ul>
+
+
+<!-- ================================================================ -->
+<hr size='4' color='darkblue'>
+<h2>Version 0.7</h2>
+
+<i>Release Date:  January 14, 2009</i>
+
+<h3>Functionality Improvements</h3>
+
+<h4>Language Syntax & Semantics</h4>
+<ul>
+<li>Can now use <tt>select</tt> expressions as command parameter arguments
+<li>Changed default formatting of Dates to allow easy sorting
+<li>Changed default formatting of Double values to display more digits of precision
+</ul>
+
+<h4>Standard Library</h4>
+<ul>
+<li>Added split function <tt>Geom.splitByVertices</tt>
+<li>Added split function <tt>SplitBy.index</tt>
+<li>Added aggregate function <tt>Agg.geomConnect</tt>
+<li>Enhanced <tt>KMLWriter</tt> to allow styling directly in feature table
+<li>Added <tt>DbReader</tt>, <tt>DbMetadata</tt>, <tt>DbWriter</tt>, <tt>DbExec</tt>, <tt>PostgisReader</tt>
+<li>Fixed <tt>CSVReader</tt> to allow ignoring, skipping or using column names from file
+<li>Added <tt>Plot</tt> command
+</ul>
+
+<h3>Syntax Changes</h3>
+<ul>
+<li><tt>table</tt> value syntax now does not separate rows with commas (commas are allowed but deprecated)
+<li><tt>table</tt> value can be used as an expression term
+<li>Added syntax for WKT constants (such as POINT (...), LINESTRING (...), POLYGON(...) )
+</ul>
+
+<!-- ================================================================ -->
+<hr size='4' color='darkblue'>
+<h2>Version 0.6.1</h2>
+
+<i>Release Date:  Sep 15, 2008</i>
+
+<h3>Functionality Changes</h3>
+<ul>
+<li><tt>ShapefileWriter</tt> now outputs SHX file as per Shapefile specification
+</ul>
+
+<!-- ================================================================ -->
+<hr size='4' color='darkblue'>
+<h2>Version 0.6</h2>
+
+<i>Release Date:  Aug 5, 2008</i>
+
+<h3>Functionality Improvements</h3>
+<ul>
+<li>Added <tt>EXCEPT</tt> modifier to starred-table references in select result-list
+<li>Added support for Date datatype (Date function class, etc)
+</ul>
+
+<h3>Functionality Changes</h3>
+<ul>
+<li><tt>Print</tt> command provides a clean output format (but provides code: parameter for JEQL code format)
+<li>imports can now override previously registered classes
+</ul>
+
+<!-- ================================================================ -->
+<hr size='4' color='darkblue'>
+<h2>Version 0.5</h2>
+
+<i>Release Date:  July 20, 2008</i>
+
+<h3>Functionality Improvements</h3>
+<ul>
+<li>Added <tt>DbfReader</tt>
+<li>Added <tt>Geom.nearestPoints()</tt>
+<li>Added <tt>Geom.numInteriorRings()</tt>
+<li>Added <tt>Geom.exteriorRing()</tt>
+<li>Added <tt>RegEx</tt> function class
+<li>Improved error reporting for unknown commands
+<li>Enhanced <tt>KMLWriter</tt> with better default behaviours, new styling elements
+<li>Added Raw String and Rich String literal syntax
+<li>Added <tt>SPLIT BY</tt> clause, <tt>splitValue<tt>, <tt>splitIndex<tt> pseudo-columns
+<li>Added <tt>Geom.splitByMembers()</tt>, <tt>String.splitByString()</tt> splitting functions
+<li>Added <tt>Memorize</tt> command
+<li>Added <tt>Polygonizer</tt> command
+</ul>
+
+<h3>Bug Fixes</h3>
+<ul>
+<li>Fixed <tt>TextWriter</tt> and <tt>CSVWriter</tt> to use platform-specific line separator
+<li>Fixed evaluation of operators with null operands
+<li>Fixed <tt>ShapefileWriter</tt> to handle empty tables (writes shapefile with POINT geometry type)
+<li>Fixed <tt>ShapefileWriter</tt> to handle empty polygons correctly
+<li>Fixed aggregated queries to handle empty input tables
+<li>No longer requires variables to be defined before being used as command output arguments
+</ul>
+
+<h3>Samples & Unit Tests</h3>
+<ul>
+<li>Added <tt>testShapefile.jql</tt>
+<li>Added <tt>testRegEx.jql</tt>
+<li>Added <tt>testTypes.jql</tt>
+</ul>
+
+
+<h3>API Changes</h3>
+<ul>
+<li>Changed <tt>KMLWriter</tt> feature table columns
+</ul>
+
+</body></html>

@@ -1,0 +1,45 @@
+/*================================
+
+Test PREV function
+
+
+	
+================================*/
+
+
+in1 = select * from table (
+( 1, "a" ),
+( 2, "b" ),
+( 3, "c" ),
+( 4, "a" )
+ ) t(a, b);
+
+t1 = select a, prev(a, 999) as aa from in1;
+//Print t1;
+
+tExp1 = select * from table ( 
+( 1, 999 ),
+( 2, 1 ),
+( 3, 2 ),
+( 4, 3 ) );
+
+AssertEqual t1 expected: tExp1;
+
+//------------------------------------------
+
+in2 = select * from table (
+( 1 ),
+( 10 ),
+( 6 ),
+( 5 )
+ ) t(a);
+
+t2 = select min(a + 1) 
+	from (select * from in2 order by a asc) as t2
+	where a - prev(a, -999) > 1;
+//Print t2;
+
+tExp2 = select * from table ( 
+( 2 ) );
+
+AssertEqual t2 expected: tExp2;

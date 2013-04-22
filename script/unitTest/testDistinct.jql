@@ -1,0 +1,52 @@
+/*================================
+
+Test DISTINCT
+	
+================================*/
+
+t = select * from table ( (0) (0) ( 1 )( 1 ) (2) ) t(x);
+
+t1 = select distinct * from t;
+//Print t1;
+
+tExp1 = select * from table ( ( 0 ) ( 1 ) (2) );
+
+AssertEqual t1 expected: tExp1;
+
+//----------------------------------------------
+
+t = select * from table ( ("a") ("a") ( "b" )( "b" ) ("c") ) t(x);
+
+t2 = select distinct * from t;
+//Print :from t2;
+
+tExp2 = select * from table ( ("a") ("b") ("c") );
+
+AssertEqual t2 expected: tExp2;
+//----------------------------------------------
+
+t = select * from table ( 
+	("a", 1, 1.0 ) 
+	("a", 1, 1.0 ) 
+	("a", 1, 1.0 ) 
+	("b", 2, 2.0 )
+	("b", 2, 2.0 ) 
+	("b", 1, 2.0 ) 
+	("c", 3, 3.0 ) 
+	) t(a, b, c);
+
+
+t3 = select distinct * from t;
+//Print t3;
+
+tExp3 = select * from table ( 
+	("a", 1, 1.0 ) 
+	("b", 1, 2.0 ) 
+	("b", 2, 2.0 )
+	("c", 3, 3.0 ) 
+);
+
+AssertEqual t3 expected: tExp3;
+
+
+

@@ -1,0 +1,22 @@
+tseq = select * from Generate.sequence(1, 2);
+
+t = select t1.i i, t2.i j, t3.i k
+	from tseq t1 join tseq t2 join tseq t3;
+	
+AssertEqual t expected: 
+table (
+( 1, 1, 1 )
+( 1, 1, 2 )
+( 1, 2, 1 )
+( 1, 2, 2 )
+( 2, 1, 1 )
+( 2, 1, 2 )
+( 2, 2, 1 )
+( 2, 2, 2 )
+);
+
+
+
+
+
+

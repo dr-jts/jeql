@@ -1,0 +1,101 @@
+/*================================
+
+Test expressions
+	
+================================*/
+
+
+x = 10;
+y = 3.0;
+z = x * y;
+AssertEqual z expected: 30.0;
+
+//-------------------------------------------
+
+s = "test";
+t  = select * from table (( s ));
+t2 = select * from table (( "test" ));
+AssertEqual t expected: t2;
+
+//-------------------------------------------
+
+t = select not true result, false expected from table((1));
+AssertEqual t;
+
+//==========  Arithmetic Operations  ==============
+
+AssertEqual 5 * 2 expected: 10;
+AssertEqual 5 / 2 expected: 2;
+AssertEqual 5 + 2 expected: 7;
+AssertEqual 5 - 2 expected: 3;
+
+AssertEqual 5.0 * 2 expected: 10.0;
+AssertEqual 5.0 / 2 expected: 2.5;
+AssertEqual 5.0 + 2 expected: 7.0;
+AssertEqual 5.0 - 2 expected: 3.0;
+
+AssertEqual 5 % 2 expected: 1;
+AssertEqual 5.0 % 2 expected: 1.0;
+
+//==========  String Operations  ==============
+
+AssertEqual "xx" + 2    expected: "xx2";
+AssertEqual "xx" + "yy" expected: "xxyy";
+
+//==========  Comparison Operations  ==============
+
+AssertEqual 5.0 >  2 expected: true;
+AssertEqual 5.0 >= 2 expected: true;
+AssertEqual 5.0 <  2 expected: false;
+AssertEqual 5.0 <= 2 expected: false;
+
+AssertEqual true <= false expected: false;
+AssertEqual true <= true expected: true;
+AssertEqual true > false expected: true;
+
+AssertEqual POINT(1 1) > POINT(0 0) expected: true;
+AssertEqual POINT(1 1) == POINT(0 0) expected: false;
+AssertEqual POINT(1 1) == POINT(0 0) expected: false;
+// Assert POINT(1 1) == true fails;
+
+//==========  Boolean Operations  ==============
+
+AssertEqual true  and false expected: false;
+AssertEqual true  and true  expected: true;
+AssertEqual true  or  false expected: true;
+AssertEqual false or  false expected: false;
+AssertEqual false OR  false expected: false;
+AssertEqual not false expected: true;
+AssertEqual not true  expected: false;
+AssertEqual true and not true expected: false;
+AssertEqual true AND NOT true expected: false;
+
+AssertEqual true xor not true expected: true;
+AssertEqual true xor false expected: true;
+AssertEqual true xor true expected: false;
+AssertEqual false xor false expected: false;
+
+//==========  RegEx Match  ==============
+
+AssertEqual "foo" ~= "foo" expected: true;
+AssertEqual "foobar" ~= "foo" expected: false;
+AssertEqual "foo" ~= "foobar" expected: false;
+AssertEqual "foobar" ~= "fo*b[ar]+" expected: true;
+AssertEqual "fooooooooobar" ~= "fo*b[ar]+" expected: true;
+AssertEqual "foooooooxoobar" ~= "fo*b[ar]+" expected: false;
+AssertEqual "foooooooxoobar" ~= "f[ox]*b[ar]+" expected: true;
+
+//==========  RegEx Find  ==============
+
+AssertEqual "foobar" ~ "foo"  expected: true;
+AssertEqual "foobar" ~ "fo*"  expected: true;
+AssertEqual "foobar" ~ "fo+"  expected: true;
+AssertEqual "foobar" ~ "fo+b" expected: true;
+
+AssertEqual "foobar" ~ "fo?b" expected: false;
+AssertEqual "foobar" ~ "fa+"  expected: false;
+AssertEqual "foobar" ~ "ffo*" expected: false;
+
+
+
+

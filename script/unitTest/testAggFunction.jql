@@ -1,0 +1,51 @@
+/*================================
+
+Test Aggregate function evaluation
+	
+================================*/
+
+t1 = select * from table ( 
+		(10, "a"), 
+		(11, "c"), 
+		(3,  "d"), 
+		(2,  "b"), 
+		(2,  "a"), 
+		(2,  "c") 
+			) tbl(a, b);
+
+//-------------------------------------------------
+gr1 = select count(b) from t1 group by b;
+
+expected1 = select * from table ( 
+( 2 ),
+( 1 ),
+( 2 ),
+( 1 ) );
+
+Print gr1;
+AssertEqual gr1 expected: expected1;
+
+//-------------------------------------------------
+tmax = select max(a) from t1;
+Assert val(tmax) == 11;
+
+//-------------------------------------------------
+tmin = select min(a) from t1;
+Assert val(tmin) == 2;
+
+//-------------------------------------------------
+tavg = select avg(a) from t1;
+Assert val(tavg) == 5;
+//Print tavg;
+
+//-------------------------------------------------
+tstddev = select stddev(a) from t1;
+//Print tstddev;
+Assert val(tstddev) == 4.2895221179054435;
+
+//-------------------------------------------------
+tsum = select sum(a) from t1;
+Assert val(tsum) == 30;
+
+
+

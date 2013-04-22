@@ -1,0 +1,18 @@
+/*================================
+
+	JQL Test Program
+	
+================================*/
+
+t = select * from table (("AA", "1"), ("BB", "2"), ("CC", "3")) t(a, b);
+
+file = "testSTFFile.stf";
+
+STFWriter t file: file;
+
+STFReader t1 file: file;
+
+AssertEqual t expected: t1 ;
+
+
+

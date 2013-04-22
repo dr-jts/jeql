@@ -1,0 +1,66 @@
+/*================================
+
+Example of reading a complex textual spatial format, 
+containing hierarchical and denormalized data
+	
+================================*/
+
+data = 
+$"080WS,0.0,0.0,3.0,-1.0,-1.0
+      170.036     1750.610 -999.000      173.044     1750.325 -999.000
+      176.054     1750.089 -999.000      179.065     1749.928 -999.000
+       -1.000       -1.000
+080WS,9.0,0.0,3.0,-1.0,-1.0
+      170.036     1750.610 -999.000      173.044     1750.325 -999.000
+      176.054     1750.089 -999.000      179.065     1749.928 -999.000
+       -1.000       -1.000
+";
+
+TextReader t data: data;
+
+//--------------------------------------------------
+//   denormalize (flatten) header and data lines
+//--------------------------------------------------
+t = select 
+	keep(rownum(), isHeader) linenum,
+	keep(line, isHeader) hdr, 
+	isHeader ? "" : line dat
+	with {
+		isHeader = String.startsWith(line, "080");
+	}
+	from t;
+
+//--------------------------------------------------
+//   Extract ordinate values
+//--------------------------------------------------
+
+t = select linenum, hdr,
+	Val.toDouble(RegEx.splitAt(dat, \"\s+", 1)) x1,
+	Val.toDouble(RegEx.splitAt(dat, \"\s+", 2)) y1,
+	Val.toDouble(RegEx.splitAt(dat, \"\s+", 4)) x2,
+	Val.toDouble(RegEx.splitAt(dat, \"\s+", 5)) y2
+	from t
+	where String.length(dat) > 0;
+
+//--------------------------------------------------
+//   normalize (pivot) ordinate pairs
+//--------------------------------------------------
+
+t = select linenum, hdr, 
+		i == 1 ? x1 : x2 x,
+		i == 1 ? y1 : y2 y
+	from t join Generate.sequence(1, 2) t2;
+
+t = select * from t
+	where x != null and x > 0;
+
+//------------------------------------------------------
+//   for each feature connect ordinates into LINESTRINGS
+//------------------------------------------------------
+	
+t = select linenum, first(hdr), geomConnect(Geom.createPoint(x, y))
+	from t
+	group by linenum;
+	
+
+Mem t;

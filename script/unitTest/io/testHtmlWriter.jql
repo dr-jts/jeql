@@ -1,0 +1,17 @@
+/*================================
+
+	Test HtmlWriter
+	
+================================*/
+
+t = select * from table (
+	("AA", 1) 
+	("BB", 2)
+	("CC", 3));
+
+
+HtmlWriter t width: "50%" file: "testFile.html";
+
+
+
+

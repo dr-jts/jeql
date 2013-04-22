@@ -1,0 +1,70 @@
+/*================================
+
+Test String functions
+	
+================================*/
+
+x = "abcdefg";
+
+s1 = String.substring(x, 4);
+AssertEqual s1 expected: "efg";
+
+s1 = String.substring(x, 2, 4);
+AssertEqual s1 expected: "cd";
+
+
+
+//s1 = "sss" - 1;
+
+//-------------------------------------------
+
+
+x2 = "ab_ab_dddabdddcd";
+AssertEqual String.replaceAll(x2, "ab_", "Z") expected: "ZZdddabdddcd";
+AssertEqual String.replaceAll(x2, "d", "Z") expected: "ab_ab_ZZZabZZZcZ";
+
+AssertEqual String.removeChars("aAbBcCdD", "abc") expected: "ABCdD";
+AssertEqual String.keepChars("cCdDaAbB", "ac") expected: "ca";
+AssertEqual String.keepChars(x2, "a_") expected: "a_a_a";
+
+
+//-------------------------------------------
+// Test that replaceAll does not use RegExes
+//-------------------------------------------
+
+AssertEqual String.replaceAll("x$a", "$a", "Z") expected: "xZ";
+AssertEqual String.replaceAll("x[]a", "[]", "Z") expected: "xZa";
+
+//-------------------------------------------
+// Null handling
+//-------------------------------------------
+
+Assert String.substring(null, 1) == null;
+Assert String.tail(null, 1) == null;
+Assert String.toLowerCase(null) == null;
+Assert String.toUpperCase(null) == null;
+Assert String.trim(null) == null;
+Assert String.toString(null) == "";
+
+Assert String.replaceAll(null, "s", "") == null;
+Assert String.replaceAll("s", null, "x") == "s";
+Assert String.replaceAll("sasa", "a", null) == "ss";
+
+Assert String.replaceFirst(null, "s", "") == null;
+Assert String.replaceFirst("s", null, "x") == "s";
+Assert String.replaceFirst("sasa", "a", null) == "ssa";
+
+//-------------------------------------------
+// Padding
+//-------------------------------------------
+
+Assert String.pad("x", "AB", 6) == "xABABA";
+Assert String.pad("12345", "AB", 4) == "12345";
+Assert String.padLeft("x", "AB", 6) == "BABABx";
+Assert String.padLeft("x", "A", 6) == "AAAAAx";
+Assert String.padLeft("12345", "AB", 4) == "12345";
+
+AssertEqual String.count("aaaabbbccc", "bc") expected: 6;
+AssertEqual String.count("aaaabbbccc", "f") expected: 0;
+
+

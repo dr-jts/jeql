@@ -1,0 +1,55 @@
+/*================================
+
+Test JOIN semantics with multiple JOIN clauses
+	
+================================*/
+
+t1 = select * from table (
+( 1, 4, "a" )
+( 2, 5, "b" )
+( 3, 6, "c" )
+) t(a, b, c);
+
+t2 = select * from table ( 
+( 1, 11 )
+( 2, 22 )
+( 3, 33 )
+( 4, 44 )
+( 5, 55 )
+( 6, 66 )
+) t(id, d);
+
+r1 = select a, b, u.d d1 , v.d d2, c from t1 
+	join t2 u on t1.a == u.id
+	join t2 v on t1.b == v.id;
+
+Print r1;
+
+r1expected = table (
+	( 1, 4, 11, 44, "a")
+	( 2, 5, 22, 55, "b")
+	( 3, 6, 33, 66, "c")
+);
+
+//Print tj3Expected;
+
+AssertEqual r1 expected: r1expected;
+
+//---------------------------------------------
+
+tseq = select * from Generate.sequence(1, 2);
+
+t = select t1.i i, t2.i j, t3.i k
+	from tseq t1 join tseq t2 join tseq t3;
+	
+AssertEqual t expected: 
+table (
+( 1, 1, 1 )
+( 1, 1, 2 )
+( 1, 2, 1 )
+( 1, 2, 2 )
+( 2, 1, 1 )
+( 2, 1, 2 )
+( 2, 2, 1 )
+( 2, 2, 2 )
+);

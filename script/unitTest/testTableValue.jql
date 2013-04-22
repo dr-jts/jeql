@@ -1,0 +1,23 @@
+/*================================
+
+Test TABLE value semantics
+	
+================================*/
+
+t1 = select * from table ( (1, "a"), (2, "b") );
+
+t2 = select * from table ( (1, "a"), (2, "b") );
+
+AssertEqual value: t1 expected: t2;
+
+a = val(t1);
+Assert a == 1;
+
+tc = select count(*) from t1;
+Assert val(tc) == 2;
+
+
+
+
+
+

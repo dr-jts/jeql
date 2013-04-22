@@ -1,0 +1,176 @@
+<?xml version="1.0"?>
+<project name="JEQL Buildfile" default="all" basedir=".">
+  <description>
+    Ant build script for JEQL
+  </description>
+
+  <!-- ================================================================== -->
+  <!-- Properties  -->
+  <!-- ================================================================== -->
+
+  <target name="props">
+  	<property file="${basedir}/build.properties"/>
+  	<property name="base.src" 	value="${basedir}/modules/jeql/src/main/java"/>
+  	<property name="base.lib" 	value="${basedir}/java/lib"/>
+  	<property name="base.lib-nodist" 	value="${basedir}/java/lib-nodist"/>
+  	<property name="base.doc" 	value="${basedir}/doc"/>
+  	<property name="base.bin" 	value="${basedir}/bin"/>
+  	<property name="base.dist" 	value="${basedir}/dist"/>
+  	<property name="base.script" 	value="${basedir}/script"/>
+  	
+   	<property name="jeqlw.src" 	value="${basedir}/modules/jeqlw/src/main/java"/>
+
+   	<property name="build" 		value="${basedir}/build"/>
+ 	<property name="build.classes" 	value="${build}/classes/jeql"/>
+ 	<property name="jeqlw.classes" 	value="${build}/classes/jeqlw"/>
+  	
+  	<property name="test" value="test"/>
+  	
+  	<property name="dist" value="${build}/dist"/>
+  	<property name="dist.src" value="${dist}/src"/>
+  	<property name="dist.lib" value="${dist}/lib"/>
+  	<property name="dist.doc" value="${dist}/doc"/>
+  	<property name="dist.javadoc" value="${dist}/doc/javadoc"/>
+   	<!--property name="dist.jts-jar" value="${dist.lib}\jts-${jts.version}.jar" /-->
+ 	
+  	<property name="zipfile" value="jeql-${release.version}.zip"/>
+  	<property name="doc-dir" value="doc"/>
+  	
+  </target>
+
+  <!-- ================================================================== -->
+  <!-- Targets -->
+  <!-- ================================================================== -->
+
+  <target name="copy-dist"
+          description="Copy the distro files">
+    <mkdir dir="${dist}"/>
+    <delete includeemptydirs="true">
+  	<fileset dir="${dist}" includes="**/*"/>
+    </delete>
+  
+    <mkdir dir="${dist.lib}"/>
+    <!--
+    <copy todir="${dist.src}">
+      <fileset dir="${base.src}"
+               excludes=""/>
+    </copy>
+  -->
+  
+    <!-- clean & load the jars -->
+  	
+    <copy todir="${dist}\lib">
+      <fileset dir="${base.lib}" />
+    </copy>
+   
+    <copy todir="${dist}\doc">
+      <fileset dir="${base.doc}" />
+    </copy>
+   
+    <copy todir="${dist}\bin">
+      <fileset dir="${base.bin}" />
+    </copy>
+   
+    <copy todir="${dist}\script">
+      <fileset dir="${base.script}" />
+    </copy>
+   
+    <copy todir="${dist}">
+      <fileset dir="${base.dist}" />
+    </copy>
+   
+  </target>
+    
+  <target name="jar" 
+          description="Builds main jar" depends="copy-dist">
+    <delete dir="${build.classes}"/>
+    <mkdir dir="${build.classes}"/>
+    <javac srcdir="${base.src}"
+           debug="yes"
+	   includes="**/*.java"
+           excludes=""
+           destdir="${build.classes}">
+      <classpath>
+      	<fileset dir="${base.lib}">
+      	  <include name="**/*.jar"/>
+      	</fileset>
+      	<fileset dir="${base.lib-nodist}">
+      	  <include name="**/*.jar"/>
+      	</fileset>
+      </classpath>
+    </javac>
+    <delete file="${dist.lib}/jeql-*" failonerror="false"/>
+    <mkdir dir="${dist.lib}"/>
+    <jar jarfile="${dist.lib}\jeql-${release.version}.jar"
+         basedir="${build.classes}"/>
+  </target>
+
+  <target name="jeqlw-jar" 
+          description="Builds jeqlw jar" depends="copy-dist, jar">
+    <delete dir="${jeqlw.classes}"/>
+    <mkdir dir="${jeqlw.classes}"/>
+    <javac srcdir="${jeqlw.src}"
+           debug="yes"
+	   includes="**/*.java"
+           excludes=""
+           destdir="${jeqlw.classes}">
+      <classpath>
+	<pathelement location="${build.classes}"/>
+	<fileset dir="${base.lib}">
+      	  <include name="**/*.jar"/>
+      	</fileset>
+      	<fileset dir="${base.lib-nodist}">
+      	  <include name="**/*.jar"/>
+      	</fileset>
+      </classpath>
+    </javac>
+    <copy todir="${jeqlw.classes}/jeql/workbench">
+      <fileset dir="${jeqlw.src}/jeql/workbench" includes="*.gif,*.png"/>
+    </copy>
+    <copy todir="${jeqlw.classes}/jeql/workbench/ui/data">
+      <fileset dir="${jeqlw.src}/jeql/workbench/ui/data" includes="*.gif,*.png"/>
+    </copy>
+    <copy todir="${jeqlw.classes}/jeql/workbench/images">
+      <fileset dir="${jeqlw.src}/jeql/workbench/images" includes="*.gif,*.png"/>
+    </copy>
+    <delete file="${dist.lib}/jeqlw-*" failonerror="false"/>
+    <mkdir dir="${dist.lib}"/>
+    <jar jarfile="${dist.lib}\jeqlw-${release.version}.jar"
+         basedir="${jeqlw.classes}"/>
+  </target>
+
+  <target name="javadoc" depends="copy-dist"
+          description="Generates the JavaDoc files">
+    <javadoc packagenames="jeql.api.*"
+             destdir="${dist.javadoc}">
+      <sourcepath location="${base.src}"/>
+    </javadoc>
+  </target>
+
+  <target name="make-dist" depends="props"
+  	description="Zips all files into a distro archive">
+    <zip destfile="${build}/jeql-${release.version}.zip" 
+    	basedir="${dist}"  />
+  </target>
+  
+  <target name="zip-src" depends="props"
+  	description="Zips src files into a backup archive">
+    <zip destfile="${build}/jeql-src-${release.version}.zip" 
+    	basedir="${base.src}"
+    	includes="**/*" />
+  </target>
+  
+  <target name="OLDzip-build" depends="props"
+  	description="Zips src files into a backup archive">
+    <zip destfile="${build}/jeql-srcbuild-${release.version}.zip" 
+    	basedir="${base}" /> 
+  </target>
+  
+  <target name="build" depends="copy-dist, jar, jeqlw-jar" 
+          description="Cleans, compiles, builds jars, generates javadoc">
+  </target>
+
+  <target name="all" depends="props, build, make-dist, zip-src" 
+	  description="Compiles and builds the distro archive"/>
+
+</project>

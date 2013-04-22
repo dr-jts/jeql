@@ -1,0 +1,24 @@
+/*================================
+
+Test JOIN errors
+	
+================================*/
+
+t1 = select * from table (
+( 1, "a" )
+( 2, "b" )
+( 3, "c" )
+) t(a, b);
+
+t2 = select * from table ( 
+( 1, 11 )
+( 2, 22 )
+) t(c, d);
+
+//------ Invalid column name in JOIN table
+
+tj = select t1.*, t2.foo from t1 join t2;
+
+Mem tj;
+
+

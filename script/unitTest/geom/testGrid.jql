@@ -1,0 +1,19 @@
+/*================================
+
+Test Grid functions
+	
+================================*/
+
+
+
+Assert 0 == Grid.hexIndex( POINT(0 0), BOX(0 0, 3 3), 3);
+Assert 0 == Grid.hexIndex( POINT(0 0.86), BOX(0 0, 3 3), 3);
+Assert 3 == Grid.hexIndex( POINT(0 0.9), BOX(0 0, 3 3), 3);
+Assert 3 == Grid.hexIndex( POINT(0 1), BOX(0 0, 3 3), 3);
+
+Assert 1 == Grid.hexIndex( POINT(1 1), BOX(0 0, 3 3), 3);
+Assert 1 == Grid.hexIndex( POINT(2.1 1), BOX(0 0, 3 3), 3);
+
+Assert 4 == Grid.hexIndex( POINT(2 2), BOX(0 0, 3 3), 3);
+Assert 8 == Grid.hexIndex( POINT(3 3), BOX(0 0, 3 3), 3);
+

@@ -1,0 +1,98 @@
+/*================================
+
+Test LEFT [ OUTER ] JOIN semantics
+	
+================================*/
+
+
+t1 = select * from table (
+( 1, "a" )
+( 2, "b" )
+( 3, "c" )
+( 4, "d" )
+( 5, "e" )
+) t(a, b);
+
+t2 = select * from table ( 
+( 1, 11 )
+( 2, 22 )
+) t(c, d);
+
+//-----------------------------------------
+//     simple join
+//-----------------------------------------
+
+tj1 = select a, b, d from t1 left outer join t2 on t1.a == t2.c;
+
+Print tj1;
+
+tj1expected = table (
+	( 1, "a", 11 )
+	( 2, "b", 22 )
+	( 3, "c", null )
+	( 4, "d", null )
+	( 5, "e", null )
+);
+
+//Print tj1expected;
+
+AssertEqual tj1 expected: tj1expected;
+
+//-----------------------------------------
+//     RH empty
+//-----------------------------------------
+tempty = select * from t2 where false;
+
+tj2 = select a, b, d from t1 left outer join tempty on t1.a == tempty.c;
+
+//Print tj2;
+
+tj2expected = table (
+	( 1, "a", false ? 0 : null )
+	( 2, "b", null )
+	( 3, "c", null )
+	( 4, "d", null )
+	( 5, "e", null )
+);
+
+//Print tj2expected;
+
+AssertEqual tj2 expected: tj2expected;
+
+//-----------------------------------------
+//     LH empty
+//-----------------------------------------
+
+tempty = select * from t1 where false;
+
+tj3 = select a, b, d from tempty left outer join t2 on tempty.a == t2.c;
+
+//Print tj3;
+
+tj3expected = table (
+	( 1, "a", false ? 0 : null )
+	( 2, "b", null )
+	( 3, "c", null )
+	( 4, "d", null )
+	( 5, "e", null )
+);
+tj3expected = select * from tj3expected where false;
+
+//Print tj3expected;
+
+AssertEqual tj3 expected: tj3expected;
+
+//-----------------------------------------
+//     volume testing
+//-----------------------------------------
+
+n = 100;
+t4 = select i a   from Generate.sequence(1,n) t(i);
+t5 = select 2*i b from Generate.sequence(1, n/2) t(i);
+
+tj4 = select a, b from t4 left join t5 on a == b;
+
+tj4expected = select i, i % 2 == 0 ? i : null from Generate.sequence(1,n) t(i);
+AssertEqual tj4 expected: tj4expected;
+
+

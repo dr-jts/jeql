@@ -1,0 +1,78 @@
+/*================================
+
+Test datatypes
+	
+================================*/
+
+//==========  Geometry type  =========
+
+t = table (
+	( POINT EMPTY )
+	( POINT(1 1) )
+	
+	( LINESTRING EMPTY )
+	( LINESTRING (1 1, 2 2, 3 3) ) 
+	
+	( LINEARRING EMPTY )
+	( LINEARRING (1 1, 2 2, 3 3, 1 1) )
+	
+	( POLYGON EMPTY )
+	( POLYGON ((1 1, 2 1, 2 2, 1 1)) )
+	( POLYGON ((10 10, 20 10, 20 20, 10 10), (11 11, 12 11, 12 12, 11 11))   )
+	
+	( MULTIPOINT EMPTY )
+	( MULTIPOINT (EMPTY, EMPTY) )
+	( MULTIPOINT ((1 1), (2 2)) )
+	( MULTIPOINT ((1 1), (2 2), (3 3), (4 4), (5 5)) )
+	
+	( MULTILINESTRING EMPTY )
+	( MULTILINESTRING (EMPTY, EMPTY) )
+	( MULTILINESTRING ((1 1, 2 2)) )
+	( MULTILINESTRING ((1 1, 2 2), (3 3, 4 4, 5 5)) )
+	
+	( MULTIPOLYGON EMPTY )
+	( MULTIPOLYGON (EMPTY, EMPTY) )
+	( MULTIPOLYGON ( ((1 1, 2 2, 2 1, 1 1)) ) )
+	( MULTIPOLYGON ( ((1 1, 2 2, 2 1, 1 1)), 
+			 ((10 10, 20 20, 20 10, 10 10), (11 11, 12 12, 12 11, 11 11))
+		       ) )
+	
+	( GEOMETRYCOLLECTION EMPTY )
+	( GEOMETRYCOLLECTION (POINT EMPTY, LINESTRING EMPTY) )
+	( GEOMETRYCOLLECTION (  POINT (1 1), 
+				LINESTRING (1 1, 2 2),
+				MULTIPOINT EMPTY,
+				POLYGON ((1 1, 2 1, 2 2, 1 1))
+			) )
+
+	);
+
+Print t;
+
+
+//==========  Date type  =========
+
+d = Val.toDate("Jan 3, 1994");
+
+Print d;
+
+d2 = Val.toDate("Jan 4, 1994");
+
+Print Date.diff(d2, d);
+
+Assert Date.diff(d2, d) == Date.daysToSeconds(1);
+
+Print Date.add(d, Date.diff(d2, d));
+
+Assert Date.add(d, Date.diff(d2, d)) == d2;
+
+
+t = select  date
+	with {
+		start = Val.toDate("Jan 3, 1994");
+		interval = Date.daysToSeconds(i);
+		date = Date.add(start, interval);
+	}
+	from Generate.sequence(1, 365) t(i);
+	
+//Print t;

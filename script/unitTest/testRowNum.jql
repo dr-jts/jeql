@@ -1,0 +1,55 @@
+/*================================
+
+Test ROWNUM function
+	
+================================*/
+
+in1 = select * from table (
+( 100 ),
+( 200 ),
+( 300 )
+ ) t(a);
+
+t1 = select a, 100 * rownum() from in1;
+//Print t1;
+
+AssertEqual t1;
+
+//-----------------------------------
+
+in2 = select * from table (
+( 1 ),
+( 2 ),
+( 3 ),
+( 4 ),
+( 5 )
+ ) t(a);
+
+t2 = select a, rownum() from in2
+	where in2.a % 2 != 0;
+//Print t2;
+
+exp2 = select * from table ( 
+( 1, 1 ),
+( 3, 2 ),
+( 5, 3 ) );
+
+AssertEqual t2 expected: exp2;
+
+//-------------------------------------
+// RowNun() used in WHERE clause
+
+in3 = select * from Generate.sequence(1, 10) t(a);
+
+
+t3 = select a, rownum() from in3
+	where in3.a % 2 != 0 and rownum() > 4;
+//Print t3;
+
+exp3 = select * from table ( 
+( 5, 1 ),
+( 7, 2 ),
+( 9, 3 ) );
+
+AssertEqual t3 expected: exp3;
+

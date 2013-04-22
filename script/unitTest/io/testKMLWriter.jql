@@ -1,0 +1,47 @@
+/*================================
+
+	Unit Test - KMLWriter
+	
+================================*/
+
+tKML = select * from table 
+(
+	("Feature <1>", POINT ( -123 49), "Folder1", "0", 1, Val.toDate("2009-01-01") ) 
+	("Feature& 2", POINT ( -123 50), "Folder1",  "0", 1, Val.toDate("2009-01-02") ) 
+	("Feature 3", POINT ( -123 51), "Folder2",   "0", 0, Val.toDate("2009-01-03") )
+	("Feature 4", POINT ( -123.123123123 51.99999999999), "Folder2", "0", 0, Val.toDate("2009-01-04") )
+	("Feature 5", MULTIPOINT (( -123 52), (-124 52), (-125 52)), "Folder2",  "0", 0, Val.toDate("2009-01-03") )
+) 
+	t(kmlName, geom, kmlFolderName, kmlFolderVisibility, kmlFolderOpen, kmlTimeStampWhen);
+
+tKML = select *, 
+	"desc" kmlDescription,
+	#aaaaaa balloonStyleBgColor,
+	#ff0000 balloonStyleTextColor,
+	"balloon text" balloonStyleText,
+	"default" balloonStyleDisplay
+	from tKML;
+	
+file = "test.kml";
+
+KMLWriter tKML 
+	comment: "JEQL Unit test of KMLWriter"
+	name: "KMLWriter test"
+	description: "Tests interface and functionality of KMLWriter"
+	altitude: 100.0
+	altitudeMode: "extrude"
+	lineStyleColor: "ffffff00"
+	lineStyleWidth: 2
+	polyStyleColor: "ffffff00"
+	polyStyleColorMode: "random"
+	polyStyleFill: 1
+	polyStyleOutline: 1
+	iconStyleHref: "http://maps.google.com/mapfiles/kml/shapes/donut.png"
+	iconStyleColor: "#ff" + Color.RGBtoBGR(Color.cssNameToRGB("red"))
+	iconStyleColorMode: "normal"
+	precision: 4
+	file: file;
+
+// no KML reader, so can't do loopback check
+
+

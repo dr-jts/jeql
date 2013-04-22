@@ -1,0 +1,20 @@
+//--- Data provided in table literal
+t = TABLE t(id, type, lanes, Geometry) (
+( 1, "HWY",  4, LINESTRING (1 1, 2 2))
+( 2, "CITY", 2, LINESTRING (10 10, 20 20))
+( 3, "CITY", 2, LINESTRING (100 100, 20 20, 300 300, 400 400))
+) ;
+
+//--- define GML id
+tgml = select id gml_id, * from t;
+
+GMLWriter tgml
+	namespacePrefix: "ts"
+	namespaceURI: "http://tsusiatsoftware.net/gml"
+	featureCollectionTag: "RoadNetwork"
+	featureTag: "RoadSegment"
+	file: "test.gml";
+	
+	
+	
+	

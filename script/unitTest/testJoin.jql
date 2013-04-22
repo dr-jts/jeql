@@ -1,0 +1,69 @@
+/*================================
+
+Test JOIN semantics
+	
+================================*/
+
+t1 = select * from table (
+( 1, "a" )
+( 2, "b" )
+( 3, "c" )
+) t(a, b);
+
+t2 = select * from table ( 
+( 1, 11 )
+( 2, 22 )
+) t(c, d);
+
+//------ empty tables
+
+
+tempty = select * from t2 where false;
+
+tj = select t1.*, tempty.* from t1 join tempty;
+count = select count(*) from tj;
+Assert val(count) == 0;
+
+tj2 = select t1.*, tempty.* from tempty join t1;
+count = select count(*) from tj2;
+Assert val(count) == 0;
+
+//Print tj;
+
+//-----------------------------------------------
+//------- simple join (using INNER no-op keyword)
+
+tj3 = select a, b, d from t1 inner join t2 on t1.a == t2.c;
+
+//Print tj3;
+
+tj3Expected = table (
+	( 1, "a", 11)
+	( 2, "b", 22)
+);
+
+//Print tj3Expected;
+
+AssertEqual tj3 expected: tj3Expected;
+
+//-----------------------------------------------
+//------- cross join (no join expression)
+
+tj4 = select a, b, d from t1 inner join t2;
+
+Print tj4;
+
+tj4Expected = table (
+	( 1, "a", 11)
+	( 1, "a", 22)
+	( 2, "b", 11)
+	( 2, "b", 22)
+	( 3, "c", 11)
+	( 3, "c", 22)
+);
+
+//Print tj3Expected;
+
+AssertEqual tj4 expected: tj4Expected;
+
+

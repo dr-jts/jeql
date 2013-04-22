@@ -1,0 +1,39 @@
+/*================================
+
+	JQL Test Program
+	
+================================*/
+
+t = select * from table (("AA"), ("BB"), ("CC"));
+
+
+TextWriter t file: "testTextFileOut.txt";
+
+TextReader t1 file: "testTextFileOut.txt";
+
+
+AssertEqual t expected: t1 ;
+
+//-----------------------------------
+// Test using strings as input
+//-----------------------------------
+
+str = 
+$"This
+is
+a multiline
+string
+";
+
+TextReader t data: str;
+
+cnt = select count(*) from t;
+
+Assert  val(cnt) == 4;
+
+//Print t;
+
+
+
+
+

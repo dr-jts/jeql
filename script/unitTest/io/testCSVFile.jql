@@ -1,0 +1,39 @@
+/*================================
+
+	Test CSV file writing and reading
+	
+================================*/
+
+// test saving strings with CSV formatting chars in them
+
+t = select * from table (
+	("AA",   1), 
+	("B,B",  2), 
+	("C\"C", 3)
+	) t(a, b);
+
+file = "testFile.csv";
+
+CSVWriter t colNames: file: file;
+CSVReader t1 useColNames: file: file;
+Print t1;
+
+t1e = select a, Val.toInt(b) from t1;
+AssertEqual t expected: t1e;
+
+//-----------------------------------
+// Test separator
+//-----------------------------------
+
+file2 = "testFile.tsv";
+
+CSVWriter t  colSep: "\t" file: file2;
+CSVReader t2 useColNames: colSep: "\t" file: file2;
+Print t2;
+
+t2e = select a, Val.toInt(b) from t2;
+AssertEqual t expected: t2e;
+
+
+
+

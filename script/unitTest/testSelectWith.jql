@@ -1,0 +1,17 @@
+/*================================
+
+Test SELECT ... WITH { } ...
+	
+================================*/
+
+t1 = select  a2, b 
+	with { a1 = a * 2; 
+		a2 = a1 + 3; }
+	from table ( (1, "a"), (2, "b") ) t(a, b);
+
+t2 = select * from table ( (5, "a"), (7, "b") );
+
+AssertEqual t1 expected: t2;
+
+
+

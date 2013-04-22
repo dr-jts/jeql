@@ -1,0 +1,29 @@
+/*================================
+
+Test Console function
+	
+================================*/
+
+tdat = select * from 
+	table ( (1, "a"), 
+		(2, "b"),
+		(3, "c"),
+		(4, "d"),
+		(5, "d"),
+		(6, "d") ) tbl(a, b);
+
+t1 = select Console.println(a + " : " + b) from tdat;
+
+Memorize t1;
+
+expected1 = select a + " : " + b from tdat;
+
+AssertEqual t1 expected: expected1;
+
+
+
+
+
+
+
+

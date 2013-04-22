@@ -1,0 +1,12 @@
+/*================================
+
+Test Geometry Literal values
+	
+================================*/
+
+Assert POINT(0 0) == POINT(0 0);
+Assert Geom.extractPoint(LINESTRING(10 10, 100 100), 0) == POINT(10 10);
+Assert Geom.boundary(LINESTRING(10 10, 50 50, 100 100)) 
+	== MULTIPOINT((10 10), (100 100));
+Assert BOX(10 10, 100 100) 
+	== POLYGON((10 10, 10 100, 100 100, 100 10, 10 10));

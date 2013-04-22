@@ -1,0 +1,16 @@
+/*================================
+
+Test String Matching functions
+	
+================================*/
+
+
+//----- Levenshtein (Edit) Distance ----
+
+Assert 0 == StrMatch.levenshteinDistance("ABC", "ABC");
+Assert 1 == StrMatch.levenshteinDistance("AA", "AB");
+Assert 2 == StrMatch.levenshteinDistance("AAA", "AB");
+Assert 1 == StrMatch.levenshteinDistance("ABB", "AB");
+Assert 3 == StrMatch.levenshteinDistance("ABC", "DEF");
+
+

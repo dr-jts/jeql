@@ -1,0 +1,138 @@
+/*================================
+
+Test GROUP BY syntax & semantics
+	
+================================*/
+
+t1 = select * from table ( 
+		(10, "a"), 
+		(11, "c"), 
+		(3,  "d"), 
+		(2,  "b"), 
+		(2,  "a"), 
+		(2,  "c") 
+			) tbl(a, b);
+
+//-------------------------------------------------
+gr1 = select count(b) from t1 group by b;
+
+expected1 = select * from table ( 
+( 2 ),
+( 1 ),
+( 2 ),
+( 1 ) );
+
+//Print gr1;
+AssertEqual gr1 expected: expected1;
+
+gr1_1 = select count(*) from t1 group by b;
+AssertEqual gr1_1 expected: expected1;
+
+
+//-------------------------------------------------
+gr2 = select sum(a), b from t1 group by b;
+
+expected2 = select * from table ( 
+( 12.0, "a" ),
+( 2.0, "b" ),
+( 13.0, "c" ),
+( 3.0, "d" ) );
+
+//Print gr2;
+
+AssertEqual gr2 expected: expected2;
+
+//-------------------------------------------------
+gr3 = select max(a), b from t1 group by b;
+
+ex3 = select * from table ( 
+( 10, "a" ),
+( 2, "b" ),
+( 11, "c" ),
+( 3, "d" ) );
+
+//Print gr3;
+
+AssertEqual gr3 expected: ex3;
+
+//-------------------------------------------------
+gr4 = select min(a), b from t1 group by b;
+
+ex4 = select * from table ( 
+( 2, "a" ),
+( 2, "b" ),
+( 2, "c" ),
+( 3, "d" ) );
+
+Print gr4;
+
+AssertEqual gr4 expected: ex4;
+
+//-------------------------------------------------
+//  Test Aggregation with no GROUP BY
+//-------------------------------------------------
+
+grAll1 = select sum(a) from t1;
+
+exAll1 = select * from table ( 
+( 30.0 ));
+
+Print grAll1;
+
+AssertEqual grAll1 expected: exAll1;
+
+//-------------------------------------------------
+grAll3 = select max(a) from t1;
+
+exAll3 = select * from table ( 
+( 11 ));
+
+//Print gr3;
+
+AssertEqual grAll3 expected: exAll3;
+
+//-------------------------------------------------
+grAll4 = select min(a) from t1;
+
+exAll4 = select * from table ( 
+( 2 ));
+
+//Print gr4;
+
+AssertEqual grAll4 expected: exAll4;
+
+//-------------------------------------------------
+grAll5 = select count(*) from t1;
+
+exAll5 = select * from table ( 
+( 6 ));
+
+//Print gr5;
+
+AssertEqual grAll5 expected: exAll5;
+
+//-------------------------------------------------
+// Aggregation of empty table
+//-------------------------------------------------
+
+grAll6 = select min(a), count(*) from t1 where 1 == 0;
+Print grAll6;
+
+exAll6 = select * from table ( 
+( Val.toInt(null), 0 ));
+
+AssertEqual grAll6 expected: exAll6;
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,27 @@
+/*================================
+
+Test aliasing
+	
+================================*/
+
+// alias for a table value expression
+
+t = select x from table ( (0), ( 1 ), (2) ) t(x);
+
+// alias for a table reference
+
+t1 = select a from t tt(a);
+//Print t1;
+
+tExp1 = select * from table ( ( 0 ), ( 1 ), (2) ) t(a);
+
+AssertEqual t1 expected: tExp1 matchColumnNames: ;
+
+//----------------------------------------------
+
+// TODO: alias for functions, scalars, subselects
+
+
+
+
+

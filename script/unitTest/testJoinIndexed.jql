@@ -1,0 +1,52 @@
+/*================================
+
+Test indexed JOIN semantics (correctness, features, performance)
+	
+================================*/
+
+t1 = select * from table (
+( 1, "a" )
+( 2, "b" )
+( 3, "c" )
+) t(a, b);
+
+t2 = select * from table ( 
+( 1, 1111 )
+( 1, 11 )
+( 2, 22 )
+( 2, 2222 )
+( 2, 222222 )
+) t(c, d);
+
+//-----------------------------------------------
+//------- indexed join with multiple rows in join table
+
+tj3 = select a, b, c, d from t1 inner join t2 on t1.a == t2.c;
+
+Print tj3;
+
+tj3Expected = table (
+	( 1, "a", 1, 1111 )
+	( 1, "a", 1, 11 )
+	( 2, "b", 2, 22 )
+	( 2, "b", 2, 2222 )
+	( 2, "b", 2, 222222 )
+);
+
+//Print tj3Expected;
+
+AssertEqual tj3 expected: tj3Expected;
+
+//----------------------------------------
+//---- Indexed Join using aliases and raw table names
+
+t1 = Generate.sequence(1, 10);
+t2 = select i i2 from Generate.sequence(1, 10000);
+
+Print "If this test takes a long time it indicates that index detection is not fully functional";
+
+t3 = select t1.i, t2.i2 from t1 join t2 t on t1.i == t2.i2;
+Mem t3;
+
+
+

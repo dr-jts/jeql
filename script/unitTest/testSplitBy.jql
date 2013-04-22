@@ -1,0 +1,165 @@
+/*================================
+
+Test SPLIT BY syntax & semantics
+	
+================================*/
+
+t = select * from table ( 
+		(1)
+		(2)
+		(3)
+			) tbl(n);
+
+tsplit = select n, splitIndex, splitValue from t split by SplitBy.index(n);
+
+Print tsplit;
+
+expected = select * from table ( 
+( 1, 1, 0 )
+( 2, 1, 0 )
+( 2, 2, 1 )
+( 3, 1, 0 )
+( 3, 2, 1 )
+( 3, 3, 2 )  );
+
+AssertEqual tsplit expected: expected;
+
+//====================================================
+
+tsplit = select n, splitIndex, splitValue from t split by SplitBy.range(n, n + 2);
+
+Print tsplit;
+
+expected = select * from table ( 
+( 1, 1, 1 )
+( 1, 2, 2 )
+( 1, 3, 3 )
+( 2, 1, 2 )
+( 2, 2, 3 )
+( 2, 3, 4 )
+( 3, 1, 3 )
+( 3, 2, 4 )
+( 3, 3, 5 )  );
+
+AssertEqual tsplit expected: expected;
+
+//====================================================
+
+t = table t(s) ( ( "1,2,3,4,5,6,7,8,9" ) );
+tsplit = select splitIndex, splitValue from t split by RegEx.splitByMatch(s, \"\d+,\d+");
+
+Print tsplit;
+
+expected = table ( 
+( 1, "1,2" )
+( 2, "3,4" )
+( 3, "5,6" )
+( 4, "7,8" )
+  );
+
+AssertEqual tsplit expected: expected;
+
+
+//====================================================
+
+t2 = select * from table ( 
+		(1, "one,two,three"),
+		(2, "four,five,six")
+			) tbl(a, s);
+
+//-------------------------------------------------
+split2 = select a, splitValue g2, splitIndex si from t2 split by String.splitByString(s, ",");
+
+Print split2;
+
+expected2 = select * from table ( 
+( 1, "one", 	1 ),
+( 1, "two", 	2 ),
+( 1, "three", 	3 ),
+( 2, "four", 	1 ),
+( 2, "five", 	2 ),
+( 2, "six", 	3 )  );
+
+AssertEqual split2 expected: expected2;
+
+//====================================================
+
+t2 = select * from table ( 
+		(1, "one,two,,,,three"),
+		(2, "four,,,five,,six")
+			) tbl(a, s);
+
+//-------------------------------------------------
+split2 = select a, splitValue g2, splitIndex si from t2 split by RegEx.splitBySep(s, ",+");
+
+Print split2;
+
+expected2 = select * from table ( 
+( 1, "one", 	1 ),
+( 1, "two", 	2 ),
+( 1, "three", 	3 ),
+( 2, "four", 	1 ),
+( 2, "five", 	2 ),
+( 2, "six", 	3 )  );
+
+AssertEqual split2 expected: expected2;
+
+
+//====================================================
+
+t1 = select a, geom 
+		from table ( 
+		(1, MULTIPOINT ((0 0), (1 1), (2 2)) )
+		(2, MULTIPOINT ((5 5), (6 6), (2 2)) )
+			) tbl(a, geom);
+
+//-------------------------------------------------
+split1 = select a, splitValue g2, splitIndex si from t1 split by Geom.splitByMember(geom);
+
+Print split1;
+
+expected1 = select * from table ( 
+( 1, POINT (0 0), 1 ),
+( 1, POINT (1 1), 2 ),
+( 1, POINT (2 2), 3 ),
+( 2, POINT (5 5), 1 ),
+( 2, POINT (6 6), 2 ),
+( 2, POINT (2 2), 3 ) );
+
+AssertEqual split1 expected: expected1;
+
+//====================================================
+// test using WHERE clause
+
+split1 = select a, splitValue g2, splitIndex si from t1 
+		split by Geom.splitByMember(geom)
+		where splitIndex <= 2;
+
+Print split1;
+
+expected1 = select * from table ( 
+( 1, POINT (0 0), 1 )
+( 1, POINT (1 1), 2 )
+( 2, POINT (5 5), 1 )
+( 2, POINT (6 6), 2 )
+);
+AssertEqual split1 expected: expected1;
+
+//====================================================
+// test using WHERE and GROUP BY
+
+split1 = select a, geomConnect(splitValue) g2 from t1 
+		split by Geom.splitByMember(geom)
+		where splitIndex <= 2
+		group by a;
+
+Print split1;
+
+expected1 = select * from table ( 
+( 1, LINESTRING (0 0, 1 1) )
+( 2, LINESTRING (5 5, 6 6) )
+);
+AssertEqual split1 expected: expected1;
+
+
+

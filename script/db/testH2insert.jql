@@ -1,0 +1,61 @@
+
+import jeql.command.db.DbWriter;
+import jeql.command.db.DbExec;
+
+DbExec 	class: "org.h2.Driver"
+	url: "jdbc:h2:tcp://localhost/~/test"
+	user: "sa"
+//	password: ""
+	sql: "DELETE FROM TEST;" ;
+
+t = select * from table (
+	( 16, "foo" ), 
+	( 17, "foo2" )
+	) t(ID, NAME);
+
+t = select 	
+	i ID, 
+	"foo_" + i + "_" + Date.now() NAME
+		from Generate.sequence(1, 5);
+	
+DbWriter t
+	class: "org.h2.Driver"
+	url: "jdbc:h2:tcp://localhost/~/test"
+	user: "sa"
+	password: ""
+	table: "TEST" 
+	batchSize: 5
+	commitSize: 5
+	;
+
+
+t2 = select 	
+	i xxID, 
+	"first_" + i + "_" + Date.now() b
+		from Generate.sequence(200, 205);
+	
+DbWriter t2
+	class: "org.h2.Driver"
+	url: "jdbc:h2:tcp://localhost/~/test"
+	user: "sa"
+	password: ""
+//	table: "TEST" 
+//	values: "?,UPPER(?)"
+	sql: "INSERT INTO TEST (ID, NAME) VALUES (?,UPPER(?))"
+	;
+	
+t3 = select 	
+	"second_" + i b, 	
+	i a
+		from Generate.sequence(1, 10);
+		
+DbWriter t3
+	class: "org.h2.Driver"
+	url: "jdbc:h2:tcp://localhost/~/test"
+	user: "sa"
+	password: ""
+	sql: "UPDATE test SET NAME=? WHERE id = ?"
+	;
+
+
+

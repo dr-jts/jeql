@@ -1,0 +1,74 @@
+/*================================
+
+Test LIMIT and OFFSET
+	
+================================*/
+
+t = select x from Generate.sequence(0, 5) a(x);
+
+//----------------------------------------------
+
+tOff2 = select t.* from t offset 2;
+//Print tOff2;
+
+tExpOff2 = select * from table ( ( 2 ),( 3 ), (4), (5) );
+
+AssertEqual tOff2 expected: tExpOff2;
+
+//----------------------------------------------
+
+n = 2;
+tOff2_var = select t.* from t offset n;
+AssertEqual tOff2_var expected: tExpOff2;
+
+//----------------------------------------------
+
+n = 1;
+tOff2_var = select t.* from t offset n + 1;
+AssertEqual tOff2_var expected: tExpOff2;
+
+//----------------------------------------------
+
+
+tLim3 = select * from t limit 3;
+//Print tLim3;
+
+tExp3 = select * from table ( ( 0 ),( 1 ),( 2 ) );
+
+AssertEqual tLim3 expected: tExp3;
+
+//----------------------------------------------
+
+n = 3;
+tLim3_var = select * from t limit n;
+AssertEqual tLim3_var expected: tExp3;
+
+//----------------------------------------------
+
+n = 1;
+tLim3_var = select * from t limit 3 * n;
+AssertEqual tLim3_var expected: tExp3;
+
+//----------------------------------------------
+
+tLim3Off1 = select * from t limit 3 offset 1;
+//Print tLim3Off1;
+
+tExpLim3Off1 = select * from table ( ( 1 ),( 2 ),( 3 ) );
+
+AssertEqual tLim3Off1 expected: tExpLim3Off1;
+
+//----------------------------------------------
+// check that ORDER BY is evaluated before LIMIT
+
+tOL = select * from t order by x desc limit 3;
+//Print tOL;
+
+tExpOL = select * from table ( ( 5 ),( 4 ),( 3 ) );
+
+AssertEqual tOL expected: tExpOL;
+
+
+
+
+

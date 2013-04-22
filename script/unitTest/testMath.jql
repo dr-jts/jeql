@@ -1,0 +1,19 @@
+/*================================
+
+Test Math functions
+	
+================================*/
+
+t = select Math.sin(Math.toRadians(d)) sin,
+	   Math.cos(Math.toRadians(d)) cos
+	from Generate.sequence(-90, 90, 10) t(d);
+	
+t1 = select Math.truncate(sin*sin + cos*cos + .0001, 1) result, 1.0 expected
+	from t;
+	
+//Print t1;
+
+AssertEqual t1;
+
+
+

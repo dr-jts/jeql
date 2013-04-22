@@ -1,0 +1,22 @@
+import jeql.command.db.DbMetadata;
+import jeql.command.db.DbReader;
+
+/*
+DbMetadata t class: "org.h2.Driver"
+	//url: "jdbc:h2:test"
+	url: "jdbc:h2:tcp://localhost/~/test"
+	user: "sa"
+	password: ""
+	tables: ;
+	
+Print t;
+*/
+
+DbReader t2 class: "org.h2.Driver"
+	//url: "jdbc:h2:test"
+	url: "jdbc:h2:tcp://localhost/~/test"
+	user: "sa"
+	password: ""
+	sql: "select * from test order by id" ;
+
+Print t2;

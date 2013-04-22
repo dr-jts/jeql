@@ -1,0 +1,54 @@
+/*================================
+
+Test CASE syntax & semantics
+	
+================================*/
+
+t1 = select * from 
+	table ( (1, "a"), 
+		(2, "b"),
+		(3, "c"),
+		(4, "d"),
+		(5, "d"),
+		(6, "d") ) tbl(a, b);
+
+
+s1 = select case
+	when a == 1 then "a"
+	when a == 2 then "b"
+	when a == 3 then "c"
+	else "d"
+	end as x, b
+from t1;
+
+//Print s1 :header;
+
+AssertEqual s1;
+
+//-------------------------------------------------
+// test simple CASE
+
+s2 = select case a
+	when 1 then "a"
+	when 2 then "b"
+	when 3 then "c"
+	else "d"
+	end as x, b
+from t1;
+
+//Print s2;
+
+AssertEqual s2;
+
+
+
+
+
+
+
+
+
+
+
+
+

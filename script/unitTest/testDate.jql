@@ -1,0 +1,69 @@
+/*================================
+
+Test Date datatype
+	
+================================*/
+
+//==========  Date type  =========
+
+Print Date.now();
+
+d = Val.toDate("Jan 3, 1994");
+Print d;
+
+// check that dates can be coerced to strings
+Print "----" + d;
+
+Print Date.format(d, "EEE, d MMM yyyy HH:mm:ss Z");
+Print Date.format(d, "yyMMddHHmmssZ");
+
+Print Date.parse(Date.format(d, "yyMMddHHmmssZ"), "yyMMddHHmmssZ");
+
+// Comparison operators
+
+Assert Date.parse("2008 Jan 1", "yyyy MMM dd") < Date.parse("2008 Jan 2", "yyyy MMM dd");
+Assert Date.parse("2008 Jan 1", "yyyy MMM dd") > Date.parse("2007 Jan 2", "yyyy MMM dd");
+
+// Invalid dates parse to null
+
+Assert Date.parse("208 xJan 1123") == null;
+Assert not Date.isValid("208 xJan 1123");
+Assert Date.parse("208 xJan 1123", "yyyy MMM dd") == null;
+Assert not Date.isValid("208 xJan 1123", "yyyy MMM dd");
+
+//---------------------------------------------
+// Test generating, writing and parsing a set of dates with different formats
+//---------------------------------------------
+
+tday = select day from table (
+	( 1 ), ( 10 ), ( 20 )) t(day);
+tmonth =select * from  table (
+	( "Jan" ), ( "Feb" ), ( "Mar" ), 
+	( "Apr" ), ( "May" ), ( "Jun" ) ) t2(month);
+
+tdatePart = select month, day from tmonth join tday;
+	
+tdate = select Date.parse(2008 + " " + month + " " + day, "yyyy MMM dd") date from tdatePart;
+
+tfmt = select * from table (
+		( "d MMM yyyy HH:mm:ss Z" )
+		( "yyyy MMM dd" )
+		( "MMM dd yyyy" )
+		( "yyyy-MM-dd" )
+		( "yyyy/MM/dd" )
+		) t(format);
+		
+//Print tdate;
+
+tdd = select date, Date.parse(Date.format(date, format), format) from tdate join tfmt;
+
+//Print tdd;
+
+AssertEqual tdd;
+
+
+
+
+
+
+

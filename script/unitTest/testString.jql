@@ -1,0 +1,113 @@
+/*================================
+
+Test String datatype
+	
+================================*/
+
+t1 = select * from table ( 
+		(10, "a"), 
+		(11, "c"), 
+		(3, "d"), 
+		(2, "b"), 
+		(2, "a"), 
+		(2, "c") 
+			) tbl(a, b);
+
+c = "ccc";
+
+//-------------------------------------------------
+ord1 = select $"$a-${b}x-$c" from t1;
+
+Print ord1;
+
+expected1 = select * from table ( 
+( "10-ax-ccc" ),
+( "11-cx-ccc" ),
+( "3-dx-ccc" ),
+( "2-bx-ccc" ),
+( "2-ax-ccc" ),
+( "2-cx-ccc" ) );
+
+AssertEqual ord1 expected: expected1;
+
+//----- Sting quoting syntax ----
+
+Assert 'foo' == "foo";
+Assert 'f\'o"o' == "f'o\"o";
+Assert \'f\oo' == \"f\oo";
+Assert $'f\oo' == $"f\oo";
+
+//----- Quick String syntax ----
+
+Assert #foo == "foo";
+Assert #123_abc$xx == "123_abc$xx";
+Assert #foo+#blarg == "fooblarg";
+
+//----- Raw String syntax ----
+
+Assert \"f\oo" == "f\\oo";
+Assert \"foo" == "foo";
+Assert \"f\oo" == "f\\oo";
+Assert \"f\oo" == "f\\\oo";
+Assert \"f\\oo" == "f\\\\oo";
+
+//----- Rich String syntax ----
+
+Assert $"fo
+o" == $"fo
+o";
+
+//----- Rich strings with var substitution
+x = "bbb";
+a = 42;
+testVar = 9999;
+
+
+Assert $"\\$x" == "\\bbb";
+Assert $"$x aaaa$a" == "bbb aaaa42";
+Assert $"aaaa$a" == "aaaa42";
+Assert $"${x}aaaa$a" == "bbbaaaa42";
+Assert $"${x}${testVar}aaaa$a" == "bbb9999aaaa42";
+Assert $"${x}\${testVar}aaaa$a" == "bbb${testVar}aaaa42";
+
+// Rich string/var subst with null value
+
+nullVar = null;
+
+Assert $"xx${nullVar}yy" == "xxyy";
+
+
+//-- On Windows only 
+Assert "fo\no" == $"fo
+o";
+
+Print $"blarg";
+Print $"bl
+arg";
+Print $"
+bl
+arg";
+
+Print $"
+This
+is
+a
+very
+long
+string
+spread
+over
+multiple
+lines";
+
+
+
+//----- Java-style String syntax ----
+
+Print "foo";
+Print "foo\"";
+Print "foo\"blarg";
+Print "foo\nxxx";
+Print "foo\\xxxx";
+Print 'foo\\"xxxx';
+

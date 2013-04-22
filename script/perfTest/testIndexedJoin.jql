@@ -1,0 +1,42 @@
+/*================================
+
+Test performance of indexed joins
+	
+================================*/
+
+n = 1000000;
+
+t1 = select i from Generate.sequence(1, n);
+
+//Print t1 limit: 10;
+
+t2 = select i, "val_" + i str from Generate.sequence(1, n);
+
+//Print t2 limit: 10;
+
+t = select t1.i, t2.str from t1
+	join t2 on t1.i == 
+//		t2.i + 0;
+		t2.i;
+	
+tcnt = select count(*) from t;
+Print tcnt;
+
+//======================================
+t = select a.i i1, b.i i2 from t1 a
+	join t1 b on a.i == 
+		b.i;
+
+tcnt = select count(*) from t;
+Print tcnt;
+//======================================
+t3 = select i ii, "val_" + i str from Generate.sequence(1, n);
+
+t = select i, ii from t1
+	join t3 on i == 
+		ii;
+
+tcnt = select count(*) from t;
+Print tcnt;
+
+

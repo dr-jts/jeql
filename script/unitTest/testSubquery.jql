@@ -1,0 +1,45 @@
+/*================================
+
+Test subqueries
+	
+================================*/
+
+
+t1 = select x, 10*x x10 from (select * from Generate.sequence(1, 10) a(x)) a;
+//Print t1;
+exp1 = select * from table (
+( 1, 10 ),
+( 2, 20 ),
+( 3, 30 ),
+( 4, 40 ),
+( 5, 50 ),
+( 6, 60 ),
+( 7, 70 ),
+( 8, 80 ),
+( 9, 90 ),
+( 10, 100 ) );
+AssertEqual value: t1 expected: exp1;
+
+//------------------------------------------------------- 
+
+t2 = select a.x, 10*a.x x10 
+	from (select * from Generate.sequence(1, 10) a(x) 
+		where x % 2 == 0) a;
+//Print t2;
+exp2 = select * from table (
+( 2, 20 ),
+( 4, 40 ),
+( 6, 60 ),
+( 8, 80 ),
+( 10, 100 ) );
+AssertEqual value: t2 expected: exp2;
+
+//------------------------------------------------------- 
+t3 = select b from (select * from t2 where x % 4 != 0) a(a, b);
+//Print t3;
+
+exp3 = select * from table (
+( 20 ),
+( 60 ),
+( 100 ) ) a(b);
+AssertEqual value: t3 expected: exp3 matchColumnNames: ;

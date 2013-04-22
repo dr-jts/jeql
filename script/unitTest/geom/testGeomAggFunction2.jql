@@ -1,0 +1,54 @@
+/*================================
+
+Tests Geometry aggregate functions - Geom.connect()
+	
+================================*/
+
+t1 = select lbl, Geom.fromWKT(g) as geom from table ( 
+		("a", "POINT (1 1)"), 
+		("a", "POINT (2 1)"), 
+		("a", "POINT (3 3)"),
+		("b", "POINT (4 3)"),
+		("b", "POINT (5 3)"),
+		("b", "POINT (6 3)")
+			) tbl(lbl, g);
+
+//-------------------------------------------------
+gr1 = select lbl, geomConnect(geom) from t1 group by lbl;
+
+expected1 = select lbl, Geom.fromWKT(g) 
+	from table  (
+( "a", "LINESTRING (1 1, 2 1, 3 3) )" ),
+( "b", "LINESTRING (4 3, 5 3, 6 3) )" )
+) tbl(lbl, g);
+
+Print gr1;
+AssertEqual gr1 expected: expected1;
+
+//-------------------------------------------------
+
+t2 = select lbl, geom from table ( 
+		("a", LINESTRING (1 1, 2 2))
+		("a", LINESTRING (3 3, 4 4))
+		("a", LINESTRING (4 4, 5 5))
+		("b", POINT (4 3))
+		("b", POINT (5 3))
+		("b", POINT (6 3))
+			) tbl(lbl, geom);
+
+//-------------------------------------------------
+gr2 = select lbl, geomConnect(geom) from t2 group by lbl;
+
+expected2 = select lbl, g 
+	from table  (
+( "a", LINESTRING (1 1, 2 2, 3 3, 4 4, 4 4, 5 5) )
+( "b", LINESTRING (4 3, 5 3, 6 3) )
+) tbl(lbl, g);
+
+Print gr2;
+AssertEqual gr2 expected: expected2;
+
+
+
+
+

@@ -1,0 +1,90 @@
+/*================================
+
+Test GROUP BY syntax & semantics
+	
+================================*/
+
+t1 = select * from table ( 
+		("bc", "victoria", 0.35), 
+		("bc", "vancouver", 3.0), 
+		("ab", "calgary", 1.0), 
+		("ab", "edmonton", 1.5), 
+		("on", "toronto", 4.0), 
+		("on", "kingston", 0.1), 
+		("on", "ottawa", 1.0) 
+			) tbl(prov, city, pop);
+
+//-------------------------------------------------
+/*
+gr1 = select prov, 
+	first(city), 
+	max(pop) from t1 group by prov;
+
+//Print gr1;
+
+expected1 = select * from table ( 
+( "ab", "calgary", 1.5 ),
+( "bc", "victoria", 3.0 ),
+( "on", "toronto", 4.0 ) 
+);
+
+AssertEqual gr1 expected: expected1;
+*/
+
+//-------------------------------------------------
+gr1_2 = select prov, 
+	last(city), 
+	max(pop) from t1 group by prov;
+
+Print gr1_2;
+
+expected1_2 = select * from table ( 
+( "ab", "edmonton", 1.5 ),
+( "bc", "vancouver", 3.0 ),
+( "on", "ottawa", 4.0 ) 
+);
+
+AssertEqual gr1_2 expected: expected1_2;
+
+//------------------------------------------------------------------------
+// Tests geometry grouping and grouping with no aggregate functions present
+//------------------------------------------------------------------------
+
+t2 = select Geom.createPoint(i2, i2) geom
+	with {
+	  i2 = i / 3;
+	}
+	from Generate.sequence(0, 10);
+	
+gr2 = select geom from t2 group by geom;
+
+Print gr2;
+
+expected2 = select Geom.fromWKT(wkt) geom from table (  
+( "POINT (0 0)" ),
+( "POINT (1 1)" ),
+( "POINT (2 2)" ),
+( "POINT (3 3)" ) ) t(wkt);
+
+AssertEqual gr2 expected: expected2;
+
+//------------------------------------------------------------------------
+
+gr2_2 = select geom, count(*) from t2 group by geom;
+
+Print gr2_2;
+
+expected2_2 = select Geom.fromWKT(wkt) geom, cnt from table (  
+( "POINT (0 0)", 3 ),
+( "POINT (1 1)", 3 ),
+( "POINT (2 2)", 3 ),
+( "POINT (3 3)", 2 ) ) t(wkt, cnt);
+
+AssertEqual gr2_2 expected: expected2_2;
+
+
+
+
+
+
+

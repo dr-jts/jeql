@@ -1,0 +1,14 @@
+/*================================
+
+Test SELECT with OR operator in WHERE clause
+	
+================================*/
+
+
+t1 = select x from Generate.sequence(1, 4) a(x)
+	where x == 1 or x == 2;
+//Print t1;
+exp1 = select * from table (
+( 1 ),( 2 ) );
+AssertEqual t1 expected: exp1;
+

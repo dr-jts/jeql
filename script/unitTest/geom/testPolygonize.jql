@@ -1,0 +1,41 @@
+/*================================
+
+Test Polygonize command
+	
+================================*/
+
+t1 = select Geom.fromWKT(g) as poly from table ( 
+		("LINESTRING (0 0, 10 0)"), 
+		("LINESTRING (10 0, 10 10)"), 
+		("LINESTRING (0 0, 0 10)"), 
+		("LINESTRING (0 10, 10 10)"),
+		("LINESTRING (10 10, 20 10)"),
+		("LINESTRING (20 10, 20 0)"),
+		("LINESTRING (10 0, 20 0)")
+			) tbl(g);
+
+tattr = select Geom.createPoint(x, y) as pt, a from table ( 
+		( 5, 5, "a" ), 
+		( 15, 5, "b" )
+			) tbl(x, y, a);
+//Print tattr;
+
+
+
+Polygonize t1 result: tpoly1;
+
+//---- Assign attributes to polygons by matching interior points
+
+tfeat1 = select a, GEOMETRY 
+	from tpoly1 join tattr on Geom.intersects(GEOMETRY, pt)
+	order by a;
+
+Print tfeat1;
+
+expected1 = select a, Geom.fromWKT(g) 
+	from table  (
+( "a", "POLYGON ((0 0, 10 0, 10 10, 0 10, 0 0 ))" ),
+( "b", "POLYGON ((10 10, 20 10, 20 0, 10 0, 10 10))")
+) tbl(a, g);
+
+AssertEqual tfeat1 expected: expected1;

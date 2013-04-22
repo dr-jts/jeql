@@ -1,0 +1,68 @@
+/*================================
+
+Test RegEx matching and extraction
+	
+================================*/
+
+// escape codes & character classes
+
+Assert RegEx.matches("12345", \"\d*");
+Assert RegEx.matches("abcd-;,", \"\D*");
+Assert RegEx.matches("12345abcd", \"\d*\D*");
+Assert RegEx.matches("abcd \t12345", \"\D*\s\s\d*");
+
+// Pattern to match numbers in scientific notation
+numPat = \"\d*\.\d*([Ee]?[\+\-]?\d+)?";
+Assert RegEx.matches("123.45", numPat);
+Assert RegEx.matches("123.", numPat);
+Assert not RegEx.matches("123", numPat);
+Assert RegEx.matches(".45", numPat);
+Assert RegEx.matches("123.45E23", numPat);
+
+// matching entire input
+
+Assert RegEx.matches("foo", "foo");
+Assert not RegEx.matches("xxxfooyyy", "foo");
+
+// matching substring of input
+
+Assert RegEx.find("xxxfooyyy", "foo");
+Assert RegEx.find("xxxfooyyy", "fo*");
+Assert RegEx.find("xxxfoooooyyy", "fo*");
+Assert RegEx.find("xxxfyyy", "fo*");
+Assert not RegEx.find("xxxfyyy", "fo+");
+
+// extracting entire matched pattern or first group, if present
+
+AssertEqual RegEx.extract("xxxfooyyy", "foo") expected: "foo";
+AssertEqual RegEx.extract("xxxfooyyy", "x(foo)y") expected: "foo";
+AssertEqual RegEx.extract("xxxfooyyy", "xfooy") expected: "xfooy";
+
+// extracting numbered groups
+
+AssertEqual RegEx.extract("xxxfooyyy", "x(foo)y", 0) expected: "xfooy";
+AssertEqual RegEx.extract("xxxfooyyy", "x(foo)y", 1) expected: "foo";
+AssertEqual RegEx.extract("xxxfooyyy", "x(foo)(y)", 2) expected: "y";
+
+// splitting on a regex
+
+AssertEqual RegEx.splitAt("11.2,33.4,55.6", ",", 0) expected: "11.2";
+AssertEqual RegEx.splitAt("11.2,33.4,55.6", ",", 1) expected: "33.4";
+AssertEqual RegEx.splitAt("11.2,33.4,55.6", ",", 2) expected: "55.6";
+
+// replacing a RegEx
+
+AssertEqual RegEx.replaceAll("<a>A</a><b>B</b>", "><", ">@<") expected: "<a>A</a>@<b>B</b>";
+AssertEqual RegEx.replaceFirst("xAx xBx", \"x\w+x", "Z") expected: "Z xBx";
+AssertEqual RegEx.replaceAll("xAx xBx", \"x\w+x", "Z") expected: "Z Z";
+
+// replacing a RegEx, with capturing groups
+
+AssertEqual RegEx.replaceAll("<a>A</a><b>B</b>", \"</(\w+?)>", "</$1>-") expected: "<a>A</a>-<b>B</b>-";
+AssertEqual RegEx.replaceAll("<a>A</a><b>B</b>", \"<.+?>(\p{Alpha}??)</.+?>", "x$1x-") expected: "xAx-xBx-";
+AssertEqual RegEx.replaceFirst("xAx xBBBx", \"x(\w+)x", "$1") expected: "A xBBBx";
+AssertEqual RegEx.replaceAll("xAx xBBBx", \"x(\w+)x", "$1") expected: "A BBB";
+
+AssertEqual RegEx.count("xAx xBBBx", \"x") expected: 4;
+AssertEqual RegEx.count("xAxA xBBBx", \"x[AB]") expected: 3;
+

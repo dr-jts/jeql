@@ -1,0 +1,43 @@
+/*================================
+
+	Unit Test - KMLWriter using styles
+	
+================================*/
+
+t = select * from table 
+(
+	("Feature 1", "POINT (-123 49)", "sm_1", "Folder1", "0" ), 
+	("Feature 2", "POINT (-123 50)", "sm_1", "Folder1", "0" ), 
+	("Feature 3", "POINT (-123 51)", "sm_1", "Folder2", "0" ),
+	("Feature 4", "POINT (-123 52)", "sm_1", "Folder2", "0" )
+) 
+	t(kmlName, geomStr, kmlStyleUrl, kmlFolderName, kmlFolderVisibility);
+
+Print t;
+
+tStyle = select * from table 
+(
+	("style1_n", "sm_1", "normal",    0, "ff00ffff", 1.0, "http://maps.google.com/mapfiles/kml/shapes/triangle.png"), 
+	("style1_h", "sm_1", "highlight", 1, "ff0000ff", 2.0, "http://maps.google.com/mapfiles/kml/shapes/triangle.png")
+)
+	t(id, styleMapId, styleMapKey, labelStyleScale, iconStyleColor, iconStyleScale, iconStyleHref );
+
+tKML = select kmlName, 
+	Geom.fromWKT(geomStr) as geometry, 
+	kmlStyleUrl,
+	kmlFolderName, 
+	kmlFolderVisibility
+		from t;
+
+file = "testStyle.kml";
+
+KMLWriter tKML 
+	comment: "JEQL Unit test of KMLWriter"
+	name: "KMLWriter test"
+	description: "Tests interface and functionality of KMLWriter"
+	styles: tStyle
+	file: file;
+
+// no KML reader, so can't do loopback check
+
+

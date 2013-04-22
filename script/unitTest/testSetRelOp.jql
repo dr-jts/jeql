@@ -1,0 +1,80 @@
+/*================================
+
+Test Set-based relational operators
+	
+================================*/
+
+
+//---------------------------------
+//   Exists
+//---------------------------------
+
+t1 = select x from Generate.sequence(1, 4) a(x)
+	where exists(select * from table((1), (2)) );
+//Print t1;
+exp1 = select * from table (
+( 1 ),( 2 ),( 3 ),( 4 ) );
+AssertEqual t1 expected: exp1;
+
+//-----------------------------------------
+
+t1 = select x from Generate.sequence(1, 4) a(x)
+	where not exists(select * from table((1), (2)) );
+//Print t1;
+exp1 = select * from table ((1)) where false;
+//Print exp1;
+AssertEqual t1 expected: exp1;
+
+
+//---------------------------------
+//   In - Expression List
+//---------------------------------
+
+tin1 = select x from Generate.sequence(1, 4) a(x)
+	where x in ( 1, 2 );
+//Print tin1;
+expin1 = select * from table (( 1 ),( 2 ) );
+AssertEqual tin1 expected: expin1;
+
+//-----------------------------------------
+tin2 = select x from Generate.sequence(1, 4) a(x)
+	where true in ( true );
+//Print tin2;
+expin2 = select * from table (( 1 ),( 2 ),( 3 ),( 4 ) );
+AssertEqual tin2 expected: expin2;
+
+//---------------------------------
+//   In - Select
+//---------------------------------
+
+expsel1 = select * from table (( 1 ),( 2 ) );
+
+tsel1 = select x from Generate.sequence(1, 4) a(x)
+	where x in ( select * from expsel1 );
+//Print tsel1;
+AssertEqual tsel1 expected: expsel1;
+
+//----------------------------------
+tsel2 = select x from Generate.sequence(1, 4) a(x)
+	where x in ( select * from table ((1), (2)) );
+//Print tsel21;
+AssertEqual tsel2 expected: expsel1;
+
+//----------------------------------
+expsel1 = select * from table (( 1 ),( 2 ) );
+
+tsel3 = select x from Generate.sequence(1, 4) a(x)
+	where x in ( select * from Generate.sequence(1, 2) );
+//Print tsel3;
+AssertEqual tsel3 expected: expsel1;
+
+
+//----------------------------------
+expsel4 = select * from table (( "1" ),( "2" ) );
+
+tsel4 = select x from (select String.toString(n) as x from Generate.sequence(1, 4) as a(n) ) as b
+	  where x in ( select * from table (("1"), ("2")) );
+//Print tsel4;
+AssertEqual tsel4 expected: expsel4;
+
+

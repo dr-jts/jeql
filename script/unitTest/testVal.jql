@@ -1,0 +1,69 @@
+/*================================
+
+Test Val functions
+	
+================================*/
+
+//==========  Boolean type  =========
+
+Assert Val.toBoolean("true");
+Assert Val.toBoolean("totally true");
+Assert Val.toBoolean("T");
+Assert Val.toBoolean("yes");
+Assert Val.toBoolean("Y");
+Assert Val.toBoolean(1);
+Assert Val.toBoolean(1.0);
+Assert Val.toBoolean(2.0);
+Assert Val.toBoolean(true);
+
+Assert not Val.toBoolean("false");
+Assert not Val.toBoolean("F");
+Assert not Val.toBoolean("no");
+Assert not Val.toBoolean("Nada");
+Assert not Val.toBoolean("absolutely not");
+Assert not Val.toBoolean(0);
+Assert not Val.toBoolean(0.0);
+Assert not Val.toBoolean(-1.0);
+Assert not Val.toBoolean(false);
+
+// test toString for large numbers
+
+Assert Val.toString(123456789000.0) == "123456789000.0";
+
+// test handling of fractional seconds - a max of three places is allowed
+Assert Val.toString(Val.toDate("2004-01-01 00:22:33"))      == "2004-01-01 00:22:33.000";
+Assert Val.toString(Val.toDate("2004-01-01 00:22:33.1"))    == "2004-01-01 00:22:33.100";
+Assert Val.toString(Val.toDate("2004-01-01 00:22:33.11"))   == "2004-01-01 00:22:33.110";
+Assert Val.toString(Val.toDate("2004-01-01 00:22:33.111"))  == "2004-01-01 00:22:33.111";
+Assert Val.toString(Val.toDate("2004-01-01 00:22:33.1111")) == "2004-01-01 00:22:33.111";
+
+//==========  Int type  =========
+
+Assert 1_0 == 10;
+Assert 1_000_000 == 1000000;
+
+Assert Val.toInt(1) == 1;
+Assert Val.toInt("1") == 1;
+
+Assert Val.toInt("X", 1) == 1;
+Assert Val.toInt("0X", 1) == 1;
+Assert Val.toInt(null, 1) == 1;
+
+//==========  Double type  =========
+
+Assert Val.toDouble(1.9) == 1.9;
+Assert Val.toDouble(null, 1.9) == 1.9;
+
+Assert Val.toDouble("0X", 1.9) == 1.9;
+Assert Val.toDouble("X", 1.9) == 1.9;
+Assert Val.toDouble(null, 1.9) == 1.9;
+
+//==========  Val pseudo-function  =========
+
+t = select i from table ( (9.3 )) t(i);
+Assert 9.3 == val(select * from t);
+Assert 1 == val(select count(*) from t);
+
+
+
+

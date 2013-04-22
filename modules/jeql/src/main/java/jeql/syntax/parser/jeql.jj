@@ -1,0 +1,1747 @@
+/*=============================================
+
+Jeql Syntax & Semantic actions 
+
+(c) 2007-2009 Martin Davis
+
+=============================================*/
+
+options {
+  LOOKAHEAD = 1;
+  CHOICE_AMBIGUITY_CHECK = 2;
+  OTHER_AMBIGUITY_CHECK = 1;
+  STATIC = false;
+  DEBUG_PARSER = false;
+  DEBUG_LOOKAHEAD = false;
+  DEBUG_TOKEN_MANAGER = false;
+  ERROR_REPORTING = true;
+  JAVA_UNICODE_ESCAPE = false;
+  UNICODE_INPUT = false;
+  IGNORE_CASE = false;
+  USER_TOKEN_MANAGER = false;
+  USER_CHAR_STREAM = false;
+  BUILD_PARSER = true;
+  BUILD_TOKEN_MANAGER = true;
+  SANITY_CHECK = true;
+  FORCE_LA_CHECK = false;
+}
+
+PARSER_BEGIN(Parser)
+
+package jeql.syntax.parser;
+
+import java.util.*;
+import jeql.syntax.*;
+import jeql.syntax.util.*;
+import jeql.util.*;
+import com.vividsolutions.jts.geom.*;
+
+public class Parser {
+
+  public static void main(String args[]) throws ParseException {
+    Parser parser = new Parser(System.in);
+    parser.SelectStatement();
+  }
+
+}
+
+PARSER_END(Parser)
+
+SKIP:
+{
+    " "
+|   "\t"
+|   "\r"
+|   "\n"
+}
+
+/*--------- Comments  -----------------*/
+
+SPECIAL_TOKEN:
+{
+   <LINE_COMMENT: "//"(~["\r","\n"])*>
+|  <MULTI_LINE_COMMENT: "/*" (~["*"])* "*" ("*" | (~["*","/"] (~["*"])* "*"))* "/">
+}
+
+/*--------- Keywords  -----------------*/
+
+TOKEN [IGNORE_CASE] :
+{
+    <K_AND: 	"and">
+|   <K_AS: 	"as">
+|   <K_ASC: 	"asc">
+|   <K_BY: 	"by">
+|   <K_CASE: 	"case">
+|   <K_DESC: 	"desc">
+|   <K_DISTINCT: "distinct">
+|   <K_ELSE: 	"else">
+|   <K_END: 	"end">
+|   <K_EXCEPT: 	"except">
+|   <K_EXISTS: 	"exists">
+|   <K_FROM: 	"from">
+|   <K_GROUP: 	"group">
+|   <K_IMPORT: 	"import">
+|   <K_IN: 	"in">
+|   <K_INNER: 	"inner">
+|   <K_JOIN: 	"join">
+|   <K_LEFT: 	"left">
+|   <K_LIMIT: 	"limit">
+|   <K_NOT:	"not">
+|   <K_OFFSET: 	"offset">
+|   <K_ON:	"on">
+|   <K_OR:	"or">
+|   <K_ORDER:	"order">
+|   <K_OUTER:	"outer">
+|   <K_PROGRAM: "program">
+|   <K_RIGHT: 	"right">
+|   <K_SELECT: 	"select">
+|   <K_SPLIT: 	"split">
+|   <K_TABLE: 	"table">
+|   <K_THEN: 	"then">
+|   <K_VALUES: 	"values">
+|   <K_WHEN: 	"when">
+|   <K_WHERE: 	"where">
+|   <K_WITH: 	"with">
+|   <K_XOR: 	"xor">
+}
+
+TOKEN :
+{
+   <K_EMPTY:  		"EMPTY">
+|  <K_LINEARRING:  	"LINEARRING">
+|  <K_LINESTRING:  	"LINESTRING">
+|  <K_POLYGON:  	"POLYGON">
+|  <K_POINT:  		"POINT">
+|  <K_MULTIPOINT:  	"MULTIPOINT">
+|  <K_MULTILINESTRING:  "MULTILINESTRING">
+|  <K_MULTIPOLYGON:  	"MULTIPOLYGON">
+|  <K_GEOMETRYCOLLECTION:  	"GEOMETRYCOLLECTION">
+|  <K_BOX:	  	"BOX">
+}
+
+
+
+TOKEN : /* Numeric Constants */
+{
+ // floats are not legal for exponents, but are specified so the lexer "captures" any trailing ".nnn"
+  	< S_NUMBER: <FLOAT>
+	    | <FLOAT> ( ["e","E"] (["-","+"])? <FLOAT> )?
+    	>
+  | 	< #FLOAT: <INTEGER>
+	    | <INTEGER> ( "." <INTEGER> )?
+	    | "." <INTEGER>
+    	>
+  | 	< #INTEGER: <DIGIT> ( "_" | <DIGIT> )* >
+  | 	< #DIGIT: ["0" - "9"] >
+}
+
+TOKEN : /* Literal Constants */
+{
+	< S_CONST_LITERAL: "true" | "false" | "null" >
+}
+
+TOKEN:  /* Identifiers and strings */
+{
+    < S_IDENTIFIER: ( <LETTER> | <SPECIAL_CHARS> )+ ( <DIGIT> | <LETTER> | <SPECIAL_CHARS> )* >
+|   < #LETTER: ["a"-"z", "A"-"Z"] >
+|   < #SPECIAL_CHARS: "$" | "_">
+
+// MD - old string literal RE
+//|   < S_STRING_LITERAL: "\"" (~["\""])* "\"" ("\"" (~["\""])* "\"")*>
+
+|  < S_STRING_LITERAL:
+      "\""
+      (   (~["\"","\\","\n","\r"])
+        | ("\\"  ~["\n","\r"] )
+      )*
+      "\""
+    |
+      "'"
+      (   (~["'","\\","\n","\r"])
+        | ("\\"  ~["\n","\r"] )
+      )*
+      "'" 
+    |
+      "#"
+      ( <DIGIT> | <LETTER> | <SPECIAL_CHARS> )+
+
+  >
+  
+  // Raw Strings do not have quoting apart from "
+  
+|  < S_RAW_STRING_LITERAL:
+      "\\\""
+      (   (~["\"", "\n", "\r"])  )*
+      "\""
+      |
+      "\\'"
+      (   (~["'", "\n", "\r"])  )*
+      "'"
+  >
+  
+  // Rich strings can be multiline, and support quoting
+  
+|  < S_RICH_STRING_LITERAL:
+      "$\""
+      (   (~["\"","\\"])
+        | ("\\"  ~["\n","\r"] )
+      )*
+      "\""
+      |
+      "$'"
+      (   (~["'","\\"])
+        | ("\\"  ~["\n","\r"] )
+      )*
+      "'"
+  >
+|   < S_QUOTED_IDENTIFIER: "[" (~["\n","\r","\""])* "]" >
+}
+
+TOKEN:  /* Command parameter names */
+{
+    < S_CMD_PARAM_NAME: <S_IDENTIFIER> ":" >
+}
+
+TOKEN:  
+{
+    < ASSIGN: "=" >	
+  | < ASTERISK: "*" >
+  | < COLON: ":" >
+  | < COMMA: "," >
+  | < DOT: "." >
+  | < GREATER: ">" >
+  | < GREATEREQUAL: ">=" >
+  | < LESS: "<" >
+  | < LESSEQUAL: "<=" >
+  | < EQUAL: "==" >
+  | < MINUS: "-" >
+  | < NOTEQUAL: "!=" >
+  | < NOTEQUAL2: "<>" >
+  | < OPENBRACE: "{" >
+  | < CLOSEBRACE: "}" >
+  | < OPENPAREN: "(" >
+  | < CLOSEPAREN: ")" >
+  | < PERCENT: "%" >
+  | < PLUS: "+" >
+  | < REGEX_FIND: "~" >
+  | < REGEX_MATCH: "~=" >
+  | < QUESTIONMARK: "?" >
+  | < SLASH: "/" >
+  | < SEMICOLON: ";" >
+}
+
+
+/* ------------ JEQL Program ----------------------*/
+
+ProgramNode Program():
+{
+	StatementListNode b;
+	List importList;
+}
+{
+	importList=  ImportStatementList()
+	b= StatementList()
+	<EOF>
+	{ return new ProgramNode(importList, b); }
+}
+
+List ImportStatementList():
+{
+	List importList = new ArrayList();
+	ImportNode stmt;
+}
+{
+	(
+		stmt= ImportStatement()
+		{ importList.add(stmt);  }
+	)*
+	{ return importList; }
+}
+
+ImportNode ImportStatement() :
+{
+	ImportNode importNode = new ImportNode();
+	String item = null;
+}
+{
+	<K_IMPORT> 
+	{  	importNode.setLoc(token.beginLine); }
+	<S_IDENTIFIER>
+		{     	importNode.add(token.image);  	}
+	(
+		<DOT> 
+		( <S_IDENTIFIER> | <ASTERISK> )
+		{     	importNode.add(token.image);  	}
+	)*
+	<SEMICOLON>
+	{ return importNode; }
+}
+
+StatementListNode StatementList():
+{
+	StatementListNode stmtList = new StatementListNode();
+	ParseTreeNode stmt;
+}
+{
+	(
+		stmt= Statement()
+		{ stmtList.add(stmt);  }
+	)*
+	{ return stmtList; }
+}
+
+ParseTreeNode Statement():
+{
+	ParseTreeNode stmt = null;
+}
+{ 
+	( 
+	  LOOKAHEAD(3)
+	  stmt= Assignment()
+	  |
+	  stmt= SelectExpression()  
+	  |
+	  LOOKAHEAD(3)
+	  stmt= CommandCall()
+	  
+	  // would be nice to have Expression here, but causes ambiguity with lines like a + b;
+	)
+	<SEMICOLON>
+	{ return stmt; }
+}
+
+AssignmentNode Assignment():
+{
+	String name;
+	ParseTreeNode val; 
+	int line;
+}
+{
+	name= Identifier()
+	<ASSIGN>
+	{ line = token.beginLine; }
+	(
+		val= SelectExpression()
+		|
+		val= Expression()
+	)
+
+	{
+		AssignmentNode node = new AssignmentNode(name, val);
+		node.setLoc(line);
+		return node;	
+	}
+}
+
+// An assigment restricted to a basic Expression (no SELECT)
+AssignmentNode ExprAssignment():
+{
+	String name;
+	ParseTreeNode val; 
+	int line;
+}
+{
+	name= Identifier()
+	<ASSIGN>
+	{ line = token.beginLine; }
+		val = Expression()
+
+	{
+		AssignmentNode node = new AssignmentNode(name, val);
+		node.setLoc(line);
+		return node;	
+	}
+}
+
+StatementListNode WithAssignmentList():
+{
+	StatementListNode stmtList = new StatementListNode();
+	ParseTreeNode stmt;
+}
+{
+	stmt= ExprAssignment()
+	{ stmtList.add(stmt);  }
+	(
+		<SEMICOLON>
+		stmt= ExprAssignment()
+		{ stmtList.add(stmt);  }
+	)*
+
+	{ return stmtList; }
+}
+
+
+/* ------------ Commands ----------------------*/
+
+CommandCallNode CommandCall():
+{
+  String name1 = null, name2 = null;;
+  List args = null;
+  int line;
+}
+{
+    <S_IDENTIFIER>
+    	{     	name1 = token.image;  	
+    		line = token.beginLine;
+    	}
+    	
+    [ <DOT> <S_IDENTIFIER> ]
+    	{ name2 = token.image;   }
+    	
+    args= CmdParamList()
+    
+  	{
+  		CommandCallNode ccn = null;
+  		if (name2 == null)
+    			ccn = new CommandCallNode(name1, args);
+    		else 
+    			ccn = new CommandCallNode(name1, name2, args);
+    		ccn.setLoc(line);
+    		return ccn;
+  	}	
+}
+
+List CmdParamList():
+{
+	List list = new ArrayList();
+	CommandParameterNode item;
+	ParseTreeNode expr = null;
+}
+{  
+  [ LOOKAHEAD(2)
+    expr= ExpressionOrSelect()
+    {
+      list.add(new CommandParameterNode(expr));
+    }
+  ]
+  
+  (item= CommandParam()   
+      		{ list.add(item);  }
+    )*
+   
+  {   return list; }
+}
+
+CommandParameterNode CommandParam():
+{
+	String name;
+	ParseTreeNode expr = null;
+  	int line;
+}
+{
+   (
+	<S_CMD_PARAM_NAME>
+    	{     	name = token.image;  line = token.beginLine;	}
+    	
+	[ LOOKAHEAD(2) expr= ExpressionOrSelect() ]
+   )	
+	
+	{
+		CommandParameterNode node = new CommandParameterNode(name, expr);
+		node.setLoc(line);
+		return node;
+	}
+}
+
+
+/* ------------ SELECT clause ----------------------*/
+
+SelectNode SelectStatement():
+{
+	SelectNode selNode;
+}
+{
+	selNode = SelectExpression()
+	{ return selNode; }
+}
+
+
+
+SelectNode SelectExpression():
+{
+	SelectItemList selectList;
+	FromList from = null;
+	ParseTreeNode where = null;
+	ParseTreeNode split = null;
+	StatementListNode with = null;
+	boolean distinct = false;
+	ParseTreeNode limit = null;
+	ParseTreeNode offset = null;
+	List orderByList = null;
+	List groupByList = null;
+}
+{
+     <K_SELECT>
+     { int line = token.beginLine; }
+     
+     [ <K_DISTINCT> 
+       {
+       	  distinct = true;
+       }
+     ] 
+     
+     selectList= SelectList()
+     
+     [ with= WithClause()    ]
+     [ from= FromClause()    ]
+     [ split = SplitByClause() ]
+     [ where = WhereClause() ]
+     [ groupByList = GroupBy() ]
+     [ orderByList = OrderBy() ]
+     
+     [ <K_LIMIT> limit= Expression()   ]
+     [ <K_OFFSET> offset= Expression() ]
+       
+     
+     { SelectNode node = new SelectNode(selectList, distinct, with, from, where, split, limit, offset, groupByList, orderByList ); 
+       node.setLoc(line);
+       return node;
+     }
+}
+
+SelectItemList SelectList():
+{
+	SelectItemList list = new SelectItemList();
+	SelectItemNode item;
+}
+{
+  (
+    
+    item= SelectItem() 
+    		{ list.add(item);  }
+    
+    ("," item=SelectItem() 
+      		{ list.add(item);  }
+    )*
+  )    
+    {   return list; }
+}
+
+SelectItemNode SelectItem():
+{
+	ParseTreeNode expr = null;
+	Token nameTok;
+	Token alias = null;
+}
+{
+  (
+        LOOKAHEAD(2) 
+        expr = StarredTableRef()
+        
+    |   expr= Expression()    // Column or Expression
+
+        [ LOOKAHEAD(2) [ <K_AS> ] alias= <S_IDENTIFIER>] // Column Alias
+  )    
+    {    
+    	String aliasName = alias != null ? alias.toString() : null;
+    	return new SelectItemNode(expr, aliasName );   
+    }
+}
+
+TableRefNode StarredTableRef():
+{
+	TableRefNode expr = null;
+	Token nameTok;
+	String exceptCol = null;
+	List colList = null;
+}
+{
+  (
+	    <ASTERISK>
+	      		{ 
+	      		  expr = new TableRefNode();  
+	    		  expr.setLoc(token.beginLine);
+	      		}
+	    |   LOOKAHEAD(2)
+	    	nameTok= IdentifierToken() ".*"  // table.*   
+	    		{
+	    		  expr = new TableRefNode(nameTok.toString());	
+	    		  expr.setLoc(nameTok.beginLine);
+	    		}
+	
+  )
+  [ <K_EXCEPT> // EXCEPT ( <col-list> )
+     (
+       exceptCol= Identifier()
+       {
+         colList = new ArrayList();
+         colList.add(exceptCol);
+       }
+     |
+       <OPENPAREN> 
+       colList= IdentifierList()
+       <CLOSEPAREN>
+     )
+     {
+     	expr.setExceptCols(colList);
+     }
+  ]
+  {
+     return expr;
+  }
+}
+
+
+/* ------------ WITH clause ----------------------*/
+
+StatementListNode WithClause():
+{
+	StatementListNode stmtList = null;
+}
+{
+    <K_WITH> 
+    <OPENBRACE>
+    stmtList= StatementList()
+    <CLOSEBRACE>
+    { return stmtList; }
+}
+
+/* ------------ FROM clause ----------------------*/
+
+FromList FromClause():
+{
+	Token fromTok = null;
+	FromList fromList = new FromList();
+	TableExpressionNode tblExpr;
+	FromItem joinItem;
+}
+{
+    fromTok = <K_FROM> 
+    tblExpr= FromTableExpr()   
+    {   
+    	FromItem fromItem = new FromItem(tblExpr);
+    	fromItem.setLoc(fromTok.beginLine);
+    	fromList.add(fromItem); }
+    
+    (
+    	joinItem= JoinItem()
+    	{ fromList.add(joinItem);  }
+    )*
+    
+    { return fromList; }
+}
+
+
+FromItem JoinItem():
+{
+	Token joinTok = null;
+	TableExpressionNode tblExpr = null;
+	ParseTreeNode onExpr = null;
+	int joinType = FromItem.JOIN_INNER;
+}
+{
+	[ (
+	   <K_INNER>  { joinType = FromItem.JOIN_INNER; }
+	   |
+	   <K_LEFT>   { joinType = FromItem.JOIN_LEFT_OUTER; }
+	   |
+	   <K_RIGHT>  { joinType = FromItem.JOIN_RIGHT_OUTER; }
+	  )
+	  [ <K_OUTER>
+	  	// if LEFT or RIGHT join type not yet set, then set OUTER 
+	  	{  if (joinType == FromItem.JOIN_INNER) joinType = FromItem.JOIN_OUTER; }
+	  ]
+	]
+	joinTok = <K_JOIN> 
+	tblExpr = FromTableExpr()
+	[ 
+		<K_ON> 
+		onExpr = BooleanExpression()
+	]
+	{ 	FromItem fromItem = new FromItem(joinType, tblExpr, onExpr);
+		fromItem.setLoc(joinTok.beginLine);	
+		return fromItem;
+	}
+	
+}
+
+TableExpressionNode FromTableExpr():
+{
+	Token tbl = null;
+	Token alias = null;
+	ParseTreeNode expr = null;
+	List colList = null;
+	int colListLine = 0;
+}
+{
+  (
+    <OPENPAREN>
+    (
+    	expr= SelectExpression()
+    )
+    <CLOSEPAREN>
+    
+    | expr= TableValueExpression()
+
+    | LOOKAHEAD(2) 
+      expr= Function()
+    
+    | tbl= <S_IDENTIFIER>
+      {    
+        String tblName = tbl.toString();
+        expr = new TableRefNode(tblName);
+        expr.setLoc(tbl.beginLine);
+      }
+  )
+  
+  //----- table and optional column aliases    Full syntax: T(A,B,...) -------
+ 
+  [ LOOKAHEAD(2)
+    // allow AS to be used for table aliases as well, for uniformity
+    [ <K_AS> ]
+    
+    alias= <S_IDENTIFIER> 
+  
+    [ <OPENPAREN>
+       { colListLine = token.beginLine; }
+      colList= IdentifierList()
+      <CLOSEPAREN>
+    ]
+  ]
+  
+  {    
+      String aliasName = alias != null ? alias.toString() : null;
+      return new TableExpressionNode(expr, aliasName, colList, colListLine);   
+  }
+
+}
+
+
+
+/* ------------ WHERE clause ----------------------*/
+
+
+ParseTreeNode WhereClause():
+{
+	ParseTreeNode expr;
+}
+{
+    <K_WHERE> 
+    expr= BooleanExpression()   
+    
+    { return expr; }
+}
+
+/* ------------ SPLIT BY clause ----------------------*/
+
+
+ParseTreeNode SplitByClause():
+{
+	ParseTreeNode expr;
+}
+{
+    <K_SPLIT> <K_BY> 
+    expr= Expression()  
+    
+    { return expr; }
+}
+
+
+/* ------------ GROUP BY clause ----------------------*/
+
+// for now GROUP BY allows only a list of identifiers
+// FUTURE: allow arbitrary expressions
+
+List GroupBy() :
+{
+   List result = null;
+}
+{
+   <K_GROUP> <K_BY>
+   result = TableColumnList()
+   {
+      return result;
+   }
+}
+
+/* ------------ ORDER BY clause ----------------------*/
+
+List OrderBy() :
+{
+   List result = null;
+}
+{
+   <K_ORDER> <K_BY>
+   result = OrderByList()
+   {
+      return result;
+   }
+}
+
+List OrderByList() :
+{
+   List orderList = new ArrayList();
+   OrderItem item = null;
+}
+{
+   item = OrderByItem()
+   {
+      orderList.add(item);
+   }
+   ( LOOKAHEAD(2)
+      <COMMA>
+      item = OrderByItem()
+      {
+         orderList.add(item);
+      }
+   )*
+   {
+      return orderList;
+   }
+}
+
+OrderItem OrderByItem() :
+{
+   String itemLiteral = null;
+   boolean isAscending = true;
+}
+{
+  // for now only allow named select columns  (column indexes can be added later)
+   itemLiteral = Identifier() 
+   
+   [ isAscending = OrderDirection() ]
+   {
+      return new OrderItem(itemLiteral, isAscending);
+   }
+}
+
+boolean OrderDirection() :
+{
+   boolean ascending = true;
+}
+{
+  (
+    <K_ASC>
+  | <K_DESC>
+    { ascending = false; }
+  )
+  {
+   return ascending;
+  }
+}
+
+
+/* ------------ VALUES clause ----------------------*/
+
+// not used, and probably broken/unusable
+
+ValuesNode ValuesExpression():
+{
+  ValuesNode values = new ValuesNode();
+  List exprList;
+}
+{
+  <K_VALUES>
+  <OPENPAREN> 
+  	exprList = ExpressionList()	
+  	{   values.add(exprList);  }
+  <CLOSEPAREN>
+  (
+    <COMMA> 
+    <OPENPAREN>
+  	exprList = ExpressionList()	
+  	{   values.add(exprList);  }
+    <CLOSEPAREN>
+  )*
+  { return values; }
+}
+
+/* ------------ TABLE value clause ----------------------*/
+
+TableValueNode TableValueExpression():
+{
+  TableValueNode value = new TableValueNode();
+  TableSchemaNode schema = null;
+  List exprList;
+}
+{
+  <K_TABLE>
+  
+  [ schema= TableSchemaExpr() 
+     { value.setSchema(schema);  }
+  ]
+  
+  <OPENPAREN> 
+  [  
+    <OPENPAREN> 
+  	exprList = ExpressionList()	
+  	{   value.add(exprList);  }
+  	<CLOSEPAREN>
+    	(
+    		[ <COMMA> ]
+    		<OPENPAREN>
+  			exprList = ExpressionList()	
+  			{   value.add(exprList);  }
+    		<CLOSEPAREN>
+  	)*
+  ]
+  <CLOSEPAREN>
+
+  
+  { return value; }
+}
+
+
+TableSchemaNode TableSchemaExpr():
+{
+	Token alias = null;
+	List colList = null;
+	int colListLine = 0;
+}
+{
+    alias= <S_IDENTIFIER> 
+  
+    [ LOOKAHEAD(2)
+      <OPENPAREN>
+       { colListLine = token.beginLine; }
+      colList= IdentifierList()
+      <CLOSEPAREN>
+    ]
+  {    
+      String aliasName = alias != null ? alias.toString() : null;
+      return new TableSchemaNode(aliasName, colList, colListLine);   
+  }
+
+}
+
+/* ------------ Functions ----------------------*/
+
+FunctionNode Function() :
+{
+  String name1 = null;
+  String name2 = null;
+  List args = null;
+  ParseTreeNode sel = null;
+  FunctionNode node = new FunctionNode();
+}
+{
+    <S_IDENTIFIER>
+    	{     	name1 = token.image;  	
+    		node.setLoc(token.beginLine);
+    	}
+    	
+    [ <DOT> <S_IDENTIFIER> 
+    	{ name2 = token.image;   }
+    ]
+    	
+    <OPENPAREN>
+    [ 
+      (
+        // have to allow * as arg for agg functions - this must be checked for in semantic processing
+        <ASTERISK>
+          { args = new ArrayList();
+            ParseTreeNode tblRefNode = new TableRefNode();
+            tblRefNode.setLoc(token.beginLine);
+            args.add(tblRefNode);
+          }
+        |
+          sel = SelectExpression()
+          { args = new ArrayList();
+            args.add(sel);
+          }
+        | 
+          args= ExpressionList() 
+      )
+      
+    ]
+    <CLOSEPAREN>
+    
+  	{
+    		node.setFunction(name1, name2, args);
+    		return node;
+  	}	
+}
+
+
+
+/* ------------ Expressions ----------------------*/
+
+ParseTreeNode Expression():
+{
+	ParseTreeNode expr;
+}
+{
+  
+	expr = ConditionalExpression()
+  
+	{ return expr; }
+}
+
+ParseTreeNode ExpressionOrSelect():
+{
+	ParseTreeNode expr;
+}
+{
+  (
+	expr = Expression()
+	|
+	expr= SelectExpression()
+  )
+  
+	{ return expr; }
+}
+
+ParseTreeNode ConditionalExpression():
+{
+	ParseTreeNode condExpr = null;
+	ParseTreeNode expr1 = null;
+	ParseTreeNode expr2 = null;
+}
+{
+	condExpr = BooleanExpression()
+	[
+		<QUESTIONMARK> 
+		expr1= Expression()
+		<COLON>
+		expr2= Expression()
+	]
+	{
+	  if (expr1 != null)
+	    return new ConditionalExpressionNode(condExpr, expr1, expr2); 
+	  else
+	    return condExpr;  
+	}
+}
+
+/* ------------ Boolean Expressions ----------------------*/
+
+ParseTreeNode BooleanExpression() :
+{
+   ParseTreeNode e;
+}
+{
+	e = OrExpr()
+	{  return e; }
+}
+
+ParseTreeNode OrExpr() :
+{
+  ParseTreeNode e;
+  ParseTreeNode e2;
+  int line;
+}
+{
+  e = AndExpr()
+  (
+      <K_OR>
+         { String op = token.image;   line = token.beginLine;  }
+    e2 = AndExpr()
+    {
+    	e = new BinaryExpressionNode(op, e, e2, line);
+    }
+  )*
+  {
+    return e;
+  }
+}
+
+ParseTreeNode AndExpr() :
+{
+  ParseTreeNode e;
+  ParseTreeNode e2;
+  int line;
+}
+{
+  e = UnaryBooleanExpr()
+  (
+    ( <K_AND> | <K_XOR> )
+         { String op = token.image;  line = token.beginLine;  }
+    e2 = UnaryBooleanExpr()
+    {
+    	e = new BinaryExpressionNode(op, e, e2, line);
+    }
+  )*
+  {
+    return e;
+  }
+}
+
+ParseTreeNode UnaryBooleanExpr() :
+{
+  ParseTreeNode e = null;
+  SelectNode eSel = null;
+  String notOp = null;
+}
+{
+   [ <K_NOT>
+      { notOp = token.image; }
+   ]
+   (
+       <K_EXISTS> <OPENPAREN> 
+     	eSel = SelectExpression() 
+       <CLOSEPAREN>
+       { e = new ExistsNode(eSel); }
+     |
+   	e = RelationalExpr()
+   )
+   {
+   	if (notOp != null)
+   		return new UnaryExpressionNode(notOp, e);
+   	return e;
+   }
+}
+
+ParseTreeNode RelationalExpr() :
+{
+  ParseTreeNode e;
+  ParseTreeNode e2;
+  String op;
+  int line;
+}
+{
+  e = ArithExpression()
+  [
+    op = RelationalOp()
+    { line = token.beginLine;  }
+    e2 = ArithExpression()
+  		{  e = new BinaryExpressionNode(op, e, e2, line); 	}
+    | 
+    LOOKAHEAD(2)  e = InOpExpr(e)
+  ]
+  {  return e;  }
+}
+
+
+ParseTreeNode InOpExpr(ParseTreeNode lhs) :
+{
+  boolean notPresent = false;
+  SelectNode eSel = null;
+  List exprList = null;
+}
+{
+  [ <K_NOT> { notPresent = true; } ]
+  
+  <K_IN> <OPENPAREN> 
+  (
+    eSel = SelectExpression()
+    |
+    exprList = ExpressionList()
+  ) 
+  <CLOSEPAREN>
+
+  {
+  	if (eSel != null)
+  		return new InNode(lhs, eSel, notPresent);
+  	else
+  		return new InNode(lhs, exprList, notPresent);
+  }
+}
+
+
+/* ------------ Arithmetic Expressions ----------------------*/
+
+ParseTreeNode ArithExpression() :
+{
+   ParseTreeNode e;
+}
+{
+	e = AddExpr()
+	{  return e; }
+}
+
+ParseTreeNode AddExpr() :
+{
+  ParseTreeNode e;
+  ParseTreeNode e2;
+  int line;
+}
+{
+  e = MultExpr()
+  (
+      ( <PLUS> | <MINUS> )
+         { String op = token.image; line = token.beginLine; }
+    e2 = MultExpr()
+    {
+    	e = new BinaryExpressionNode(op, e, e2,line);
+    }
+  )*
+  {
+    return e;
+  }
+}
+
+ParseTreeNode MultExpr() :
+{
+  ParseTreeNode e;
+  ParseTreeNode e2;
+  int line;
+}
+{
+  e = UnaryExpr()
+  (
+      ( <ASTERISK> | <SLASH> | <PERCENT> )
+         { String op = token.image; line = token.beginLine; }
+    e2 = UnaryExpr()
+    {
+    	e = new BinaryExpressionNode(op, e, e2,line);
+    }
+  )*
+  {
+    return e;
+  }
+}
+
+ParseTreeNode UnaryExpr() :
+{
+	ParseTreeNode e = null;
+	String op = null;
+}
+{
+   [ ( <PLUS> | <MINUS> ) 
+      { op = token.image; }
+   ]
+   e = Term()
+   {
+   	if (op != null)
+   		return new UnaryExpressionNode(op, e);
+   	return e;
+   }
+}
+
+
+ParseTreeNode Term() :
+{
+	ParseTreeNode expr = null;
+}
+{
+  (
+    <OPENPAREN>
+    expr= Expression()
+    <CLOSEPAREN>
+    
+  | expr = CaseExpr()
+    
+  | <S_CONST_LITERAL> 
+  	{ expr = new NamedConstantNode(token.image); 
+  	  expr.setLoc(token.beginLine);
+  	}
+  	
+  | LOOKAHEAD(4) expr= Geometry() 
+  	
+  | LOOKAHEAD(4) expr= Function()
+  
+  | LOOKAHEAD(3) expr= TableColumn()
+  
+  | expr= TableValueExpression()
+  
+  | <S_NUMBER>
+       { expr = new NumericConstantNode(token.image); 
+         expr.setLoc(token.beginLine);
+       }
+       
+  | ( <S_STRING_LITERAL> | <S_RAW_STRING_LITERAL> | <S_RICH_STRING_LITERAL> )
+       { expr = new StringLiteralNode(token.image); 
+         expr.setLoc(token.beginLine);
+       }
+
+  )
+  	{   	return expr;    	}
+}
+
+ParseTreeNode CaseExpr() :
+{
+    List   cases = new ArrayList();
+    ParseTreeNode valueExpr = null;
+    ParseTreeNode whenExpr  = null;
+    ParseTreeNode thenExpr  = null;
+    ParseTreeNode elseExpr  = null;
+}
+{
+    <K_CASE>
+    [
+      // presence of expression here indicates simple case; otherwise is searched case
+      valueExpr = Expression()
+    ]
+    (
+        <K_WHEN>
+        (   
+            whenExpr = Expression()
+            {
+                cases.add(whenExpr);
+            }
+        )
+        <K_THEN>
+        (
+            thenExpr = Expression()
+            {
+                cases.add(thenExpr);
+            }
+        )
+    )+
+    
+    [
+        <K_ELSE>
+        elseExpr = Expression()
+    ]
+    <K_END>
+    {
+        return new CaseNode(valueExpr, cases, elseExpr);
+    }
+}
+
+/***************************************************************/
+/**** ---------------- Geometry Productions ---------------- ***/
+/***************************************************************/
+
+
+ParseTreeNode Geometry():
+{
+    Geometry g = null;
+}
+{
+	g = GeometryTaggedText()
+	{    return new GeometryConstantNode(g);	}	
+}
+
+Geometry GeometryTaggedText():
+{
+    Geometry g = null;
+}
+{
+  (
+	g = PointTaggedText()
+	| g = LineStringTaggedText()
+	| g = LinearRingTaggedText()
+	| g = PolygonTaggedText()
+	| g = MultiPointTaggedText()
+	| g = MultiLineStringTaggedText()
+	| g = MultiPolygonTaggedText()
+	| g = GeometryCollectionTaggedText()
+	| g = BoxTaggedText()
+  )
+	{ return g;	}	
+}
+
+Geometry PointTaggedText():
+{
+    Geometry geom;
+}
+{
+	<K_POINT> 
+	geom = PointText()
+	{ return geom; }
+}
+
+Geometry PointText():
+{
+    Coordinate coord = null;
+}
+{
+	[
+	  	<K_EMPTY>
+	  |
+	    	<OPENPAREN> 
+		coord = Coordinate()
+		<CLOSEPAREN>
+	]
+	{
+	    return GeometryBuilder.createPoint(coord);
+	}
+}
+
+Geometry LineStringTaggedText():
+{
+    Geometry geom;
+}
+{
+	<K_LINESTRING> 
+	geom = LineStringText()
+	{ return geom; }
+}
+
+Geometry LineStringText():
+{
+    Coordinate[] seq = null;
+}
+{
+	[
+	  	<K_EMPTY>
+	  |
+	    	<OPENPAREN> 
+	   	seq = CoordinateSeq()
+		<CLOSEPAREN>
+	]
+	{
+	    return GeometryBuilder.createLineString(seq);
+	}
+}
+Geometry LinearRingTaggedText():
+{
+    Geometry geom;
+}
+{
+	<K_LINEARRING> 
+	geom = LinearRingText()
+	{ return geom; }
+}
+
+Geometry LinearRingText():
+{
+    Coordinate[] seq = null;
+}
+{
+	[
+	  	<K_EMPTY>
+	  |
+	    	<OPENPAREN> 
+	   	seq = CoordinateSeq()
+		<CLOSEPAREN>
+	]
+	{
+	    return GeometryBuilder.createLinearRing(seq);
+	}
+}
+Geometry BoxTaggedText():
+{
+    Geometry geom;
+}
+{
+	<K_BOX> 
+	geom = BoxText()
+	{ return geom; }
+}
+
+Geometry BoxText():
+{
+	Coordinate coord1 = null;
+	Coordinate coord2 = null;
+}
+{
+	<OPENPAREN> 
+	coord1 = Coordinate()
+	<COMMA>
+	coord2 = Coordinate()
+	<CLOSEPAREN>
+	{
+	    return GeometryBuilder.createBox(coord1, coord2);
+	}
+}
+Geometry PolygonTaggedText():
+{
+    Geometry geom;
+}
+{
+	<K_POLYGON> 
+	geom = PolygonText()
+	{ return geom; }
+}
+Geometry PolygonText():
+{
+    Coordinate[] shell = null;
+    Coordinate[] hole = null;
+    List holes = new ArrayList();
+}
+{
+	[
+	  	<K_EMPTY>
+	  |		
+		<OPENPAREN> 
+		
+		<OPENPAREN> 
+		shell = CoordinateSeq()
+		<CLOSEPAREN>
+		( 
+		 	<COMMA>
+			<OPENPAREN> 
+			hole = CoordinateSeq()
+			<CLOSEPAREN>
+			{ holes.add(hole); }
+		)*
+		<CLOSEPAREN>
+
+	]
+	{
+	    return GeometryBuilder.createPolygon(shell, holes);
+	}
+}
+
+Geometry MultiPointTaggedText():
+{
+    Geometry geom;
+    List geoms = new ArrayList();
+}
+{
+	<K_MULTIPOINT>
+	[
+	  	<K_EMPTY>
+	  |
+	    	<OPENPAREN> 
+	   	geom = PointText()
+	   	{ geoms.add(geom); }
+	   	(
+		 	<COMMA>
+	   		geom = PointText()
+	   		{ geoms.add(geom); }
+	   	)*
+	   	
+		<CLOSEPAREN>
+	]
+	{
+	    return GeometryBuilder.createMultiPoint(geoms);
+	}
+}
+
+Geometry MultiLineStringTaggedText():
+{
+    Geometry geom;
+    List geoms = new ArrayList();
+}
+{
+	<K_MULTILINESTRING>
+	[
+	  	<K_EMPTY>
+	  |
+	    	<OPENPAREN> 
+	   	geom = LineStringText()
+	   	{ geoms.add(geom); }
+	   	(
+		 	<COMMA>
+	   		geom = LineStringText()
+	   		{ geoms.add(geom); }
+	   	)*
+	   	
+		<CLOSEPAREN>
+	]
+	{
+	    return GeometryBuilder.createMultiLineString(geoms);
+	}
+}
+
+Geometry MultiPolygonTaggedText():
+{
+    Geometry geom;
+    List geoms = new ArrayList();
+}
+{
+	<K_MULTIPOLYGON>
+	[
+	  	<K_EMPTY>
+	  |
+	    	<OPENPAREN> 
+	   	geom = PolygonText()
+	   	{ geoms.add(geom); }
+	   	(
+		 	<COMMA>
+	   		geom = PolygonText()
+	   		{ geoms.add(geom); }
+	   	)*
+	   	
+		<CLOSEPAREN>
+	]
+	{
+	    return GeometryBuilder.createMultiPolygon(geoms);
+	}
+}
+
+Geometry GeometryCollectionTaggedText():
+{
+    Geometry geom;
+    List geoms = new ArrayList();
+}
+{
+	<K_GEOMETRYCOLLECTION>
+	[
+	  	<K_EMPTY>
+	  |
+	    	<OPENPAREN> 
+	   	geom = GeometryTaggedText()
+	   	{ geoms.add(geom); }
+	   	(
+		 	<COMMA>
+	   		geom = GeometryTaggedText()
+	   		{ geoms.add(geom); }
+	   	)*
+	   	
+		<CLOSEPAREN>
+	]
+	{
+	    return GeometryBuilder.createGeometryCollection(geoms);
+	}
+}
+
+Coordinate[] CoordinateSeq():
+{
+	Coordinate coord = null;
+	CoordinateList coordList = new CoordinateList();
+}
+{
+    [
+            coord= Coordinate()
+            {
+            	coordList.add(coord);
+            }
+    ]
+    (
+    	<COMMA>
+        coord= Coordinate()
+        {
+        	coordList.add(coord);
+        }
+        
+    )*
+	{
+		return coordList.toCoordinateArray();
+	}
+}
+
+Coordinate Coordinate():
+{
+	double x, y, z;
+	boolean negX = false, negY = false;
+}
+{	
+	// since minus signs are lexed as separate tokens, need this finangling
+	[ <MINUS>  { negX = true; } ]
+	<S_NUMBER>
+	{ x = Double.parseDouble(token.image); 
+	  x = negX ? -x : x;
+	}
+	
+	[ <MINUS>  { negY = true; } ]
+	<S_NUMBER>
+	{ y = Double.parseDouble(token.image); 
+	  y = negY ? -y : y;
+	}
+	
+	{
+		return new Coordinate(x, y);
+	}
+}
+
+/***************************************************************/
+/** ---------------- Utility Productions --------------------- */
+/***************************************************************/
+
+List ExpressionList():
+{
+	List list = new ArrayList();
+	ParseTreeNode item;
+}
+{  
+    item= Expression() 
+    		{ list.add(item);  }
+    
+    (<COMMA> item= Expression()   
+      		{ list.add(item);  }
+    )*
+   
+    {   return list; }
+}
+
+TableColumnNode TableColumn():
+{
+	String s1  = null, s2 = null;
+	TableColumnNode node;
+	int line = 0;
+}
+{
+    // table.column
+    s1= Identifier() 
+    { line = token.beginLine; }
+    
+    [ "." s2= Identifier() ]
+    
+    { if (s2 == null)
+    	node = new TableColumnNode(s1);
+      else	
+      	node = new TableColumnNode(s1, s2); 
+      node.setLoc(line);
+      return node;
+    }
+}
+
+/* parses a list of one or more comma-separated TableColumns */
+List TableColumnList():
+{
+	TableColumnNode col;
+	List colList = new ArrayList();
+}
+{
+	col = TableColumn()
+	{ colList.add(col); }
+	( 
+		<COMMA>
+		col= TableColumn()
+		{ colList.add(col); }
+	)*
+  
+  
+  { return colList; }
+}
+
+
+String Identifier():
+{
+	Token t;
+}
+{
+(
+    t=<S_IDENTIFIER> 
+  | t=<S_QUOTED_IDENTIFIER>  )
+  
+  { return t.toString(); }
+}
+
+Token IdentifierToken():
+{
+	Token t;
+}
+{
+(
+    t=<S_IDENTIFIER> 
+  | t=<S_QUOTED_IDENTIFIER>  )
+  
+  {
+  	return t; 
+  }
+}
+
+/* parses a list of one or more comma-separated identifiers */
+List IdentifierList():
+{
+	String id;
+	List idList = new ArrayList();
+}
+{
+	id = Identifier()
+	{ idList.add(id); }
+	( 
+		<COMMA>
+		id= Identifier()
+		{ idList.add(id); }
+	)*
+  
+  
+  { return idList; }
+}
+
+String RelationalOp():
+{}
+{
+  ( <EQUAL> | <NOTEQUAL> | <GREATER> | <GREATEREQUAL> | <LESS> | <LESSEQUAL>
+    | <REGEX_FIND> | <REGEX_MATCH> )
+  { return token.image; }
+}
+
+/*
+// MD - no longer used?
+TableColumnNode TableReference():
+{
+	String s1 = null;
+}	
+{
+    s1= Identifier()
+    { TableColumnNode node = new TableColumnNode(s1, null);
+    	node.setLoc(token.beginLine);
+    	return node;
+    }
+}
+*/
+
+
+
+
+
+
+
+

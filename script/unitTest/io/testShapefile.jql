@@ -1,0 +1,61 @@
+/*================================
+
+	Test Shapefile I/O
+	
+================================*/
+
+tGrid = select * from Generate.grid(0, 10, 0, 10);
+
+tBox = select Geom.createBox(i, j, i + 0.5, j + 0.5) as geometry from tGrid;
+
+t = select Geom.normalize(geometry), 
+	rownum() as colInt, 
+	rownum() / 2.0 as colFloat, 
+	"testing" as colString 
+	from tBox;
+
+file = "testShapefile.shp";
+
+ShapefileWriter t file: file;
+
+ShapefileReader t1 file: file;
+
+t1Norm = select Geom.normalize(GEOMETRY), colInt, colFloat, colString from t1;
+
+//Print t1Norm;
+
+AssertEqual t expected: t1Norm;
+
+DbfReader tdbf file: "testShapefile.dbf";
+
+//Print tdbf;
+
+//---------  Test writing LINESTRINGS
+t2 = table (
+	( LINESTRING(0 0, 1 1) )
+	( MULTILINESTRING( (0 0, 1 1), (2 2, 3 3)) )
+	);
+	
+ShapefileWriter t2 file: "test.shp";
+
+//---------  Test writing POINTS
+t2 = table (
+	( POINT(0 0) )
+	( MULTIPOINT( (0 0), (2 2)) )
+	);
+	
+ShapefileWriter t2 file: "test.shp";
+
+/*
+//---------  Test writing with no geometry
+t2 = table (
+	( 1 )
+	( 2 )
+	);
+	
+ShapefileWriter t2 file: "test.shp";
+*/
+
+
+
+

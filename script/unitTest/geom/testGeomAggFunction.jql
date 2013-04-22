@@ -1,0 +1,64 @@
+/*================================
+
+Tests Geometry aggregate functions
+	
+================================*/
+
+t1 = select Geom.fromWKT(g) as geom from table ( 
+		("POINT (1 1)"), 
+		("POINT (2 1)"), 
+		("POINT (3 3)")
+			) tbl(g);
+
+//-------------------------------------------------
+gr1 = select geomCollect(geom) from t1;
+
+expected1 = select Geom.fromWKT(g) 
+	from table  (
+( "GEOMETRYCOLLECTION ( POINT (1 1), POINT (2 1), POINT (3 3) )" )
+) tbl(g);
+
+Print gr1;
+AssertEqual gr1 expected: expected1;
+
+//-------------------------------------------------
+gr2 = select geomConvexHull(geom) from t1;
+
+expected2 = select Geom.fromWKT(g) 
+	from table  (
+( "POLYGON((1 1, 3 3, 2 1, 1 1))" )
+) tbl(g);
+
+Print gr2;
+AssertEqual gr2 expected: expected2;
+
+//-------------------------------------------------
+gr3 = select geomExtent(geom) from t1;
+
+expected3 = select Geom.fromWKT(g) 
+	from table  (
+( "POLYGON ((1 1, 3 1, 3 3, 1 3, 1 1))" )
+) tbl(g);
+
+Print gr3;
+AssertEqual gr3 expected: expected3;
+
+//-------------------------------------------------
+gr4 = select geomUnion(geom) from t1;
+
+expected4 = select Geom.fromWKT(g) 
+	from table  (
+( "MULTIPOINT (1 1, 2 1, 3 3)" )
+) tbl(g);
+
+Print gr4;
+AssertEqual gr4 expected: expected4;
+
+
+
+
+
+
+
+
+

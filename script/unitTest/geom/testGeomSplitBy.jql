@@ -1,0 +1,84 @@
+/*================================
+
+Test SPLIT BY syntax & semantics - Geom.splitByVertices and SplitBy.index()
+	
+================================*/
+
+t1 = select id, lbl, wkt geom 
+		from table ( 
+		(1, "aaa", LINESTRING (0 0, 1 1, 2 2))
+		(2, "bbb", MULTILINESTRING ((5 5, 6 6, 2 2), (1 2, 3 4, 5 6)))
+			) tbl(id, lbl, wkt);
+
+//-------------------------------------------------
+split1 = select id, lbl, splitValue g2, splitIndex si from t1 
+		split by Geom.splitByVertex(geom);
+
+//Print split1 code: ;
+
+expected1 = select * from table ( 
+( 1, "aaa", Geom.fromWKT("POINT (0 0)"), 1 ),
+( 1, "aaa", Geom.fromWKT("POINT (1 1)"), 2 ),
+( 1, "aaa", Geom.fromWKT("POINT (2 2)"), 3 ),
+( 2, "bbb", Geom.fromWKT("POINT (5 5)"), 1 ),
+( 2, "bbb", Geom.fromWKT("POINT (6 6)"), 2 ),
+( 2, "bbb", Geom.fromWKT("POINT (2 2)"), 3 ),
+( 2, "bbb", Geom.fromWKT("POINT (1 2)"), 4 ),
+( 2, "bbb", Geom.fromWKT("POINT (3 4)"), 5 ),
+( 2, "bbb", Geom.fromWKT("POINT (5 6)"), 6 ) 
+);
+
+AssertEqual split1 expected: expected1;
+
+//-------------------------------------------------
+splitSeg = select id, lbl, splitValue g2, splitIndex si from t1 
+		split by Geom.splitBySegment(geom);
+
+//Print split1 code: ;
+
+expectedSeg = select * from table ( 
+( 1, "aaa", LINESTRING (0 0, 1 1), 1 )
+( 1, "aaa", LINESTRING (1 1, 2 2), 2 )
+( 2, "bbb", LINESTRING (5 5, 6 6), 1 )
+( 2, "bbb", LINESTRING (6 6, 2 2), 2 )
+( 2, "bbb", LINESTRING (1 2, 3 4), 3 )
+( 2, "bbb", LINESTRING (3 4, 5 6), 4 )
+);
+
+Print splitSeg code: ;
+AssertEqual splitSeg expected: expectedSeg;
+
+
+//-------------------------------------------------
+
+split2 = select id, lbl, splitValue i, splitIndex index from t1 
+		split by SplitBy.index(Geom.numPoints(geom));
+
+Print split2 code: ;
+
+expected2 = select * from table ( 
+( 1, "aaa", 0, 1 ),
+( 1, "aaa", 1, 2 ),
+( 1, "aaa", 2, 3 ),
+( 2, "bbb", 0, 1 ),
+( 2, "bbb", 1, 2 ),
+( 2, "bbb", 2, 3 ),
+( 2, "bbb", 3, 4 ),
+( 2, "bbb", 4, 5 ),
+( 2, "bbb", 5, 6 )
+);
+
+AssertEqual split2 expected: expected2;
+
+//-------------------------------------------------
+// Split by an index, and use index to extract vertex
+
+split3 = select id, lbl, Geom.extractPoint(geom, splitValue), splitIndex index from t1 
+		split by SplitBy.index(Geom.numPoints(geom));
+
+Print split3 code: ;
+
+AssertEqual split3 expected: expected1;
+
+//====================================================
+

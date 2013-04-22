@@ -1,0 +1,36 @@
+/*================================
+
+Test simple joins
+	
+================================*/
+
+
+t1 = select x, 10*x x10 from Generate.sequence(1, 10) a(x);
+
+t2 = select x, 20*x x20 from Generate.sequence(1, 10) b(x);
+
+//Print t2;
+
+/*
+tLimit = select * from t1 limit 3;
+Print tLimit;
+*/
+
+tJoin = select x, x10, x20 from t1 a join t2 b on a.x == b.x
+		limit 5;
+		
+tJE = select * from table ( 
+( 1, 10, 20),
+( 2, 20, 40),
+( 3, 30, 60),
+( 4, 40, 80),
+( 5, 50, 100)
+);
+
+//Print tJoin;
+AssertEqual value: tJoin expected: tJE;
+
+
+
+
+

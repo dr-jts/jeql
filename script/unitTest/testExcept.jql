@@ -1,0 +1,29 @@
+/*================================
+
+Test SELECT * EXCEPT ...  syntax & semantics
+	
+================================*/
+
+t1 = select * from table ( 
+		(10, "a", .1), 
+		(11, "c", .2), 
+		( 3, "d", .3), 
+		( 2, "b", .4), 
+		( 2, "a", .5), 
+		( 2, "c", .6) 
+			) tbl(a, b, c);
+
+//-------------------------------------------------
+ex1 = select * except a from t1;
+expected1 = select b, c from t1;
+AssertEqual ex1 expected: expected1;
+
+//-------------------------------------------------
+ex2 = select * except b from t1;
+expected2 = select a, c from t1;
+AssertEqual ex2 expected: expected2;
+
+//-------------------------------------------------
+ex3 = select * except (a, b) from t1;
+expected3 = select c from t1;
+AssertEqual ex3 expected: expected3;
