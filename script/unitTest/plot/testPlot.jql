@@ -6,17 +6,21 @@ Test Plot command
 
 sz = 400;
 
-// tests that no stroke is drawn when not set
+/*
+* Tests a variety of combinations of stroke, strokeWidth and fill
+*/
 t = select i,
-	#0000ff80 styleFill,
-	i % 2 == 0 ? #ff0000 : null styleStroke,
-	i % 4 == 0 ? 4 : null styleStrokeWidth,
-	Geom.buffer(Geom.createPoint(x, x), radius)
+	tot % 5 != 0 ? #0000ff80 : null styleFill,
+	tot % 2 == 0 ? #ff0000 : null styleStroke,
+	tot % 4 == 0 ? 4 : null styleStrokeWidth,
+	Geom.buffer(Geom.createPoint(x, y), 0.8 * radius)
 	with {
 		radius = sz / 10.0;
 		x = i * radius;
+		y = j * radius;
+		tot = i + j;
 	}
-	from Generate.sequence(1,10);
+	from Generate.grid(1,10,1,10);
 
 Plot data: t file: "plotDot.png";
 
