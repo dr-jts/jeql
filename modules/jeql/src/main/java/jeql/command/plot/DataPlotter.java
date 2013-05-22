@@ -48,9 +48,6 @@ public class DataPlotter
   private Plot plot;
   
   private int geomIndex = -1;
-  private int lineColorIndex = -1;
-  private int lineWidthIndex = -1;
-  private int fillColorIndex = -1;
   
   public DataPlotter(Plot plot) {
     this.plot = plot;
@@ -63,10 +60,7 @@ public class DataPlotter
     
     StyleExtracter styler = new StyleExtracter(schema);
     geomIndex = SchemaUtil.getColumnWithType(schema, Geometry.class);
-    lineColorIndex = SchemaUtil.getColumnIndex(schema, StyleConstants.STROKE, StyleConstants.COLOR);
-    lineWidthIndex = SchemaUtil.getColumnIndex(schema, StyleConstants.STROKE_WIDTH);
-    fillColorIndex = SchemaUtil.getColumnIndex(schema, StyleConstants.FILL);
-    
+    // no geometry, so nothing to plot
     if (geomIndex < 0) return;
     
     Graphics2D graphics = plot.getGraphics();
@@ -81,9 +75,6 @@ public class DataPlotter
     }
   }
 
-  private static final String DEFAULT_FILL_CLR = "5555ff80";
-  private static final String DEFAULT_LINE_CLR = "0000ffff";
-  
   private void plot(Row row, StyleExtracter styler, Graphics2D graphics)
   {
     Geometry geom = (Geometry) row.getValue(geomIndex);
@@ -106,9 +97,9 @@ public class DataPlotter
     
     Color lineClr = styler.stroke(row);
     if (lineClr != null) {
-      if (lineWidthIndex >= 0) {
-        double width = TypeUtil.toDouble(row.getValue(lineWidthIndex));
-        graphics.setStroke(new BasicStroke((float) width, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+      if (styler.hasStrokeWidth()) {
+        graphics.setStroke(new BasicStroke((float) styler.strokeWidth(row), 
+            BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
       }
       graphics.setColor(lineClr);
       graphics.draw(shp);

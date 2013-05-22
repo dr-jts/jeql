@@ -85,10 +85,14 @@ public class RowUtil
 
   public static double getDouble(RowSchema schema, String colName, Row row,
       double defaultVal) {
-    int index = schema.getColIndex(colName);
+    return getDouble(schema.getColIndex(colName), row, defaultVal);
+  }
+
+  public static double getDouble(int index, Row row,double defaultVal) {
     if (index < 0)
       return defaultVal;
     Object oval = row.getValue(index);
+    if (oval == null) return defaultVal;
     try {
       double val = ((Number) oval).doubleValue();
       return val;

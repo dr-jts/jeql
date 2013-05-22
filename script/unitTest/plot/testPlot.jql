@@ -10,6 +10,7 @@ sz = 400;
 t = select i,
 	#0000ff80 styleFill,
 	i % 2 == 0 ? #ff0000 : null styleStroke,
+	i % 4 == 0 ? 4 : null styleStrokeWidth,
 	Geom.buffer(Geom.createPoint(x, x), radius)
 	with {
 		radius = sz / 10.0;

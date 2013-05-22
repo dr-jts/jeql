@@ -11,8 +11,8 @@ import jeql.util.TypeUtil;
 
 public class StyleExtracter
 {
-  private static final String DEFAULT_FILL = "5555ff80";
-  private static final String DEFAULT_STROKE = "0000ffff";
+  public static final String DEFAULT_FILL = "5555ff80";
+  public static final String DEFAULT_STROKE = "0000ffff";
 
   private int strokeIndex;
   private int strokeWidthIndex;
@@ -44,10 +44,15 @@ public class StyleExtracter
     return clr;
   }
 
+  public boolean hasStrokeWidth()
+  {
+    return strokeWidthIndex >= 0;
+  }
+  
   public double strokeWidth(Row row)
   {
     if (strokeWidthIndex >= 0)
-      return TypeUtil.toDouble(row.getValue(strokeWidthIndex));
+      return RowUtil.getDouble(strokeWidthIndex, row, 1.0);
     return 1.0;
   }
   
