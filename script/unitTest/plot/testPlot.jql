@@ -1,0 +1,16 @@
+/*================================
+
+Test Plot command
+	
+================================*/
+
+// tests that no stroke is drawn when not set
+t = select Geom.buffer(Geom.createPoint(x, x), 100),
+	#0000ff80 styleFill
+	from Generate.sequence(1,1000,50) t(x);
+
+Plot data: t file: "plotDot.png";
+
+
+	
+	

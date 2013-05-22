@@ -45,7 +45,8 @@ public class TestProgram {
 //  exec("C:\\data\\martin\\proj\\jeql\\unitTest\\geom\\testGeomAggFunction.jql");
 //  exec("C:\\data\\martin\\proj\\jeql\\unitTest\\testCase.jql");
 //    execUnit("testDate.jql");
-    execUnit("geom/testGrid.jql");
+    //execUnit("geom/testGrid.jql");
+    execUnit("plot/testPlot.jql");
 //  exec("C:\\data\\martin\\proj\\jeql\\unitTest\\testExcept.jql");
 //  execUnit("testExpression.jql");
 //  exec("C:\\data\\martin\\proj\\jeql\\unitTest\\testGroupBy.jql");
@@ -204,9 +205,14 @@ public class TestProgram {
 
   }
 
+  /**
+   * Assumes run from repo "jeql/script/output" directory
+   * 
+   * @param scriptname
+   */
   void execUnit(String scriptname)
   {
-    exec("C:\\data\\martin\\proj\\jeql\\trunk\\script\\unitTest\\" + scriptname);
+    exec("..\\unitTest\\" + scriptname);
   }
   void exec(String filename)
   {
