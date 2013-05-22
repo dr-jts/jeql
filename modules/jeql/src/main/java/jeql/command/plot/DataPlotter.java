@@ -77,60 +77,42 @@ public class DataPlotter
       Row row = ri.next();
       if (row == null)
         break;
-      plot(row, graphics);
+      plot(row, styler, graphics);
     }
   }
 
   private static final String DEFAULT_FILL_CLR = "5555ff80";
   private static final String DEFAULT_LINE_CLR = "0000ffff";
   
-  private void plot(Row row, Graphics2D graphics)
+  private void plot(Row row, StyleExtracter styler, Graphics2D graphics)
   {
     Geometry geom = (Geometry) row.getValue(geomIndex);
     if (geom == null) return;
-    plot(geom, row, graphics);
+    plot(geom, row, styler, graphics);
   }
     
-  private void plot(Geometry geom, Row row,  Graphics2D graphics)
+  private void plot(Geometry geom, Row row,  StyleExtracter styler, Graphics2D graphics)
   {
     Shape shp = plot.getConverter().toShape(geom);
-
     boolean isArea = geom.getDimension() >= 2;
-    boolean hasColor = fillColorIndex >= 0 || lineColorIndex >= 0;
     
-    // only use default colours if none are specified
-    String fillClrStr = null;
-    String lineClrStr = null;    
-    if (! hasColor) {
-      fillClrStr = DEFAULT_FILL_CLR;
-      lineClrStr = DEFAULT_LINE_CLR;    
-    }
-
     if (isArea) {
-      if (fillColorIndex >= 0) 
-        fillClrStr = RowUtil.getString(fillColorIndex, row, null);
-        
-      if (fillClrStr != null && fillClrStr.length() > 0) {
-          Color clr = ColorUtil.RGBAtoColor(fillClrStr);
-          graphics.setPaint(clr);
-          graphics.fill(shp);
+      Color clr = styler.fill(row);
+      if (clr != null) {
+        graphics.setPaint(clr);
+        graphics.fill(shp);       
       }
     }
     
-    if (lineWidthIndex >= 0) {
-      double width = TypeUtil.toDouble(row.getValue(lineWidthIndex));
-      graphics.setStroke(new BasicStroke((float) width, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-    }
- 
-    if (lineColorIndex >= 0) 
-      lineClrStr = (String) row.getValue(lineColorIndex);
-     
-
-    if (lineClrStr != null && lineClrStr.length() > 0) {
-      Color clr = ColorUtil.RGBAtoColor(lineClrStr);
-      graphics.setColor(clr);
+    Color lineClr = styler.stroke(row);
+    if (lineClr != null) {
+      if (lineWidthIndex >= 0) {
+        double width = TypeUtil.toDouble(row.getValue(lineWidthIndex));
+        graphics.setStroke(new BasicStroke((float) width, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+      }
+      graphics.setColor(lineClr);
       graphics.draw(shp);
-    }  
+    }
   }
     
 

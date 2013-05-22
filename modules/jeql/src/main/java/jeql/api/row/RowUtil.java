@@ -46,7 +46,9 @@ public class RowUtil
   public static String getString(int index, Row row, String defaultValue)
   {
     if (index < 0) return defaultValue;
-    String val = row.getValue(index).toString();
+    Object v = row.getValue(index);
+    if (v == null) return null;
+    String val = v.toString();
     return val;
   }
   

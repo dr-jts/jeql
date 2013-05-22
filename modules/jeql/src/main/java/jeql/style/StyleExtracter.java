@@ -18,7 +18,7 @@ public class StyleExtracter
   private int strokeWidthIndex;
   private int fillIndex;
   private String defaultFill = null;
-  private String defaultStroke;
+  private String defaultStroke = null;
   
 
   public StyleExtracter(RowSchema schema)
@@ -26,12 +26,17 @@ public class StyleExtracter
     strokeIndex = SchemaUtil.getColumnIndex(schema, StyleConstants.STROKE, StyleConstants.COLOR);
     strokeWidthIndex = SchemaUtil.getColumnIndex(schema, StyleConstants.STROKE_WIDTH);
     fillIndex = SchemaUtil.getColumnIndex(schema, StyleConstants.FILL);
-    if (strokeIndex < 0 && fillIndex < 0) {
+    if (! hasColor()) {
       defaultFill = DEFAULT_FILL;
       defaultStroke = DEFAULT_STROKE;
     }
   }
 
+  public boolean hasColor()
+  {
+    return strokeIndex >= 0 || fillIndex >= 0;
+  }
+  
   public Color fill(Row row)
   {
     String fillClrStr = RowUtil.getString(fillIndex, row, defaultFill);    

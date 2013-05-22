@@ -4,10 +4,18 @@ Test Plot command
 	
 ================================*/
 
+sz = 400;
+
 // tests that no stroke is drawn when not set
-t = select Geom.buffer(Geom.createPoint(x, x), 100),
-	#0000ff80 styleFill
-	from Generate.sequence(1,1000,50) t(x);
+t = select i,
+	#0000ff80 styleFill,
+	i % 2 == 0 ? #ff0000 : null styleStroke,
+	Geom.buffer(Geom.createPoint(x, x), radius)
+	with {
+		radius = sz / 10.0;
+		x = i * radius;
+	}
+	from Generate.sequence(1,10);
 
 Plot data: t file: "plotDot.png";
 
