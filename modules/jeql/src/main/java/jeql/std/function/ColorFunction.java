@@ -220,6 +220,12 @@ implements FunctionClass
     return rgb.substring(4, 6);
   }
   
+  public static String getAlpha(String rgba)
+  {
+    if (rgba.length() < 8) return "FF";
+    return rgba.substring(6, 8);
+  }
+  
   public static String getR(String rgb)  
   {    
     return rgb.substring(0, 2);  
@@ -314,6 +320,11 @@ implements FunctionClass
     return toHexByte(r) + toHexByte(g) + toHexByte(b);
   }
   
+  public static String toRGBA(int r, int g, int b, int a)
+  {
+    return toHexByte(r) + toHexByte(g) + toHexByte(b) + toHexByte(a);
+  }
+  
   private static final String hexDigits = "0123456789ABCDEF"; 
   
   public static String toHexByte(int x)
@@ -326,13 +337,28 @@ implements FunctionClass
   
   private static int[] toIntArray(String clr)
   {
-    int[] rgb = new int[3];
+    int[] rgb;
+    if (clr.length() > 6) {
+      rgb = new int[4];
+    }
+    else {
+      rgb = new int[3];
+    }
     rgb[0] = Integer.parseInt(getRed(clr), 16);
     rgb[1] = Integer.parseInt(getGreen(clr), 16);
     rgb[2] = Integer.parseInt(getBlue(clr), 16);
+    if (rgb.length == 4)
+      rgb[3] = Integer.parseInt(getAlpha(clr), 16);
     return rgb;
   }
   
+  /**
+   * 
+   * @param clr1 a color string (RGB or RGBA)
+   * @param clr2 a color string (RGB or RGBA)
+   * @param frac a number between 0 and 1
+   * @return the interpolated color string
+   */
   public static String interpolate(String clr1, String clr2, double frac)
   {
     if (frac <= 0) return clr1.toUpperCase();
@@ -340,10 +366,17 @@ implements FunctionClass
     
     int[] clrRGB1 = toIntArray(clr1);
     int[] clrRGB2 = toIntArray(clr2);
+    boolean hasAlpha = clrRGB1.length > 3 || clrRGB2.length > 3;
     int r = interpolate(clrRGB1[0], clrRGB2[0], frac);
     int g = interpolate(clrRGB1[1], clrRGB2[1], frac);
     int b = interpolate(clrRGB1[2], clrRGB2[2], frac);
-    return toRGB(r, g, b);
+    if (! hasAlpha)
+      return toRGB(r, g, b);
+    
+    int a1 = clrRGB1.length > 3 ? clrRGB1[3] : 255;
+    int a2 = clrRGB2.length > 3 ? clrRGB2[3] : 255;
+    int a = interpolate(a1, a2, frac);
+    return toRGBA(r, g, b, a);
   }
   
   public static String interpolate(String clr1, String clr2, String clr3, double frac)
