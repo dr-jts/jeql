@@ -2,14 +2,14 @@ JEQL
 ====
 A scripting language for spatial processing and ETL, which runs on the JVM.  
 
-JEQL is based on the standard and well-known SQL model for declarative specification of data query and transformation.
+JEQL is based on the standard and well-known SQL model.  This enables declarative specification of data query and transformation.
 
-JEQL improves SQL syntax & semantics by adding:
+JEQL improves on SQL syntax & semantics by adding:
 
 * a streaming model of computation
-* allows factoring complex SQL queries into a chain of simpler queries
-* common subexpressions can be factored out and named
-* SPLIT BY provides the inverse of GROUP BY
+* factoring of complex SQL queries into a chain of simpler queries
+* factoring out and naming common subexpressions
+* adding SPLIT BY as the the inverse of GROUP BY
  
 JEQL provides an extensive set of commands and functions, including:
 
