@@ -18,7 +18,7 @@ JEQL provides an extensive set of commands and functions, including:
 * functions for String manipulation, including RegEX processing
 
 
-[Home page](http://tsusiatsoftware.net/jeql/main.html)
+Much more information is available on the JEQL Home Page agt Tsusiat Software [here](http://tsusiatsoftware.net/jeql/main.html)
 
 
 
