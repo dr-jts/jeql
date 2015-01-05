@@ -14,8 +14,10 @@ JEQL improves on SQL syntax & semantics by adding:
 JEQL provides an extensive set of commands and functions, including:
 
 * Readers and Writers for many textual and spatial formats
-* functions for geometry manipulation
-* functions for String manipulation, including RegEX processing
+* functions for:
+  * geometry manipulation
+  * String manipulation
+  * RegEX matching and extracting
 
 
 More information is available on the Tsusiat Software [JEQL Home Page](http://tsusiatsoftware.net/jeql/main.html).
