@@ -1,6 +1,6 @@
 JEQL
 ====
-A scripting language for spatial processing and ETL, which runs on the JVM.  
+JEQL is a scripting language for spatial processing and ETL, which runs on the JVM.  
 
 JEQL is based on the standard and well-known SQL model.  This enables declarative specification of data query and transformation.
 
