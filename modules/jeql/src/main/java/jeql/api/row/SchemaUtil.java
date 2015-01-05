@@ -15,7 +15,7 @@ public class SchemaUtil
   public static int getColumnWithType(RowSchema schema, Class type)
   {
     for (int i = 0; i < schema.size(); i++) {
-      if (schema.getType(i) == type)
+      if (type.isAssignableFrom(schema.getType(i)))
         return i;
     }
     return -1;
