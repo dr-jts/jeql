@@ -163,23 +163,27 @@ public interface ParserConstants {
   /** RegularExpression Id. */
   int CLOSEBRACE = 80;
   /** RegularExpression Id. */
-  int OPENPAREN = 81;
+  int OPENBRACKET = 81;
   /** RegularExpression Id. */
-  int CLOSEPAREN = 82;
+  int CLOSEBRACKET = 82;
   /** RegularExpression Id. */
-  int PERCENT = 83;
+  int OPENPAREN = 83;
   /** RegularExpression Id. */
-  int PLUS = 84;
+  int CLOSEPAREN = 84;
   /** RegularExpression Id. */
-  int REGEX_FIND = 85;
+  int PERCENT = 85;
   /** RegularExpression Id. */
-  int REGEX_MATCH = 86;
+  int PLUS = 86;
   /** RegularExpression Id. */
-  int QUESTIONMARK = 87;
+  int REGEX_FIND = 87;
   /** RegularExpression Id. */
-  int SLASH = 88;
+  int REGEX_MATCH = 88;
   /** RegularExpression Id. */
-  int SEMICOLON = 89;
+  int QUESTIONMARK = 89;
+  /** RegularExpression Id. */
+  int SLASH = 90;
+  /** RegularExpression Id. */
+  int SEMICOLON = 91;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -267,6 +271,8 @@ public interface ParserConstants {
     "\"<>\"",
     "\"{\"",
     "\"}\"",
+    "\"[\"",
+    "\"]\"",
     "\"(\"",
     "\")\"",
     "\"%\"",

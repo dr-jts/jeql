@@ -13,10 +13,11 @@ import jeql.engine.query.BaseQueryScope;
 /**
  * A reference to a table.
  * An alias can be supplied.  
- * If the ref is a from ref, the alias is a table alias. 
- * If the ref is in a select list, the alias is a column alias.
+ * If the ref is in a FROM, the alias is a table alias. 
+ * If the ref is in a SELECT list, the alias is a column alias.
  * 
- * If the reference is a "*" in a select list, there may be no table name.
+ * If the reference is a "*" in a SELECT list, there may be no table name
+ * (it will be null).
  *  
  * @author Martin Davis
  *
@@ -77,12 +78,11 @@ public class TableRefNode
     for (int i = 0; i < tbl.size(); i++) {
       String colName = tbl.getColumnName(i);
       
-      // skip any excepted columns
-      if (exceptColList != null)
-        if (isExceptCol(colName))
-          continue;
+      // skip EXCEPT columns
+      if (isExceptCol(colName)) continue;
       
-      TableColumnNode col = new TableColumnNode(tbl.getName(), tbl.getColumnName(i));
+      TableColumnNode col = new TableColumnNode(tableName, tbl.getColumnName(i));
+      col.setLoc(this);
       SelectItemNode item = new SelectItemNode(col);
       // uniquifying disabled for now...
       //SelectItemNode item = new SelectItemNode(col, generateUniqueName(col.getColName(), currentColNames));
@@ -111,6 +111,7 @@ public class TableRefNode
   
   private boolean isExceptCol(String col)
   {
+    if (exceptColList == null) return false;
     for (int i = 0; i < exceptColList.size(); i++) {
       if (col.equals(exceptColList.get(i)))
         return true;

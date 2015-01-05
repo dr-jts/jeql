@@ -219,6 +219,8 @@ TOKEN:
   | < NOTEQUAL2: "<>" >
   | < OPENBRACE: "{" >
   | < CLOSEBRACE: "}" >
+  | < OPENBRACKET: "[" >
+  | < CLOSEBRACKET: "]" >
   | < OPENPAREN: "(" >
   | < CLOSEPAREN: ")" >
   | < PERCENT: "%" >
@@ -671,7 +673,7 @@ TableExpressionNode FromTableExpr():
     )
     <CLOSEPAREN>
     
-    | expr= TableValueExpression()
+    | expr= TableValue()
 
     | LOOKAHEAD(2) 
       expr= Function()
@@ -846,9 +848,23 @@ ValuesNode ValuesExpression():
   { return values; }
 }
 
-/* ------------ TABLE value clause ----------------------*/
+/* ------------ TABLE value ----------------------*/
 
-TableValueNode TableValueExpression():
+TableValueNode TableValue():
+{
+	TableValueNode expr;	
+}
+{
+  (
+	expr = TableKeywordValue()
+	|
+	expr = TableBracketValue()
+  )
+  
+	{ return expr; }
+}
+
+TableValueNode TableKeywordValue():
 {
   TableValueNode value = new TableValueNode();
   TableSchemaNode schema = null;
@@ -876,6 +892,39 @@ TableValueNode TableValueExpression():
   	)*
   ]
   <CLOSEPAREN>
+
+  
+  { return value; }
+}
+
+TableValueNode TableBracketValue():
+{
+  TableValueNode value = new TableValueNode();
+  TableSchemaNode schema = null;
+  List exprList;
+}
+{
+  
+  <OPENBRACKET> 
+  
+  [ schema= TableSchemaExpr() 
+     { value.setSchema(schema);  }
+  ]
+  
+  [  
+    <OPENBRACKET> 
+  	exprList = ExpressionList()	
+  	{   value.add(exprList);  }
+  	<CLOSEBRACKET>
+    	(
+    		[ <COMMA> ]
+    		<OPENBRACKET>
+  			exprList = ExpressionList()	
+  			{   value.add(exprList);  }
+    		<CLOSEBRACKET>
+  	)*
+  ]
+  <CLOSEBRACKET>
 
   
   { return value; }
@@ -1222,7 +1271,7 @@ ParseTreeNode Term() :
   
   | LOOKAHEAD(3) expr= TableColumn()
   
-  | expr= TableValueExpression()
+  | expr= TableValue()
   
   | <S_NUMBER>
        { expr = new NumericConstantNode(token.image); 

@@ -1,12 +1,17 @@
 /*================================
 
-Test TABLE value semantics
+Test TABLE value syntax & semantics
+
+- comma separators are optional
+- expressions are supported for values
+- bracket syntax
+- table schemas can be specified
 	
 ================================*/
 
-t1 = select * from table ( (1, "a"), (2, "b") );
+t1 = select * from table ( ( 10 - 9, "aa" ), ( 10 / 5, "b") );
 
-t2 = select * from table ( (1, "a"), (2, "b") );
+t2 = select * from table t(a, b) ( (1, "a" + "a" ) (2, "b") );
 
 AssertEqual value: t1 expected: t2;
 
@@ -16,8 +21,18 @@ Assert a == 1;
 tc = select count(*) from t1;
 Assert val(tc) == 2;
 
+// Table bracketed values
 
+t1 = select a,b from 
+	[ t(a, b, c) 
+		[ 2-1, "a", 99 ] 
+		[ 1+1, String.leftStr("b", 1), 99 ] 
+	];
+t2 = select * from [ [1, "a"] [2, "b"] ];
 
+AssertEqual value: t1 expected: t2;
+
+//Print t2;
 
 
 

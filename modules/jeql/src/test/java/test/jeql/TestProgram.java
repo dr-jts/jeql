@@ -46,7 +46,7 @@ public class TestProgram {
 //  exec("C:\\data\\martin\\proj\\jeql\\unitTest\\testCase.jql");
 //    execUnit("testDate.jql");
     //execUnit("geom/testGrid.jql");
-    execUnit("plot/testPlot.jql");
+//    execUnit("plot/testPlot.jql");
 //  exec("C:\\data\\martin\\proj\\jeql\\unitTest\\testExcept.jql");
 //  execUnit("testExpression.jql");
 //  exec("C:\\data\\martin\\proj\\jeql\\unitTest\\testGroupBy.jql");
@@ -67,7 +67,7 @@ public class TestProgram {
 //  exec("C:\\data\\martin\\proj\\jeql\\unitTest\\testScope.jql");
 //  exec("C:\\data\\martin\\proj\\jeql\\unitTest\\testSelectStatement.jql");
 //  exec("C:\\data\\martin\\proj\\jeql\\unitTest\\testSTFFile.jql");
-//  exec("C:\\data\\martin\\proj\\jeql\\unitTest\\testTableValue.jql");
+  execUnit("testTableValue.jql");
 //  exec("C:\\data\\martin\\proj\\jeql\\unitTest\\testTypes.jql");
 //  exec("C:\\data\\martin\\proj\\jeql\\unitTest\\testCSVFile.jql");
 //  exec("C:\\data\\martin\\proj\\jeql\\unitTest\\testSelectWith.jql");
