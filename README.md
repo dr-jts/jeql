@@ -11,13 +11,17 @@ JEQL improves on SQL syntax & semantics by adding:
 * factoring out and naming common subexpressions
 * adding SPLIT BY as the the inverse of GROUP BY
  
-JEQL provides an extensive set of commands and functions, including:
+JEQL provides an extensive set of commands and functions.
+
+Built-in commands include:
 
 * Readers and Writers for many textual and spatial formats
-* functions for:
-  * geometry manipulation
-  * String manipulation
-  * RegEX matching and extracting
+ 
+Built-in function libraries include:
+
+* geometry manipulation
+* String manipulation
+* RegEX matching and extracting
 
 
 More information is available on the Tsusiat Software [JEQL Home Page](http://tsusiatsoftware.net/jeql/main.html).
