@@ -41,14 +41,17 @@ public class ColorUtil
   }
 
   public static String getR(String rgb) {
+    if (rgb.length() < 2) return "00";
     return rgb.substring(0, 2);
   }
 
   public static String getG(String rgb) {
+    if (rgb.length() < 4) return "00";
     return rgb.substring(2, 4);
   }
 
   public static String getB(String rgb) {
+    if (rgb.length() < 6) return "00";
     return rgb.substring(4, 6);
   }
 

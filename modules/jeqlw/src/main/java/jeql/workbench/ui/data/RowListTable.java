@@ -213,6 +213,9 @@ class RowListTable extends JTable
     }
     if (col > 0 && isColorColumn[col - 1]) {
       Color clr = ColorUtil.RGBAtoColor((String) getModel().getValueAt(row, col));
+      if (clr == null) {
+        clr = Color.white;
+      }
       renderer.setBackground(clr);
       renderer.setForeground(readableForeground(clr));
     }
