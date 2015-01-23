@@ -17,6 +17,11 @@ public class TypeUtil
   
   public static int compareValue(Object v1, Object v2) 
   {
+	if (v1 == null && v2 == null) return 0;
+	// null is less than any non-null value
+	if (v1 == null) return -1;
+	if (v2 == null) return 1;
+	
     if (v1 instanceof Comparable) {
       if (v2 == null)
         return -1;

@@ -39,6 +39,8 @@ AssertEqual String.replaceAll("x[]a", "[]", "Z") expected: "xZa";
 // Null handling
 //-------------------------------------------
 
+Assert "a" + null == "a";
+Assert null + "a" == "a";
 Assert String.substring(null, 1) == null;
 Assert String.tail(null, 1) == null;
 Assert String.toLowerCase(null) == null;

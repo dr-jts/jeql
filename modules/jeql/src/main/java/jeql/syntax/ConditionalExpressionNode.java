@@ -35,7 +35,7 @@ public class ConditionalExpressionNode
   public Object eval(Scope scope)
   {
     Object condVal = condExpr.eval(scope);
-    boolean cond = ((Boolean) condVal).booleanValue();
+    boolean cond = condVal == null ? false : ((Boolean) condVal).booleanValue();
     if (cond)
       return expr1.eval(scope);
     else

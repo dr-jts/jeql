@@ -96,6 +96,24 @@ AssertEqual "foobar" ~ "fo?b" expected: false;
 AssertEqual "foobar" ~ "fa+"  expected: false;
 AssertEqual "foobar" ~ "ffo*" expected: false;
 
+//==========  null handling  ==============
+
+Assert 1 + null == null;
+Assert 1.0 + null == null;
+Assert not (1 < null);
+Assert 1 > null;
+Assert (1 <= null) == false;
+Assert 1.0 > null;
+
+// unary ops
+
+Assert (not null) == null;
+Assert (- null) == null;
+
+// ternary ops
+
+Assert (null ? 1 : 2) == 2;  // null condition => false
+
 
 
 

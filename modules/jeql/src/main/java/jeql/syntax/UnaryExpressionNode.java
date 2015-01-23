@@ -37,6 +37,8 @@ public class UnaryExpressionNode
   
   private Object compute(Object v)
   {
+	  if (v == null) return null;
+	  
     Class exprType = v.getClass();
     
     if (op == Operation.SUB) {

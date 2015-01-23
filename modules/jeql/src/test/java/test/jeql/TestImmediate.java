@@ -42,7 +42,8 @@ public class TestImmediate {
     String s2 = "t = select Geom.buffer(Geom.createPoint(i, i), 10) i from Generate.sequence(1, 300); \n"
         + " t2 = select t1.i, t2.i j from t t1 join t t2; \n"
         + " Print t2;";
-    options.setWorkbench(true);
+    s = "v = 1 < null;";
+    //options.setWorkbench(true);
     execScript(s);
   }
 

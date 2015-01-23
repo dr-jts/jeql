@@ -10,12 +10,12 @@ import com.vividsolutions.jts.util.*;
 
 public class TestUnit 
 {
-  static final String BASE = "C:\\data\\martin\\proj\\jeql\\trunk";
+  static final String BASE = ".";
   
   String[] dirs = {
-      BASE + "\\script\\unitTest",
-      BASE + "\\script\\unitTest\\io",
-      BASE + "\\script\\unitTest\\geom"
+      BASE + "/script/unitTest",
+      BASE + "/script/unitTest/io",
+      BASE + "/script/unitTest/geom"
   };
     
   public static void main(String args[])

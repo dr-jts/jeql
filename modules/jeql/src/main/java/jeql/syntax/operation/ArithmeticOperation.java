@@ -35,6 +35,8 @@ public class ArithmeticOperation
   
   private Object computeDouble(Object v1, Object v2)
   {
+	  // null safety
+	if (v1 == null || v2 == null) return null;
     double o1 = ((Double) v1).doubleValue(); 
     double o2 = ((Double) v2).doubleValue(); 
     switch (opCode) {
@@ -50,6 +52,8 @@ public class ArithmeticOperation
   
   private Object computeInteger(Object v1, Object v2)
   {
+	  // null safety
+	if (v1 == null || v2 == null) return null;
     int o1 = ((Integer) v1).intValue(); 
     int o2 = ((Integer) v2).intValue(); 
     switch (opCode) {
@@ -67,8 +71,13 @@ public class ArithmeticOperation
   {
     String o1 = (String) v1; 
     String o2 = (String) v2; 
+   
     switch (opCode) {
-    case Operation.ADD: return o1 + o2;
+    case Operation.ADD: {
+    	if (o1 == null) return o2;
+    	if (o2 == null) return o1;
+    	return o1 + o2;
+    }
     // TODO: provide string * integer
     }
     throwOpTypeError(opStr, o1.getClass());
@@ -77,6 +86,8 @@ public class ArithmeticOperation
   
   private Object computeDate(Object v1, Object v2)
   {
+	  // null safety
+	if (v1 == null || v2 == null) return null;
     Date o1 = (Date) v1; 
     Date o2 = (Date) v2; 
 

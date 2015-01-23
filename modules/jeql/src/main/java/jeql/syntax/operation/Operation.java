@@ -130,7 +130,14 @@ public abstract class Operation
     return exprType;
   }
 
+  /**
+   * 
+   * @param o1
+   * @param o2
+   * @return null if both inputs are null
+   */
   protected static Class getMostGeneralType(Object o1, Object o2) {
+	if (o1 == null && o2 == null) return null;
     if (o1 == null)
       return o2.getClass();
     if (o2 == null)
@@ -148,7 +155,8 @@ public abstract class Operation
   protected Object coerce(Object o, Class reqType) {
     if (o == null)
       return null;
-
+    if (reqType == null) return o;
+    
     if (o.getClass() == reqType)
       return o;
 

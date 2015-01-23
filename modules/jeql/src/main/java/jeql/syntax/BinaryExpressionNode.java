@@ -106,9 +106,11 @@ public class BinaryExpressionNode
     Object v2 = e2.eval(scope);
     
     // special case if one value is null - only certain ops can be computed
+    /*
     if (v1 == null || v2 == null) {
       return computeNullValuesOp(v1, v2);
     }
+    */
     
     return operation.compute(v1, v2);
   }
