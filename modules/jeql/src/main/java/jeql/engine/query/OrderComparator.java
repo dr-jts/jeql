@@ -56,6 +56,13 @@ public class OrderComparator
   
   public int compareValue(Object val1, Object val2)
   {
+    // compare nulls first
+    if (val1 == null) {
+      if (val2 == null) return 0;
+      return -1;
+    }
+    if (val2 == null) return 1;
+    
     if (val1 instanceof Comparable) {
       return ((Comparable) val1).compareTo(val2);
     }
