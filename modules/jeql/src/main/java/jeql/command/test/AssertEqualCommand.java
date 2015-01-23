@@ -110,10 +110,13 @@ implements Command
   
   private void checkEqual(Object o1, Object o2)
   {
-    if (o1.getClass() == o2.getClass()) {
-      boolean isEqual = TypeUtil.isEqual(o1, o2);
-      if (isEqual) return;
-    }
+	  if (o1 == null && o2 == null) return;
+	  if (o1 != null && o2 != null) {
+	    if (o1.getClass() == o2.getClass()) {
+	      boolean isEqual = TypeUtil.isEqual(o1, o2);
+	      if (isEqual) return;
+	    }
+	  }
     reportNotEqualError("Values do not match (" + o1 + ", " + o2 + ")");
   }
 

@@ -41,6 +41,10 @@ AssertEqual 5.0 % 2 expected: 1.0;
 
 AssertEqual "xx" + 2    expected: "xx2";
 AssertEqual "xx" + "yy" expected: "xxyy";
+AssertEqual "ab" * 2 expected: "abab";
+AssertEqual "" * 2 expected: "";
+AssertEqual "ab" * null expected: "";
+
 
 //==========  Comparison Operations  ==============
 

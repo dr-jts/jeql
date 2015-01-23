@@ -170,6 +170,7 @@ public abstract class Operation
     if (reqType == Geometry.class) {
       if (o instanceof Geometry)
         return o;
+      //TODO: handle WKT strings
     }
     throw new ExecutionException("Can't convert type "
         + ClassUtil.classname(o.getClass()) + " to "

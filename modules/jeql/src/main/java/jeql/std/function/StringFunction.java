@@ -241,6 +241,7 @@ implements FunctionClass
   
   public static String repeat(String s, int count)
   {
+	  if (s == null) return null;
     StringBuilder buf = new StringBuilder();
     for (int i = 0; i < count; i++) {
       buf.append(s);

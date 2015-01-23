@@ -3,8 +3,10 @@ package jeql.syntax.operation;
 import java.util.Date;
 
 import jeql.api.error.ExecutionException;
+import jeql.std.function.StringFunction;
 import jeql.syntax.ParseTreeNode;
 import jeql.util.ClassUtil;
+import jeql.util.TypeUtil;
 
 public class ArithmeticOperation 
   extends Operation
@@ -69,18 +71,24 @@ public class ArithmeticOperation
   
   private Object computeString(Object v1, Object v2)
   {
-    String o1 = (String) v1; 
-    String o2 = (String) v2; 
+    String s1 = (String) v1; 
    
     switch (opCode) {
     case Operation.ADD: {
-    	if (o1 == null) return o2;
-    	if (o2 == null) return o1;
-    	return o1 + o2;
+        String s2 = (String) v2; 
+    	if (s1 == null) return s2;
+    	if (s2 == null) return s1;
+    	return s1 + s2;
+    }
+    case Operation.MUL: {
+    	if (s1 == null) return null;
+    	if (v2 == null) return "";
+        int count = (int) TypeUtil.toDouble(v2); // a bit of a hack - need toInt()
+    	return StringFunction.repeat(s1, count);
     }
     // TODO: provide string * integer
     }
-    throwOpTypeError(opStr, o1.getClass());
+    throwOpTypeError(opStr, s1.getClass());
     return null;
   }
   
@@ -93,7 +101,7 @@ public class ArithmeticOperation
 
     // TODO: +, - for Dates and numbers
     
-    throwOpTypeError(opStr, String.class);
+    throwOpTypeError(opStr, Date.class);
     return null;
   }
   
