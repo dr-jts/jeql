@@ -105,12 +105,27 @@ Assert 1 > null;
 Assert (1 <= null) == false;
 Assert 1.0 > null;
 
-// unary ops
+// Boolean ops
+
+Assert (true and null) == false;
+Assert (null and true) == false;
+Assert (true or null) == true;
+Assert (null or true) == true;
+Assert (null or null) == false;
+
+// RegEx ops
+
+Assert (null ~ "xx") == false;
+Assert ("xx" ~ null) == false;
+Assert (null ~= "xx") == false;
+Assert ("xx" ~= null) == false; 
+
+// Unary ops
 
 Assert (not null) == null;
 Assert (- null) == null;
 
-// ternary ops
+// Ternary ops
 
 Assert (null ? 1 : 2) == 2;  // null condition => false
 

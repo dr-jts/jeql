@@ -24,6 +24,8 @@ public class RegExOperation
   
   public Object compute(Object o1, Object o2)
   {
+	  if (o1 == null || o2 == null) return Boolean.FALSE;
+	  
     Object v1 = coerce(o1, String.class);
     require(o2, String.class);
     

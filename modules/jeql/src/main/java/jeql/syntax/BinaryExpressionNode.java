@@ -93,40 +93,17 @@ public class BinaryExpressionNode
     
     // short circuits for boolean operations
     if (opCode == Operation.AND) {
-      if (((Boolean) v1).booleanValue() == false) {
+      if (v1 != null && ((Boolean) v1).booleanValue() == false) {
         return Boolean.FALSE;
       }
     }
     if (opCode == Operation.OR) {
-      if (((Boolean) v1).booleanValue() == true) {
+      if (v1 != null && ((Boolean) v1).booleanValue() == true) {
         return Boolean.TRUE;
       }
-    }
-        
+    }  
     Object v2 = e2.eval(scope);
-    
-    // special case if one value is null - only certain ops can be computed
-    /*
-    if (v1 == null || v2 == null) {
-      return computeNullValuesOp(v1, v2);
-    }
-    */
-    
     return operation.compute(v1, v2);
   }
   
-  private Object computeNullValuesOp(Object v1, Object v2)
-  {
-    if (opCode == Operation.EQ) return new Boolean(v1 == v2);
-    if (opCode == Operation.NE) return new Boolean(v1 != v2);
-    if (opCode == Operation.RE_FIND) return Boolean.FALSE;
-    if (opCode == Operation.RE_MATCH) return Boolean.FALSE;
-    if (opCode == Operation.ADD 
-        && (v1 instanceof String || v2 instanceof String)) 
-      return operation.compute(v1, v2);
-   
-    throw new ExecutionException(this, "Operator " + opStr + " is undefined for null operands");    
-  }
-  
-
 }

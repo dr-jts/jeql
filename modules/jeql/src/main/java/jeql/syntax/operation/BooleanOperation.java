@@ -21,8 +21,8 @@ public class BooleanOperation
   {
     Object v1 = coerce(o1, Boolean.class);
     Object v2 = coerce(o2, Boolean.class);
-    boolean b1 = ((Boolean) v1).booleanValue();
-    boolean b2 = ((Boolean) v2).booleanValue();
+    boolean b1 = v1 == null ? false : ((Boolean) v1).booleanValue();
+    boolean b2 = v2 == null ? false : ((Boolean) v2).booleanValue();
     
     switch (opCode) {
     case Operation.AND: return new Boolean(b1 && b2);

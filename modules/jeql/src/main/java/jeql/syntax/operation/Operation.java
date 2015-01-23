@@ -191,5 +191,12 @@ public abstract class Operation
         + " in operation " + opStr);
   }
 
+  /**
+   * Implementors must handle null operands.
+   * 
+   * @param o1
+   * @param o2
+   * @return
+   */
   public abstract Object compute(Object o1, Object o2);
 }
