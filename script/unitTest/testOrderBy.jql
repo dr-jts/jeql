@@ -83,7 +83,7 @@ ord5 = select a, b from table (
 	( null, false ),
 	( 2, false )) tbl(a, b)
 	order by b, a desc;
-Print ord5;
+//Print ord5;
 
 expected5 = select * from table ( 
 ( 2, false ? false : null ),  // hack to make type detection work
