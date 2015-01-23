@@ -74,6 +74,25 @@ expected4 = select * from table (
 
 AssertEqual ord4 expected: expected4;
 
+//-------------------------------------------------
+// Ordering with nulls
+
+ord5 = select a, b from table (
+	( 1, true ),
+	( 2, null ),
+	( null, false ),
+	( 2, false )) tbl(a, b)
+	order by b, a desc;
+Print ord5;
+
+expected5 = select * from table ( 
+( 2, false ? false : null ),  // hack to make type detection work
+( 2, false ),
+( null, true ),
+( 1, true ) );
+
+AssertEqual ord5 expected: expected5;
+
 
 
 
