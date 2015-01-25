@@ -293,7 +293,7 @@ StatementListNode StatementList():
 	{ return stmtList; }
 }
 
-StatementListNode ExprAssignmentList():
+StatementListNode AliasList():
 {
 	StatementListNode stmtList = new StatementListNode();
 	ParseTreeNode stmt;
@@ -370,23 +370,6 @@ AssignmentNode ExprAssignment():
 		node.setLoc(line);
 		return node;	
 	}
-}
-
-StatementListNode WithAssignmentList():
-{
-	StatementListNode stmtList = new StatementListNode();
-	ParseTreeNode stmt;
-}
-{
-	stmt= ExprAssignment()
-	{ stmtList.add(stmt);  }
-	(
-		<SEMICOLON>
-		stmt= ExprAssignment()
-		{ stmtList.add(stmt);  }
-	)*
-
-	{ return stmtList; }
 }
 
 
@@ -609,7 +592,7 @@ StatementListNode LetClause():
 }
 {
     <K_LET> 
-    stmtList= ExprAssignmentList()
+    stmtList= AliasList()
     { return stmtList; }
 }
 
