@@ -33,7 +33,7 @@ public class SelectEvaluator
     return queryEval.eval(scope);
   }
   
-  public static void evalAssignments(StatementListNode stmtList, Scope scope)
+  public static void evalAliases(StatementListNode stmtList, Scope scope)
   {
     if (stmtList == null)
       return;
@@ -98,8 +98,8 @@ public class SelectEvaluator
 
     bindSplitBy(select.getSplitBy(), baseScope);
     
-    // bind WITH block stmts
-    bindWithBlock(select.getWithList(), baseScope);
+    // bind LET block stmts
+    bindAliasBlock(select.getAliasList(), baseScope);
     
     // bind select list
     select.getSelectList().bind(baseScope); 
@@ -118,11 +118,11 @@ public class SelectEvaluator
   }
   
   /**
-   * Enter WITH vars into scope, with defined type but undefined value
+   * Enter alias vars into scope, with defined type but undefined value
    * 
    * @param scope
    */
-  private void bindWithBlock(StatementListNode stmtList, QueryScope scope)
+  private void bindAliasBlock(StatementListNode stmtList, QueryScope scope)
   {
     if (stmtList == null) 
       return;
@@ -142,7 +142,7 @@ public class SelectEvaluator
   
   private RowList evalSelect(SelectNode select, QueryScope scope, RowList baseRS) 
   {
-    RowList selectRS = new SelectedItemsRowList(baseRS, select.getSelectList(), select.getWithList(), scope);
+    RowList selectRS = new SelectedItemsRowList(baseRS, select.getSelectList(), select.getAliasList(), scope);
     return selectRS;
   }
 
@@ -159,7 +159,7 @@ public class SelectEvaluator
     selectList.bind(groupScope);  
     
     GroupByEvaluator ge = new GroupByEvaluator(
-        scope, aggFunArgList, select.getWithList(),
+        scope, aggFunArgList, select.getAliasList(),
         groupScope, selectList);
     
     RowList selectRS = ge.eval(baseRS);

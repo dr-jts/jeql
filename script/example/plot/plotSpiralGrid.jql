@@ -1,0 +1,50 @@
+/*=========================================================
+
+Plots a grid based on a spiral
+
+=========================================================*/
+
+plotSize = 2000;
+boxCount = 20;
+nArm = 30;
+plotCentre = plotSize / 2;
+plotCentrePt = Geom.createPoint(plotCentre, plotCentre);
+
+Hred =  Color.getH("ff0000");
+Hblue = Color.getH("ffff00");
+
+pi2 = 2 * Math.pi();
+angInc = pi2 / nArm;
+
+tplot = select 	geom,
+		"000000" styleStroke,
+		Color.toRGBfromHSV(H, 1.0, V) styleFill
+	with {
+		r0 = 2.0 * Math.square(2*j);
+		r1 = 2.0 * Math.square(2*j + 1.0);
+		//size = (40.0 * j) / nArm;
+		
+		spiralInc = 0.1 * j;
+		theta00 = i * angInc + spiralInc;
+		theta01 = (i+0.6) * angInc + spiralInc;
+		
+		theta10 = (i+0.2) * angInc + spiralInc;
+		theta11 = (i+0.8) * angInc + spiralInc;
+
+		geom = Geom.createPolygon(
+Geom.createPoint(r0 * Math.cos(theta00) + plotCentre, r0 * Math.sin(theta00) + plotCentre),
+Geom.createPoint(r0 * Math.cos(theta01) + plotCentre, r0 * Math.sin(theta01) + plotCentre),
+Geom.createPoint(r1 * Math.cos(theta11) + plotCentre, r1 * Math.sin(theta11) + plotCentre),
+Geom.createPoint(r1 * Math.cos(theta10) + plotCentre, r1 * Math.sin(theta10) + plotCentre)
+			);
+		dist = Geom.distance(Geom.centroid(geom), plotCentrePt);
+		distFrac = dist / plotCentre;
+		V = 1.0 - distFrac;
+		H = (i % 2 == 0) ? Hblue : Hred;
+	}
+	from Generate.grid(1, nArm, 0, boxCount);
+
+Plot	data: tplot
+	size: plotSize
+	background: #000000
+	file: "spiralGrid.png";

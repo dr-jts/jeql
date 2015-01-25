@@ -1,0 +1,43 @@
+/*=========================================================
+
+Plots squares spiraling out from the centre
+
+=========================================================*/
+
+plotSize = 2000;
+boxCount = 40;
+nArm = 30;
+plotCentre = plotSize / 2;
+plotCentrePt = Geom.createPoint(plotCentre, plotCentre);
+
+Hred =  Color.getH("ff0000");
+Hblue = Color.getH("ffff00");
+
+tplot = select 	geom, i, j, r,
+		"000000" styleStroke,
+		Color.toRGBfromHSV(H, S, V) styleFill
+	with {
+		r = 50 * Math.pow(0.5 * j, 1.1);
+		//size = (300.0 * Math.sqrt(j)) / nArm;
+		size = 2 * Math.pi() * r * 0.5 / nArm;
+		
+		theta = i * (2 * Math.pi()) / nArm + 0.1 * j;
+
+		centx = r * Math.cos(theta) + plotCentre;
+		centy = r * Math.sin(theta) + plotCentre;
+		box = Geom.createBoxCenter(
+			centx, centy, 
+			size, size);
+		geom = Geom.rotate(box, 0.5 * theta + 0.01 * j);
+		dist = Geom.distance(Geom.centroid(box), plotCentrePt);
+		distFrac = dist / plotCentre;
+		V = 1.0 - distFrac;
+		H = (i % 2 == 0) ? Hblue : Hred;
+		S = (j % 2 == 0) ? 1.0 : 0.5;
+	}
+	from Generate.grid(1, nArm, 0, boxCount);
+Mem tplot;
+Plot	data: tplot
+	size: plotSize
+	background: #000000
+	file: "spiralSquares.png";

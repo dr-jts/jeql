@@ -67,12 +67,11 @@ Print Date.add(d, Date.diff(d2, d));
 Assert Date.add(d, Date.diff(d2, d)) == d2;
 
 
-t = select  date
-	with {
-		start = Val.toDate("Jan 3, 1994");
-		interval = Date.daysToSeconds(i);
-		date = Date.add(start, interval);
-	}
+t = select date
+	let
+		start = Val.toDate("Jan 3, 1994"),
+		interval = Date.daysToSeconds(i),
+		date = Date.add(start, interval)
 	from Generate.sequence(1, 365) t(i);
 	
 //Print t;

@@ -26,17 +26,17 @@ public class SelectedItemsRowList
   private RowSchema schema;
   private RowList baseRowStr;
   private List selectedItems;
-  private StatementListNode withList;
+  private StatementListNode aliasList;
   private QueryScope scope;
   
   public SelectedItemsRowList(RowList baseRowStr, 
       SelectItemList selectedItems, 
-      StatementListNode withList,
+      StatementListNode aliasList,
       QueryScope scope) 
   {
     this.baseRowStr = baseRowStr;
     this.selectedItems = selectedItems.getFinalItems();
-    this.withList = withList;
+    this.aliasList = aliasList;
     this.scope = scope;
     schema = selectedItems.computeRowSchema(scope);
   }
@@ -45,7 +45,7 @@ public class SelectedItemsRowList
 
   public RowIterator iterator()
   {
-    return new SelectedItemsRowIterator(schema, baseRowStr, selectedItems, withList, scope);
+    return new SelectedItemsRowIterator(schema, baseRowStr, selectedItems, aliasList, scope);
   }
 
   private static class SelectedItemsRowIterator
@@ -54,20 +54,20 @@ public class SelectedItemsRowList
     private RowSchema schema;
     private RowList rowList;
     private List selectedItems;
-    private StatementListNode withList;
+    private StatementListNode aliasList;
     private QueryScope scope;
     private RowIterator it;
     private int rowNum = 0;
 
   public SelectedItemsRowIterator(RowSchema schema, RowList rowList, 
       List selectedItems,
-      StatementListNode withList,
+      StatementListNode aliasList,
       QueryScope scope)
   {
     this.schema = schema;
     this.rowList = rowList;
     this.selectedItems = selectedItems;
-    this.withList = withList;
+    this.aliasList = aliasList;
     this.scope = scope;
     rowNum = 0;
   }
@@ -88,8 +88,8 @@ public class SelectedItemsRowList
     // post the current base row in the scope so the select expressions can access it
     scope.setRow(baseRow);
     
-    // evaluate WITH assignments for this row
-    SelectEvaluator.evalAssignments(withList, scope);
+    // evaluate alias assignments for this row
+    SelectEvaluator.evalAliases(aliasList, scope);
     
     Row outRow = createRow();
     return outRow;

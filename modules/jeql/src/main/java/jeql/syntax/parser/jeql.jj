@@ -84,6 +84,7 @@ TOKEN [IGNORE_CASE] :
 |   <K_IN: 	"in">
 |   <K_INNER: 	"inner">
 |   <K_JOIN: 	"join">
+|   <K_LET: 	"let">
 |   <K_LEFT: 	"left">
 |   <K_LIMIT: 	"limit">
 |   <K_NOT:	"not">
@@ -292,6 +293,22 @@ StatementListNode StatementList():
 	{ return stmtList; }
 }
 
+StatementListNode ExprAssignmentList():
+{
+	StatementListNode stmtList = new StatementListNode();
+	ParseTreeNode stmt;
+}
+{
+	stmt= ExprAssignment()
+	{ stmtList.add(stmt);  }
+	(
+		<COMMA>
+		stmt= ExprAssignment()
+		{ stmtList.add(stmt);  }
+	)*
+	{ return stmtList; }
+}
+
 ParseTreeNode Statement():
 {
 	ParseTreeNode stmt = null;
@@ -465,7 +482,7 @@ SelectNode SelectExpression():
 	FromList from = null;
 	ParseTreeNode where = null;
 	ParseTreeNode split = null;
-	StatementListNode with = null;
+	StatementListNode let = null;
 	boolean distinct = false;
 	ParseTreeNode limit = null;
 	ParseTreeNode offset = null;
@@ -484,7 +501,7 @@ SelectNode SelectExpression():
      
      selectList= SelectList()
      
-     [ with= WithClause()    ]
+     [ let= LetClause()    ]
      [ from= FromClause()    ]
      [ split = SplitByClause() ]
      [ where = WhereClause() ]
@@ -495,7 +512,7 @@ SelectNode SelectExpression():
      [ <K_OFFSET> offset= Expression() ]
        
      
-     { SelectNode node = new SelectNode(selectList, distinct, with, from, where, split, limit, offset, groupByList, orderByList ); 
+     { SelectNode node = new SelectNode(selectList, distinct, let, from, where, split, limit, offset, groupByList, orderByList ); 
        node.setLoc(line);
        return node;
      }
@@ -584,17 +601,15 @@ TableRefNode StarredTableRef():
 }
 
 
-/* ------------ WITH clause ----------------------*/
+/* ------------ LET clause ----------------------*/
 
-StatementListNode WithClause():
+StatementListNode LetClause():
 {
 	StatementListNode stmtList = null;
 }
 {
-    <K_WITH> 
-    <OPENBRACE>
-    stmtList= StatementList()
-    <CLOSEBRACE>
+    <K_LET> 
+    stmtList= ExprAssignmentList()
     { return stmtList; }
 }
 

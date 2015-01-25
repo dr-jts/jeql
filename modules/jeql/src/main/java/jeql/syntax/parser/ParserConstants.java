@@ -49,141 +49,143 @@ public interface ParserConstants {
   /** RegularExpression Id. */
   int K_JOIN = 23;
   /** RegularExpression Id. */
-  int K_LEFT = 24;
+  int K_LET = 24;
   /** RegularExpression Id. */
-  int K_LIMIT = 25;
+  int K_LEFT = 25;
   /** RegularExpression Id. */
-  int K_NOT = 26;
+  int K_LIMIT = 26;
   /** RegularExpression Id. */
-  int K_OFFSET = 27;
+  int K_NOT = 27;
   /** RegularExpression Id. */
-  int K_ON = 28;
+  int K_OFFSET = 28;
   /** RegularExpression Id. */
-  int K_OR = 29;
+  int K_ON = 29;
   /** RegularExpression Id. */
-  int K_ORDER = 30;
+  int K_OR = 30;
   /** RegularExpression Id. */
-  int K_OUTER = 31;
+  int K_ORDER = 31;
   /** RegularExpression Id. */
-  int K_PROGRAM = 32;
+  int K_OUTER = 32;
   /** RegularExpression Id. */
-  int K_RIGHT = 33;
+  int K_PROGRAM = 33;
   /** RegularExpression Id. */
-  int K_SELECT = 34;
+  int K_RIGHT = 34;
   /** RegularExpression Id. */
-  int K_SPLIT = 35;
+  int K_SELECT = 35;
   /** RegularExpression Id. */
-  int K_TABLE = 36;
+  int K_SPLIT = 36;
   /** RegularExpression Id. */
-  int K_THEN = 37;
+  int K_TABLE = 37;
   /** RegularExpression Id. */
-  int K_VALUES = 38;
+  int K_THEN = 38;
   /** RegularExpression Id. */
-  int K_WHEN = 39;
+  int K_VALUES = 39;
   /** RegularExpression Id. */
-  int K_WHERE = 40;
+  int K_WHEN = 40;
   /** RegularExpression Id. */
-  int K_WITH = 41;
+  int K_WHERE = 41;
   /** RegularExpression Id. */
-  int K_XOR = 42;
+  int K_WITH = 42;
   /** RegularExpression Id. */
-  int K_EMPTY = 43;
+  int K_XOR = 43;
   /** RegularExpression Id. */
-  int K_LINEARRING = 44;
+  int K_EMPTY = 44;
   /** RegularExpression Id. */
-  int K_LINESTRING = 45;
+  int K_LINEARRING = 45;
   /** RegularExpression Id. */
-  int K_POLYGON = 46;
+  int K_LINESTRING = 46;
   /** RegularExpression Id. */
-  int K_POINT = 47;
+  int K_POLYGON = 47;
   /** RegularExpression Id. */
-  int K_MULTIPOINT = 48;
+  int K_POINT = 48;
   /** RegularExpression Id. */
-  int K_MULTILINESTRING = 49;
+  int K_MULTIPOINT = 49;
   /** RegularExpression Id. */
-  int K_MULTIPOLYGON = 50;
+  int K_MULTILINESTRING = 50;
   /** RegularExpression Id. */
-  int K_GEOMETRYCOLLECTION = 51;
+  int K_MULTIPOLYGON = 51;
   /** RegularExpression Id. */
-  int K_BOX = 52;
+  int K_GEOMETRYCOLLECTION = 52;
   /** RegularExpression Id. */
-  int S_NUMBER = 53;
+  int K_BOX = 53;
   /** RegularExpression Id. */
-  int FLOAT = 54;
+  int S_NUMBER = 54;
   /** RegularExpression Id. */
-  int INTEGER = 55;
+  int FLOAT = 55;
   /** RegularExpression Id. */
-  int DIGIT = 56;
+  int INTEGER = 56;
   /** RegularExpression Id. */
-  int S_CONST_LITERAL = 57;
+  int DIGIT = 57;
   /** RegularExpression Id. */
-  int S_IDENTIFIER = 58;
+  int S_CONST_LITERAL = 58;
   /** RegularExpression Id. */
-  int LETTER = 59;
+  int S_IDENTIFIER = 59;
   /** RegularExpression Id. */
-  int SPECIAL_CHARS = 60;
+  int LETTER = 60;
   /** RegularExpression Id. */
-  int S_STRING_LITERAL = 61;
+  int SPECIAL_CHARS = 61;
   /** RegularExpression Id. */
-  int S_RAW_STRING_LITERAL = 62;
+  int S_STRING_LITERAL = 62;
   /** RegularExpression Id. */
-  int S_RICH_STRING_LITERAL = 63;
+  int S_RAW_STRING_LITERAL = 63;
   /** RegularExpression Id. */
-  int S_QUOTED_IDENTIFIER = 64;
+  int S_RICH_STRING_LITERAL = 64;
   /** RegularExpression Id. */
-  int S_CMD_PARAM_NAME = 65;
+  int S_QUOTED_IDENTIFIER = 65;
   /** RegularExpression Id. */
-  int ASSIGN = 66;
+  int S_CMD_PARAM_NAME = 66;
   /** RegularExpression Id. */
-  int ASTERISK = 67;
+  int ASSIGN = 67;
   /** RegularExpression Id. */
-  int COLON = 68;
+  int ASTERISK = 68;
   /** RegularExpression Id. */
-  int COMMA = 69;
+  int COLON = 69;
   /** RegularExpression Id. */
-  int DOT = 70;
+  int COMMA = 70;
   /** RegularExpression Id. */
-  int GREATER = 71;
+  int DOT = 71;
   /** RegularExpression Id. */
-  int GREATEREQUAL = 72;
+  int GREATER = 72;
   /** RegularExpression Id. */
-  int LESS = 73;
+  int GREATEREQUAL = 73;
   /** RegularExpression Id. */
-  int LESSEQUAL = 74;
+  int LESS = 74;
   /** RegularExpression Id. */
-  int EQUAL = 75;
+  int LESSEQUAL = 75;
   /** RegularExpression Id. */
-  int MINUS = 76;
+  int EQUAL = 76;
   /** RegularExpression Id. */
-  int NOTEQUAL = 77;
+  int MINUS = 77;
   /** RegularExpression Id. */
-  int NOTEQUAL2 = 78;
+  int NOTEQUAL = 78;
   /** RegularExpression Id. */
-  int OPENBRACE = 79;
+  int NOTEQUAL2 = 79;
   /** RegularExpression Id. */
-  int CLOSEBRACE = 80;
+  int OPENBRACE = 80;
   /** RegularExpression Id. */
-  int OPENBRACKET = 81;
+  int CLOSEBRACE = 81;
   /** RegularExpression Id. */
-  int CLOSEBRACKET = 82;
+  int OPENBRACKET = 82;
   /** RegularExpression Id. */
-  int OPENPAREN = 83;
+  int CLOSEBRACKET = 83;
   /** RegularExpression Id. */
-  int CLOSEPAREN = 84;
+  int OPENPAREN = 84;
   /** RegularExpression Id. */
-  int PERCENT = 85;
+  int CLOSEPAREN = 85;
   /** RegularExpression Id. */
-  int PLUS = 86;
+  int PERCENT = 86;
   /** RegularExpression Id. */
-  int REGEX_FIND = 87;
+  int PLUS = 87;
   /** RegularExpression Id. */
-  int REGEX_MATCH = 88;
+  int REGEX_FIND = 88;
   /** RegularExpression Id. */
-  int QUESTIONMARK = 89;
+  int REGEX_MATCH = 89;
   /** RegularExpression Id. */
-  int SLASH = 90;
+  int QUESTIONMARK = 90;
   /** RegularExpression Id. */
-  int SEMICOLON = 91;
+  int SLASH = 91;
+  /** RegularExpression Id. */
+  int SEMICOLON = 92;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -214,6 +216,7 @@ public interface ParserConstants {
     "\"in\"",
     "\"inner\"",
     "\"join\"",
+    "\"let\"",
     "\"left\"",
     "\"limit\"",
     "\"not\"",

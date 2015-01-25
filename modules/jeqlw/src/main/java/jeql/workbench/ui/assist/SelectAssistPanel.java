@@ -84,8 +84,8 @@ public class SelectAssistPanel extends JPanel
     listModel.addElement(new CodeSnippet("select * from _ where _"));
     listModel.addElement(new CodeSnippet("select * from _ join _ on _"));
     listModel.addElement(new CodeSnippet("select * from _ join _ on _ where _"));
-    listModel.addElement(new CodeSnippet("select * with { } from _ join _ on _ where _"));
-    listModel.addElement(new CodeSnippet("select * with { } from _ join _ on _ split by _ where _"));
+    listModel.addElement(new CodeSnippet("select * let _ from _ join _ on _ where _"));
+    listModel.addElement(new CodeSnippet("select * let _ from _ join _ on _ split by _ where _"));
 
   }
 

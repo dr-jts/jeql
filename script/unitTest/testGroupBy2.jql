@@ -51,9 +51,8 @@ AssertEqual gr1_2 expected: expected1_2;
 //------------------------------------------------------------------------
 
 t2 = select Geom.createPoint(i2, i2) geom
-	with {
-	  i2 = i / 3;
-	}
+	let
+	  i2 = i / 3
 	from Generate.sequence(0, 10);
 	
 gr2 = select geom from t2 group by geom;

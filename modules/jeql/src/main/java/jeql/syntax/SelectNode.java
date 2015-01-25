@@ -22,7 +22,7 @@ public class SelectNode
   
   private SelectItemList selectList;
   private boolean isDistinct = false;
-  private StatementListNode withList;
+  private StatementListNode aliasList;
   private FromList fromList;
   private ParseTreeNode whereExpr;
   private ParseTreeNode splitByExpr;
@@ -43,7 +43,7 @@ public class SelectNode
 
   public SelectNode(SelectItemList selectList, 
       boolean isDistinct, 
-      StatementListNode withList, 
+      StatementListNode aliasList, 
       FromList fromList, 
       ParseTreeNode whereExpr, 
       ParseTreeNode splitByExpr, 
@@ -53,7 +53,7 @@ public class SelectNode
       List orderList) {
     this.selectList = selectList;
     this.isDistinct = isDistinct;
-    this.withList = withList;
+    this.aliasList = aliasList;
     this.fromList = fromList;
     this.whereExpr = whereExpr;
     this.splitByExpr = splitByExpr;
@@ -68,7 +68,7 @@ public class SelectNode
 
   public SelectItemList getSelectList() { return selectList; }
   public boolean hasDistinct() { return isDistinct; }
-  public StatementListNode getWithList() { return withList; }
+  public StatementListNode getAliasList() { return aliasList; }
   public FromList getFromList() { return fromList; }
   public ParseTreeNode getWhere() { return whereExpr; }
   public ParseTreeNode getSplitBy() { return splitByExpr; }

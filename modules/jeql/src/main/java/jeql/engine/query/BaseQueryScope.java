@@ -23,7 +23,7 @@ import jeql.syntax.ParseTreeNode;
  * The Base Query scope introduces all the variable names
  * which are valid in the SELECT expressions.
  * These are provided by the columns in the FROM tables,
- * and the WITH definitions
+ * and the alias definitions
  * 
  * @author Martin Davis
  *
@@ -45,8 +45,8 @@ public class BaseQueryScope
   private String defaultTableName = null;
   private boolean hasDefaultTable = false;
   
-  private Map withVarMap = new HashMap();
-  private Map withVarTypeMap = new HashMap();
+  private Map aliasVarMap = new HashMap();
+  private Map aliasVarTypeMap = new HashMap();
   
   /**
    * Indicates whether currently binding an expression tree
@@ -87,7 +87,7 @@ public class BaseQueryScope
     if (colIndex != -1)
       return true;
    
-    if (withVarMap.containsKey(name))
+    if (aliasVarMap.containsKey(name))
         return true;
     
     return parentScope.hasVariable(name);
@@ -103,8 +103,8 @@ public class BaseQueryScope
       return ((SplitRow) currentRow).getSplitIndex();
     }
     
-    if (withVarMap.containsKey(name))
-      return withVarMap.get(name);
+    if (aliasVarMap.containsKey(name))
+      return aliasVarMap.get(name);
     
     //check if this is a column in this scope
     int colIndex = getColumnIndexAnyTable(name);
@@ -116,18 +116,18 @@ public class BaseQueryScope
 
   public void setVariable(String name, Object value)
   {
-    withVarMap.put(name, value);
+    aliasVarMap.put(name, value);
   }
 
   public void setVariableType(String name, Class varType)
   {
-    withVarTypeMap.put(name, varType);
+    aliasVarTypeMap.put(name, varType);
   }
 
   public Class getVariableType(String name)
   {
-    if (withVarMap.containsKey(name))
-      return (Class) withVarTypeMap.get(name);
+    if (aliasVarMap.containsKey(name))
+      return (Class) aliasVarTypeMap.get(name);
     
     //check if this is a column in this scope
     int colIndex = getColumnIndexAnyTable(name);

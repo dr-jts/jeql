@@ -45,7 +45,7 @@ extends GroupRowsBuilder
     Assert.isTrue(aggs.length == groupEval.aggFunArgList.size());
     
     groupEval.baseScope.setRow(row);
-    SelectEvaluator.evalAssignments(groupEval.withList, groupEval.baseScope);
+    SelectEvaluator.evalAliases(groupEval.aliasList, groupEval.baseScope);
     groupEval.evalAggregators(aggs, groupEval.baseScope);
   }
 }

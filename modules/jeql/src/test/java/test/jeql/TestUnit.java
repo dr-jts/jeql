@@ -46,6 +46,7 @@ public class TestUnit
     List filenames = new ArrayList();
     for (int i = 0; i < dirs.length; i++) {
       File[] files = FileUtil.listFilesWithExtension(dirs[i], ".jql");
+      if (files == null) continue;
       filenames.addAll(listOfNames(files));
     }
     return filenames;

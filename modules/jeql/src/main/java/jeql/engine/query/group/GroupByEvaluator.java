@@ -35,7 +35,7 @@ public class GroupByEvaluator
 {
   QueryScope baseScope;
   List aggFunArgList;
-  StatementListNode withList;
+  StatementListNode aliasList;
   GroupScope groupScope;
   
   private SelectItemList outerSelList;
@@ -46,13 +46,13 @@ public class GroupByEvaluator
   public GroupByEvaluator(
       QueryScope baseScope, 
       List aggFunArgList,
-      StatementListNode withList,
+      StatementListNode aliasList,
       GroupScope groupScope, 
       SelectItemList outerSelList) 
   {
     this.baseScope = baseScope;
     this.aggFunArgList = aggFunArgList;
-    this.withList = withList;
+    this.aliasList = aliasList;
     this.groupScope = groupScope;
     this.outerSelList = outerSelList;
     
