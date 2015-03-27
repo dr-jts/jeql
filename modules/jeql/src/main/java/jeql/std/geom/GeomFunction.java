@@ -9,6 +9,7 @@ import jeql.jts.geom.util.GeometricShapeFactoryExt;
 import jeql.jts.geom.util.ShapeUtil;
 
 
+
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.CoordinateArrays;
 import com.vividsolutions.jts.geom.CoordinateFilter;
@@ -19,6 +20,7 @@ import com.vividsolutions.jts.geom.GeometryCollectionIterator;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.Lineal;
+import com.vividsolutions.jts.geom.OctagonalEnvelope;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.geom.Polygonal;
@@ -419,6 +421,13 @@ implements FunctionClass
   public static Geometry createText(String s, int pointSize)
   {
     return ShapeUtil.fromFont(s, pointSize, geomFactory);
+  }
+  
+  public static Geometry octagonalEnvelope(Geometry g)
+  {
+    if (g == null) return null;
+    OctagonalEnvelope oct = new OctagonalEnvelope(g);
+    return oct.toGeometry(g.getFactory());
   }
   
   
