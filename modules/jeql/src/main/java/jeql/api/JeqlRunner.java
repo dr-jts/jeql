@@ -107,7 +107,7 @@ public class JeqlRunner
     }
     
     if (options.isVerbose)
-      System.out.println("Run completed in " + sw.getTimeString());
+      System.out.println(scriptDisplayName + " - Run completed in " + sw.getTimeString());
 
     return returnCode;
   }
