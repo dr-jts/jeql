@@ -118,7 +118,13 @@ public class SdeRowMapper
 	private Geometry toGeometry(SeShape shape)
 	throws SeException
 	{
+	  try {
 		return sdeRdr.read(shape);
+	  }
+	  // ignore geometry conversion errors
+	  catch (IllegalArgumentException e) {
+	    return null;
+	  }
 		//return SeShapeConverter.convert(shape);
 	}
 }
