@@ -33,7 +33,7 @@ public class LayerRenderer implements Renderer
     try {
       for (int i = 0; i < geomCont.size(); i++) {
       	Geometry geom = geomCont.getGeometry(i);
-        if (geom == null) return;
+        if (geom == null) continue;
         
         render(g, viewport, geom, geomCont.getStyle(i));
         //render(g, viewport, geom, layer.getStyle());

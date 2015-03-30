@@ -5,7 +5,9 @@ import java.awt.Color;
 import jeql.util.ColorUtil;
 import jeql.workbench.ui.geomview.style.BasicStyle;
 import jeql.workbench.ui.geomview.style.Style;
+
 import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
 
 public class Layer 
 {
@@ -56,7 +58,9 @@ public class Layer
   {
     Envelope env = new Envelope();
     for (int i = 0; i < geomCont.size(); i++) {
-      env.expandToInclude(geomCont.getGeometry(i).getEnvelopeInternal());
+      Geometry geom = geomCont.getGeometry(i);
+      if (geom == null) continue;
+      env.expandToInclude(geom.getEnvelopeInternal());
     }
     return env;
   }
