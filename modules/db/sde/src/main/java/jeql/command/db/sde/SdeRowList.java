@@ -5,14 +5,24 @@ import jeql.api.row.RowIterator;
 import jeql.api.row.RowList;
 import jeql.api.row.RowSchema;
 import jeql.engine.ExecutionException;
+import jeql.std.geom.GeomFunction;
 
 import com.esri.sde.sdk.client.SeConnection;
+import com.esri.sde.sdk.client.SeCoordinateReference;
 import com.esri.sde.sdk.client.SeError;
 import com.esri.sde.sdk.client.SeException;
+import com.esri.sde.sdk.client.SeFilter;
+import com.esri.sde.sdk.client.SeLayer;
 import com.esri.sde.sdk.client.SeQuery;
 import com.esri.sde.sdk.client.SeRow;
+import com.esri.sde.sdk.client.SeShape;
+import com.esri.sde.sdk.client.SeShapeFilter;
 import com.esri.sde.sdk.client.SeSqlConstruct;
 import com.esri.sde.sdk.client.SeTable;
+import com.esri.sde.sdk.geom.SeGeometry;
+import com.esri.sde.sdk.geom.SeGeometrySource;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.io.ParseException;
 
 public class SdeRowList implements RowList {
   private static final int FETCH_SIZE = 1000;
@@ -30,13 +40,19 @@ public class SdeRowList implements RowList {
   private SeQuery query = null;
   private RowSchema schema;
   private boolean isRead = false;
+  private Geometry filterGeom;
+  private String spatialCol;
+  private String filterMethodName;
 
   public SdeRowList(String connectString, String user, String password,
-      String sql, SdeRowMapper rowMapper) {
+      String sql, String spatialCol, String filterMethodName, Geometry filterGeom, SdeRowMapper rowMapper) {
     this.connectString = connectString;
     this.user = user;
     this.password = password;
     this.sql = sql;
+    this.spatialCol = spatialCol;
+    this.filterMethodName = filterMethodName;
+    this.filterGeom = filterGeom;
     this.rowMapper = rowMapper;
     open();
   }
@@ -55,7 +71,8 @@ public class SdeRowList implements RowList {
     try {
       conn = new SeConnection(urlParser.getServer(), urlParser.getInstance(),
           urlParser.getDatabase(), user, password);
-
+      //dumpConnInfo(conn);
+      
       if (columns[0].equals("*")) {
         columns = SdeUtil.fetchColumnNames(new SeTable(conn, datasetName));
       }
@@ -67,6 +84,9 @@ public class SdeRowList implements RowList {
         construct = new SeSqlConstruct(datasetName);
       }
       query = new SeQuery(conn, columns, construct);
+      if (spatialCol != null && filterGeom != null) {
+        addSpatialFilter(conn, datasetName, spatialCol, filterMethodName, filterGeom, query);
+      }
       query.prepareQuery();
 
       // set spatial constraints here if required
@@ -79,6 +99,37 @@ public class SdeRowList implements RowList {
     }
   }
 
+  private static void dumpConnInfo(SeConnection conn) throws SeException {
+    SeConnection.SeStreamSpec spec = conn.getStreamSpec();
+    System.out.println("MinBufSize: " + spec.getMinBufSize());
+  }
+  
+  private static void addSpatialFilter(SeConnection conn, String tableName, String spatialCol, String filterMethodName, Geometry geom, SeQuery query) throws SeException {
+    SeLayer seLayer = new SeLayer(conn, tableName, spatialCol);
+    SeCoordinateReference cr = seLayer.getCoordRef();
+    //String spatCol = seLayer.getSpatialColumn();
+    //Geometry geom = parseGeom(wkt);
+    
+    SeShape shape = new SeShape(cr);
+    shape.generateRectangle(SdeUtil.toExtent(geom));
+    //int method = SeFilter.METHOD_AI_OR_ET;
+    int method = SdeUtil.filterMethod(filterMethodName);
+    //int method = SeFilter.METHOD_ENVP;
+    SeFilter filter = new SeShapeFilter(tableName, spatialCol, shape, method);
+    query.setSpatialConstraints(SeQuery.SE_OPTIMIZE, false, new SeFilter[] { filter } );
+  }
+
+  private static Geometry parseGeom(String wkt) {
+    Geometry geom;
+    try {
+      geom = GeomFunction.fromWKT(wkt);
+    }
+    catch (ParseException ex) {
+      throw new ExecutionException(ex);
+    }
+    return geom;
+  }
+  
   public RowSchema getSchema() {
     return schema;
   }
