@@ -77,9 +77,11 @@ nullVar = null;
 Assert $"xx${nullVar}yy" == "xxyy";
 
 
-//-- On Windows only 
+//-- On Windows only (commented out for general use)
+/*
 Assert "fo\no" == $"fo
 o";
+*/
 
 Print $"blarg";
 Print $"bl
