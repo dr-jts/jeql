@@ -1,5 +1,6 @@
 package jeql.command.db.sde;
 
+import jeql.api.error.ExecutionException;
 import jeql.api.error.InvalidInputException;
 import jeql.engine.ConfigurationException;
 import jeql.std.geom.GeomFunction;
@@ -51,8 +52,19 @@ public class SdeUtil {
     return new SeExtent(env.getMinX(), env.getMinY(), env.getMaxX(), env.getMaxY());
   }
 
-  public static String seErrDesc(SeException ex) {
-    return ex.getSeError().getErrDesc();
+  /**
+   * Transforms SeExceptions to JEQL exceptions with the error message.
+   * All others are left unchanged.
+   * 
+   * @param ex
+   * @return
+   */
+  public static ExecutionException seError(Exception ex) {
+    if (ex instanceof SeException) {
+      SeException sex = (SeException) ex;
+      return new ExecutionException(sex.getSeError().getErrDesc());
+    }
+    return new ExecutionException(ex);
   }
   
   public static int filterMethod(String methodName) {
