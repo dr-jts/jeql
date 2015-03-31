@@ -2,6 +2,7 @@ package jeql.command.db.sde;
 
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.Calendar;
 
 import jeql.api.row.BasicRow;
 import jeql.api.row.Row;
@@ -95,7 +96,9 @@ public class SdeRowMapper {
       return row.getDouble(columnIndex);
     }
     if (destType == Date.class) {
-      return row.getTime(columnIndex);
+      Calendar cal = row.getTime(columnIndex);
+      if (cal == null) return cal;
+      return cal.getTime();
     }
     if (destType == Geometry.class) {
       return toGeometry(row.getShape(columnIndex));
