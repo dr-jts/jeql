@@ -19,14 +19,12 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-import jeql.command.db.DbColumn;
-import jeql.command.db.DbCommandBase;
-import jeql.command.db.driver.JdbcUtil;
-import jeql.engine.ExecutionException;
-import jeql.engine.Scope;
-import jeql.api.table.Table;
-import jeql.api.row.RowList;
+
+import jeql.api.error.ExecutionException;
 import jeql.api.row.RowSchema;
+import jeql.api.table.Table;
+import jeql.command.db.driver.JdbcUtil;
+import jeql.engine.Scope;
 import jeql.util.SystemUtil;
 import jeql.util.TypeUtil;
 
