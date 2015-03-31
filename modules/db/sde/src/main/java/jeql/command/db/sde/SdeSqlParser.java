@@ -14,6 +14,13 @@ package jeql.command.db.sde;
  * Keywords are case insensitive. 'condition' is passed as the where parameter
  * of an SDE SeSqlConstruct.
  * 
+ * Examples:
+ * <pre>
+ *  select * from TBL
+ *  select COL1, COL2 from TBL
+ *  select COL1, COL2 from TBL where COL1 = 1
+ * </pre>
+ * 
  * @author mbdavis
  *
  */
