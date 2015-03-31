@@ -6,6 +6,35 @@ import jeql.api.table.Table;
 import jeql.command.db.DbCommandBase;
 import jeql.engine.*;
 
+/**
+ * Parameters:
+ * <h3>url:</h3>
+ * 
+ * Format:  <code>  server : port [ : database ] </code> 
+ * 
+ * <h3>sql:</h3>
+ * Examples:
+ * <pre>
+ *  select * from LAYER
+ *  select COL1, COL2 from LAYER
+ *  select COL1, COL2 from LAYER where COL1 = 1
+ * </pre>
+ * 
+ * <h3>spatialCol:</h3>
+ * Name of spatial column in layer
+ * 
+ * <h3>filterMethod:</h3>
+ * Optional SDE Filter Method name. Default is ENVP.  Values include:
+ * ENVP, ENVP_BY_GRID, II, AI_NO_ET, AI_OR_ET, ET_OR_AI, PC, SC, etc...
+ * 
+ * 
+ *  <h3>filter:</h3>
+ *  A Geometry to filter with (currently only the envelope is used)
+ *  
+ * 
+ * @author mbdavis
+ *
+ */
 public class SdeReader extends DbCommandBase {
   
   
