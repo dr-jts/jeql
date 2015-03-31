@@ -31,6 +31,21 @@ import jeql.engine.*;
  *  <h3>filter:</h3>
  *  A Geometry to filter with (currently only the envelope is used)
  *  
+ *  Examples:
+ *  <pre>
+ *  SdeReader t  url: "x.y.z:5555" user: "xxx"  password: "yyy"
+ *    sql: "select * from SCHEMA.LAYER ";
+ *    
+ *    
+ *  SdeReader t  
+ *    url: "x.y.z:5555" user: "xxx"  password: "yyy"
+ *    sql: "select * from SCHEMA.LAYER "
+ *    spatialCol: "GEOMETRY"
+ *    filterMethod: "ENVP_BY_GRID"
+ *    filter: POLYGON ((2024991 489738, 2024991 490282, 2025535 490282, 2025535 489738, 2024991 489738))
+ *    ;
+ *  </pre>
+ *  
  * 
  * @author mbdavis
  *
