@@ -9,11 +9,14 @@ import jeql.std.geom.GeomFunction;
 
 import com.esri.sde.sdk.client.SeConnection;
 import com.esri.sde.sdk.client.SeCoordinateReference;
+import com.esri.sde.sdk.client.SeDBMSInfo;
 import com.esri.sde.sdk.client.SeError;
 import com.esri.sde.sdk.client.SeException;
 import com.esri.sde.sdk.client.SeFilter;
 import com.esri.sde.sdk.client.SeLayer;
 import com.esri.sde.sdk.client.SeQuery;
+import com.esri.sde.sdk.client.SeQueryInfo;
+import com.esri.sde.sdk.client.SeRegistration;
 import com.esri.sde.sdk.client.SeRow;
 import com.esri.sde.sdk.client.SeShape;
 import com.esri.sde.sdk.client.SeShapeFilter;
@@ -39,7 +42,7 @@ public class SdeRowList implements RowList {
   private SeConnection conn = null;
   private SeQuery query = null;
   private RowSchema schema;
-  private boolean isRead = false;
+  private boolean isAlreadyRead = false;
   private Geometry filterGeom;
   private String spatialCol;
   private String filterMethodName;
@@ -98,28 +101,65 @@ public class SdeRowList implements RowList {
   }
   
   private void execQuery() throws SeException {
-    conn = new SeConnection(server, instance,
-        database, user, password);
-    //dumpConnInfo(conn);
-    
+    conn = new SeConnection(server, instance, database, user, password);
+    // dumpConnInfo(conn);
+
     if (columns[0].equals("*")) {
       columns = SdeUtil.fetchColumnNames(new SeTable(conn, datasetName));
     }
 
-    SeSqlConstruct construct = (condition != null) 
-        ? new SeSqlConstruct(datasetName, condition) 
-        : new SeSqlConstruct(datasetName);
-    
+    // checkLayerInfo();
+
+    SeSqlConstruct construct = (condition != null) ? new SeSqlConstruct(
+        datasetName, condition) : new SeSqlConstruct(datasetName);
+
+    //computeStats(columns, construct);
+
     query = new SeQuery(conn, columns, construct);
     query.prepareQuery();
     if (useSpatialFilter) {
-      addSpatialFilter(conn, datasetName, spatialCol, filterMethodName, filterGeom, query);
+      SeFilter filter = spatialFilter(conn, datasetName, spatialCol, filterMethodName, filterGeom);
+      query.setSpatialConstraints(SeQuery.SE_OPTIMIZE, false, new SeFilter[] { filter } );
     }
     query.execute();
     schema = rowMapper.getSchema(query);
   }
 
-  private static void addSpatialFilter(SeConnection conn, String tableName, String spatialCol, String filterMethodName, Geometry geom, SeQuery query) throws SeException {
+  private void checkLayerInfo() throws SeException {
+    SeDBMSInfo dbmsInfo = conn.getDBMSInfo();
+    boolean isOracle = dbmsInfo.dbmsId == SeDBMSInfo.SE_DBMS_IS_ORACLE;
+    
+    SeRegistration reg = new SeRegistration(conn, datasetName);
+    boolean isMultiVersion = reg.isMultiVersion();
+    
+    System.out.println("isOracle = " + isOracle);
+    System.out.println("isMultiVersion = " + isMultiVersion);
+  }
+
+  private void computeStats(String[] colNames, SeSqlConstruct sql) throws SeException 
+  {
+    final int defaultMaxDistinctValues = 0;
+    final String statsCol = colNames[0];
+    
+    SeQueryInfo queryInfo = new SeQueryInfo();
+    queryInfo.setColumns(colNames);
+    queryInfo.setConstruct(sql);
+    
+    SeQuery query = new SeQuery(conn);
+    if (useSpatialFilter) {
+      SeFilter filter = spatialFilter(conn, datasetName, spatialCol, filterMethodName, filterGeom);
+      query.setSpatialConstraints(SeQuery.SE_OPTIMIZE, false, new SeFilter[] { filter } );
+    }
+
+    SeTable.SeTableStats tableStats = query.calculateTableStatistics(statsCol,
+            SeTable.SeTableStats.SE_COUNT_STATS, queryInfo, defaultMaxDistinctValues);
+  
+    int actualCount = tableStats.getCount();
+    System.out.println("Row count = " + actualCount);
+    query.close();
+  }
+  
+  private static SeFilter spatialFilter(SeConnection conn, String tableName, String spatialCol, String filterMethodName, Geometry geom) throws SeException {
     SeLayer seLayer = new SeLayer(conn, tableName, spatialCol);
     SeCoordinateReference cr = seLayer.getCoordRef();
     
@@ -130,7 +170,7 @@ public class SdeRowList implements RowList {
     //int method = SeFilter.METHOD_ENVP;
     int method = SdeUtil.filterMethod(filterMethodName);
     SeFilter filter = new SeShapeFilter(tableName, spatialCol, shape, method);
-    query.setSpatialConstraints(SeQuery.SE_OPTIMIZE, false, new SeFilter[] { filter } );
+    return filter;
   }
 
   private static Geometry parseGeom(String wkt) {
@@ -148,12 +188,44 @@ public class SdeRowList implements RowList {
     return schema;
   }
 
-  public RowIterator iterator() {
-    if (isRead)
+  public RowIterator OLDiterator() {
+    if (isAlreadyRead)
       throw new ExecutionException("Attempt to re-read streamed SDE layer ("
           + datasetName + ")");
-    isRead = true;
+    isAlreadyRead = true;
     return new SdeRowIterator(this);
+  }
+
+  public RowIterator iterator() {
+    if (isAlreadyRead)
+      throw new ExecutionException("Attempt to re-read streamed SDE layer ("
+          + datasetName + ")");
+    isAlreadyRead = true;
+    return new RowIterator() {
+      public RowSchema getSchema() {
+        return schema;
+      }
+
+      public Row next() {
+        if (query == null) return null;
+
+        Row row = null;
+        try {
+          SeRow sdeRow = query.fetch();
+          if (sdeRow != null) {
+            row = rowMapper.createRow(schema, sdeRow);
+          }
+          // else drop through and close the rowlist
+        } catch (Exception ex) {
+          throw SdeUtil.seError(ex);
+        } finally {
+          if (row == null) {
+            close();
+          }
+        }
+        return row;
+      }
+    };
   }
 
   private void close() {
