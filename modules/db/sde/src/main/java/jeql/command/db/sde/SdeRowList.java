@@ -119,7 +119,7 @@ public class SdeRowList implements RowList {
     query.prepareQuery();
     if (useSpatialFilter) {
       SeFilter filter = spatialFilter(conn, datasetName, spatialCol, filterMethodName, filterGeom);
-      query.setSpatialConstraints(SeQuery.SE_OPTIMIZE, false, new SeFilter[] { filter } );
+      query.setSpatialConstraints(SeQuery.SE_OPTIMIZE, true, new SeFilter[] { filter } );
     }
     query.execute();
     schema = rowMapper.getSchema(query);
@@ -148,7 +148,7 @@ public class SdeRowList implements RowList {
     SeQuery query = new SeQuery(conn);
     if (useSpatialFilter) {
       SeFilter filter = spatialFilter(conn, datasetName, spatialCol, filterMethodName, filterGeom);
-      query.setSpatialConstraints(SeQuery.SE_OPTIMIZE, false, new SeFilter[] { filter } );
+      query.setSpatialConstraints(SeQuery.SE_OPTIMIZE, true, new SeFilter[] { filter } );
     }
 
     SeTable.SeTableStats tableStats = query.calculateTableStatistics(statsCol,
