@@ -49,6 +49,9 @@ public class PlacemarkParser {
       else if (XMLParseUtil.isStartElement(xmlRdr, KMLConstants.STYLEURL)) {
         pm.setStyleUrl(XMLParseUtil.parseValue(xmlRdr));
       }
+      else if (XMLParseUtil.isStartElement(xmlRdr, KMLConstants.EXTENDED_DATA)) {
+        parseExtendedData(pm);
+      }
       else if (XMLParseUtil.isStartElement(xmlRdr, KMLConstants.POINT)) {
         pm.setGeometry(parsePoint(pm));
       }
@@ -70,6 +73,27 @@ public class PlacemarkParser {
       }
     }
     return pm;
+  }
+
+  private void parseExtendedData(Placemark pm) throws XMLStreamException {
+    XMLParseUtil.consumeStart(xmlRdr, KMLConstants.EXTENDED_DATA);
+    while (xmlRdr.hasNext()) {
+      if (XMLParseUtil.isEndElement(xmlRdr, KMLConstants.EXTENDED_DATA)) {
+        //System.out.println(pm);
+        xmlRdr.next();
+        break;
+      }
+      else if (XMLParseUtil.isStartElement(xmlRdr, KMLConstants.DATA)) {
+        pm.setData(XMLParseUtil.readElement(xmlRdr));
+      }
+      else if (XMLParseUtil.isStartElement(xmlRdr, KMLConstants.SCHEMA_DATA)) {
+        pm.setSchemaData(XMLParseUtil.readElement(xmlRdr));
+      }
+      else {
+        // skip any unrecognized elements
+        xmlRdr.next();
+      }
+    }
   }
 
   private Polygon parsePolygon(Placemark pm)

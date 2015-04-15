@@ -9,6 +9,7 @@ public class StyleConstants
   public static final String FILL = "styleFill";
 
   public static final String LABEL = "styleLabel";
+  public static final String LABEL_COLOR = "styleLabelColor";
   public static final String LABEL_ROTATE = "styleLabelRotate";
   public static final String LABEL_OFFSET_X = "styleLabelOffsetX";
   public static final String LABEL_OFFSET_Y = "styleLabelOffsetY";

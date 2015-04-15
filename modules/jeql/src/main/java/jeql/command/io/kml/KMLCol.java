@@ -51,5 +51,8 @@ public class KMLCol {
   public static final String STYLE_BALLOONDISPLAY =  "balloonStyleDisplay";
   
   public static final String DEFAULT_STYLE_ID = "defaultStyle";
+  
+  public static final String KML_DATA = "data";
+  public static final String KML_SCHEMA_DATA = "schemaData";
 
 }

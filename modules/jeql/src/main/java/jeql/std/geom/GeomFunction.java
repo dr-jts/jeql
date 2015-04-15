@@ -10,6 +10,10 @@ import jeql.jts.geom.util.ShapeUtil;
 
 
 
+
+
+import com.vividsolutions.jts.algorithm.MinimumBoundingCircle;
+import com.vividsolutions.jts.algorithm.MinimumDiameter;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.CoordinateArrays;
 import com.vividsolutions.jts.geom.CoordinateFilter;
@@ -430,6 +434,21 @@ implements FunctionClass
     return oct.toGeometry(g.getFactory());
   }
   
+  public static Geometry minimumCircle(Geometry g)
+  {
+    if (g == null) return null;
+    MinimumBoundingCircle mbc = new MinimumBoundingCircle(g);
+    return mbc.getCircle();
+  }
+  
+  public static Geometry minimumRectangle(Geometry g)
+  {
+    if (g == null) return null;
+    MinimumDiameter md = new MinimumDiameter(g);
+    return md.getMinimumRectangle();
+  }
+  
+
   
   /**
    * Creates a GeometryCollection from two geometries A and B.

@@ -9,6 +9,8 @@ public class Placemark {
   String styleUrl;
   Geometry geom;
   String folder;
+  String data;
+  String schemaData;
   
   public Placemark() {
     super();
@@ -30,6 +32,12 @@ public class Placemark {
     
     this.styleUrl = url;
   }
+  public void setData(String data) {
+    this.data = data;
+  }
+  public void setSchemaData(String data) {
+    this.schemaData = data;
+  }
   public void setGeometry(Geometry geom)
   {
     this.geom = geom;
@@ -46,6 +54,8 @@ public class Placemark {
     add(buf, "name", name);
     add(buf, "description", description);
     add(buf, "styleUrl", styleUrl);
+    add(buf, "data", data);
+    add(buf, "schemaData", data);
     add(buf, "geometry", geom);
     return buf.toString();
   }
@@ -55,4 +65,5 @@ public class Placemark {
     if (value != null)
       buf.append(name + "=" + value + "\n");
   }
+
 }

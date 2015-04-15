@@ -4,6 +4,8 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import jeql.util.StringUtil;
+
 public class XMLParseUtil 
 {
 
@@ -47,6 +49,53 @@ public class XMLParseUtil
          + ">, found '" + xmlRdr.getText() + "'");
   }
   
+  public static String readElement(XMLStreamReader xmlRdr)
+      throws XMLStreamException {
+    StringBuffer buf = new StringBuffer();
+    String elementName = null;
+    if (xmlRdr.hasNext() && xmlRdr.isStartElement()) {
+      elementName = xmlRdr.getLocalName();
+    }
+    // not a start elt - skip it
+    if (elementName == null)
+      return "";
+
+    while (xmlRdr.hasNext()) {
+      String val = "";
+      if (xmlRdr.isStartElement()) {
+        buf.append("<" + xmlRdr.getLocalName());
+        buf.append(readAttributes(xmlRdr));
+        buf.append(">");
+      }
+      if (xmlRdr.getEventType() == XMLStreamConstants.CHARACTERS) {
+        String txt = xmlRdr.getText();
+        boolean isWhite = txt == null || StringUtil.isWhitespace(txt);
+        if (! isWhite)
+          buf.append(txt);
+      } 
+      if (xmlRdr.isEndElement()) {
+        buf.append("</" + xmlRdr.getLocalName() + ">");
+      }
+      if (xmlRdr.isEndElement() && xmlRdr.getLocalName().equals(elementName)) {
+        xmlRdr.next();
+        break;
+      }
+      xmlRdr.next();
+    }
+    return buf.toString();
+  }
+  
+  private static String readAttributes(XMLStreamReader xmlRdr) {
+    StringBuffer buf = new StringBuffer();
+    int attrCnt = xmlRdr.getAttributeCount();
+    for (int i = 0; i < attrCnt; i++) {
+      String name = xmlRdr.getAttributeLocalName(i);
+      String value = xmlRdr.getAttributeValue(i);
+      buf.append(" " + name + '=' + "'" + value + "'");
+    }
+    return buf.toString();
+  }
+
   /*
   public static void OLDconsumeStart(XMLStreamReader xmlRdr, String elementName)
   throws XMLStreamException 

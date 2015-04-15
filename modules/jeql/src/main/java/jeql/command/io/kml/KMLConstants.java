@@ -25,4 +25,8 @@ public class KMLConstants {
   public static final String TIMESPAN_BEGIN = "timeSpanBegin";
   public static final String TIMESPAN_END = "timeSpanEnd";
   public static final String TIMESTAMP_WHEN = "timeStampWhen";
+  
+  public static final String EXTENDED_DATA = "ExtendedData";
+  public static final String SCHEMA_DATA = "SchemaData";
+  public static final String DATA = "Data";
 }

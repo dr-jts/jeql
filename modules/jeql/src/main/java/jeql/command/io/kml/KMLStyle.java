@@ -7,6 +7,7 @@ import jeql.api.row.Row;
 import jeql.api.row.RowSchema;
 import jeql.api.row.RowUtil;
 import jeql.std.function.ColorFunction;
+import jeql.style.StyleConstants;
 
 class KMLStyle
 {
@@ -31,6 +32,11 @@ class KMLStyle
     || schema.hasCol(KMLCol.STYLE_BALLOONTEXTCOLOR)
     || schema.hasCol(KMLCol.STYLE_BALLOONTEXT)
     || schema.hasCol(KMLCol.STYLE_BALLOONDISPLAY)
+    
+    || schema.hasCol(StyleConstants.STROKE)
+    || schema.hasCol(StyleConstants.FILL)
+    || schema.hasCol(StyleConstants.LABEL_COLOR)
+    || schema.hasCol(StyleConstants.STROKE_WIDTH)
     ;
   }
   
@@ -166,18 +172,21 @@ class KMLStyle
   {
     if (useId)
       id = RowUtil.getString(schema, KMLCol.KML_ID, row);
-    lineColor = RowUtil.getString(schema, "lineStyleColor", row);
+    
+    lineColor = RowUtil.getString(schema, "lineStyleColor", StyleConstants.STROKE, row);
     lineColorMode = RowUtil.getString(schema, "lineStyleColorMode", row);
-    lineWidth = RowUtil.getInt(schema, "lineStyleWidth", row, -1);
-    polyColor = RowUtil.getString(schema, "polyStyleColor", row);
+    lineWidth = RowUtil.getInt(schema, "lineStyleWidth", StyleConstants.STROKE_WIDTH, row, -1);
+    
+    polyColor = RowUtil.getString(schema, "polyStyleColor", StyleConstants.FILL, row);
     polyColorMode = RowUtil.getString(schema, "polyStyleColorMode", row);
     polyFill = RowUtil.getInt(schema, "polyStyleFill", row, -1);
     polyOutline = RowUtil.getInt(schema, "polyStyleOutline", row, -1);
-    labelColor = RowUtil.getString(schema, KMLCol.STYLE_LABELCOLOR, row);
+    
+    labelColor = RowUtil.getString(schema, KMLCol.STYLE_LABELCOLOR, StyleConstants.LABEL_COLOR, row);
     labelColorMode = RowUtil.getString(schema, KMLCol.STYLE_LABELCOLORMODE, row);
     labelScale = RowUtil.getDouble(schema, KMLCol.STYLE_LABELSCALE, row, -1.0);
     
-    iconColor = RowUtil.getString(schema, "iconStyleColor", row);
+    iconColor = RowUtil.getString(schema, "iconStyleColor", StyleConstants.COL_MARKER_COLOR, row);
     iconColorMode = RowUtil.getString(schema, "iconStyleColorMode", row);
     iconScale = RowUtil.getDouble(schema, "iconStyleScale", row, -1.0);
     iconHref = RowUtil.getString(schema, "iconStyleHref", row);

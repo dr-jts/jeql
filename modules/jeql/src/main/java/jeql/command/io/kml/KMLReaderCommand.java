@@ -44,12 +44,14 @@ class KMLRowList implements RowList {
   public KMLRowList(KMLFileSource src) {
     this.src = src;
     
-    schema = new RowSchema(5);
+    schema = new RowSchema(7);
     schema.setColumnDef(0, KMLCol.GEOMETRY, Geometry.class);
     schema.setColumnDef(1, KMLCol.KML_NAME, String.class);
     schema.setColumnDef(2, KMLCol.KML_DESCRIPTION, String.class);
     schema.setColumnDef(3, KMLCol.KML_STYLEURL, String.class);
     schema.setColumnDef(4, KMLCol.KML_FOLDER_NAME, String.class);
+    schema.setColumnDef(5, KMLCol.KML_DATA, String.class);
+    schema.setColumnDef(6, KMLCol.KML_SCHEMA_DATA, String.class);
   }
 
   public RowSchema getSchema() {
@@ -126,6 +128,8 @@ class KMLRowList implements RowList {
       row.setValue(2, pm.description);
       row.setValue(3, pm.styleUrl);
       row.setValue(4, pm.folder);
+      row.setValue(5, pm.data);
+      row.setValue(6, pm.schemaData);
       return row;
     }
   }

@@ -2,6 +2,15 @@ package jeql.util;
 
 public class StringUtil 
 {
+  public static boolean isWhitespace(String s) {
+    if (s == null) return false;
+    for (int i = 0; i < s.length(); i++) {
+      if (! Character.isWhitespace(s.charAt(i)))
+          return false;
+    }
+    return true;    
+  }
+  
   public static boolean isEqualOrBothNull(String s1, String s2)
   {
     if (s1 == null && s2 == null) return true;

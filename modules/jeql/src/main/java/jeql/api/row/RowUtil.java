@@ -21,6 +21,21 @@ public class RowUtil
   }
   
   /**
+   * Gets a string from the given primary or secondary column, or null if neither exists 
+   * 
+   * @param schema
+   * @param colName1
+   * @param colName2
+   * @param row
+   * @return the string value of the column
+   * @return null if the column does not exist
+   */
+  public static String getString(RowSchema schema, String colName1, String colName2, Row row)
+  {
+    return getString(getColIndex(schema, colName1, colName2), row, null);
+  }
+  
+  /**
    * Gets a string from the given column, or a default value
    * 
    * @param schema
@@ -36,7 +51,7 @@ public class RowUtil
   }
   
   /**
-   * Gets a string from the given column, or a default value
+   * Gets a string from the given column index, or a default value
    * 
    * @param index
    * @param row
@@ -57,6 +72,17 @@ public class RowUtil
     return getInt(schema.getColIndex(colName), row, defaultVal);
   }
 
+  public static int getInt(RowSchema schema, String colName1, String colName2, Row row, int defaultVal)
+  {
+    return getInt(getColIndex(schema, colName1, colName2), row, defaultVal);
+  }
+
+  public static int getColIndex(RowSchema schema, String col1, String col2)
+  {
+    int index = schema.getColIndex(col1);
+    if (index >= 0) return index;
+    return schema.getColIndex(col2);
+  }
   public static int getInt(int index, Row row, int defaultVal)
   {
     if (index < 0) return defaultVal;
