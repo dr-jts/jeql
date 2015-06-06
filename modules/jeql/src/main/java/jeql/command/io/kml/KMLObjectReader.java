@@ -31,23 +31,6 @@ public class KMLObjectReader
   public KMLObjectReader() {
     super();
   }
-
-  public void OLDopen(InputStream inStr)
-  throws Exception
-  {
-    fact = new WstxInputFactory();
-    xmlRdr =  fact.createXMLStreamReader(inStr);
-    model = new DocumentModel();
-    placemarkParser = new PlacemarkParser(xmlRdr);
-    
-    parsePrologue();
-  }
-  
-  public void xxopen(InputStream inStr)
-  throws Exception
-  {
-    open(new InputStreamReader(inStr));
-  }
   
   public void open(Reader inStr)
   throws Exception
