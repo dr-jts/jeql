@@ -1,7 +1,5 @@
 package jeql.command.io.kml;
 
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.Reader;
 
 import javax.xml.stream.XMLStreamConstants;
@@ -32,11 +30,11 @@ public class KMLObjectReader
     super();
   }
   
-  public void open(Reader inStr)
+  public void open(Reader rdr)
   throws Exception
   {
     fact = new WstxInputFactory();
-    xmlRdr =  fact.createXMLStreamReader(inStr);
+    xmlRdr =  fact.createXMLStreamReader(rdr);
     model = new DocumentModel();
     placemarkParser = new PlacemarkParser(xmlRdr);
     
