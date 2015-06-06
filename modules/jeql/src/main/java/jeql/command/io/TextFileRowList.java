@@ -7,6 +7,7 @@ import java.io.LineNumberReader;
 
 import jeql.api.error.JeqlException;
 import jeql.api.row.BasicRow;
+import jeql.api.row.BasicRowList;
 import jeql.api.row.Row;
 import jeql.api.row.RowIterator;
 import jeql.api.row.RowList;
@@ -20,22 +21,16 @@ import jeql.io.InputSource;
  *
  */
 public class TextFileRowList 
-  implements RowList
+  extends BasicRowList
 {
   public static final String COL_NAME = "line";
   
   private InputSource src;
-  private RowSchema schema;
   
   public TextFileRowList(InputSource src) 
   {
     this.src = src;
     schema = new RowSchema(new String[] { COL_NAME }, new Class[] { String.class });
-  }
-
-  public RowSchema getSchema()
-  {
-    return schema;
   }
 
   public RowIterator iterator()

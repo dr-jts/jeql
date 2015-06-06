@@ -1,7 +1,5 @@
 package jeql.api.row;
 
-
-
 public class BasicRow 
   implements Row
 {
