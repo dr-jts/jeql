@@ -1,4 +1,4 @@
-package jeql.command.io.kml;
+package jeql.command.io;
 
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
@@ -85,7 +85,7 @@ public class XMLParseUtil
     return buf.toString();
   }
   
-  private static String readAttributes(XMLStreamReader xmlRdr) {
+  public static String readAttributes(XMLStreamReader xmlRdr) {
     StringBuffer buf = new StringBuffer();
     int attrCnt = xmlRdr.getAttributeCount();
     for (int i = 0; i < attrCnt; i++) {

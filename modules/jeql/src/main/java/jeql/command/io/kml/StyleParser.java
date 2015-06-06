@@ -3,6 +3,8 @@ package jeql.command.io.kml;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import jeql.command.io.XMLParseUtil;
+
 public class StyleParser {
 
   private XMLStreamReader xmlRdr;

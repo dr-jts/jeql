@@ -22,6 +22,7 @@ import jeql.command.io.ShapefileReaderCommand;
 import jeql.command.io.ShapefileWriterCommand;
 import jeql.command.io.TextReaderCommand;
 import jeql.command.io.TextWriterCommand;
+import jeql.command.io.XMLReaderCommand;
 import jeql.command.io.XMLWriterCommand;
 import jeql.command.io.kml.KMLReaderCommand;
 import jeql.command.io.kml.KMLWriterCommand;
@@ -66,6 +67,7 @@ public class CommandRegistry
     register(STFWriterCommand.class);
     register(TextReaderCommand.class);
     register(TextWriterCommand.class);
+    register(XMLReaderCommand.class);
     register(XMLWriterCommand.class);
     
     register(DbMetadata.class);

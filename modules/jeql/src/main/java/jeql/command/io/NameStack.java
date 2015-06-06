@@ -1,4 +1,4 @@
-package jeql.command.io.kml;
+package jeql.command.io;
 
 import java.util.Iterator;
 import java.util.Stack;
@@ -59,4 +59,6 @@ public class NameStack
     }
     return buf.toString();
   }
+  
+  public String toString() { return getNameList(); }
 }

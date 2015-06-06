@@ -67,7 +67,6 @@ public class TestProgram {
 //  exec("C:\\data\\martin\\proj\\jeql\\unitTest\\testScope.jql");
 //  exec("C:\\data\\martin\\proj\\jeql\\unitTest\\testSelectStatement.jql");
 //  exec("C:\\data\\martin\\proj\\jeql\\unitTest\\testSTFFile.jql");
-  execUnit("testTableValue.jql");
 //  exec("C:\\data\\martin\\proj\\jeql\\unitTest\\testTypes.jql");
 //  exec("C:\\data\\martin\\proj\\jeql\\unitTest\\testCSVFile.jql");
 //  exec("C:\\data\\martin\\proj\\jeql\\unitTest\\testSelectWith.jql");
@@ -85,6 +84,7 @@ public class TestProgram {
 //  execUnit("testExpression.jql");
 //  execUnit("testUnion.jql");
 //  execUnit("testRegEx.jql");
+    execUnit("io\\testXMLReader.jql");
 //  execUnit("geom\\testGeomValues.jql");
 //  execUnit("geom\\testGeomFunc.jql");
 //  execUnit("geom\\testGeomAggFunction2.jql");

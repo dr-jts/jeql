@@ -6,6 +6,9 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import jeql.command.io.NameStack;
+import jeql.command.io.XMLParseUtil;
+
 import com.ctc.wstx.exc.WstxIOException;
 import com.ctc.wstx.stax.WstxInputFactory;
 
@@ -17,7 +20,6 @@ public class KMLObjectReader
   static final int STATE_FOLDER = 3;
   static final int STATE_PLACEMARK = 4;
   
-  private WstxInputFactory fact;
   private XMLStreamReader xmlRdr;
   private PlacemarkParser placemarkParser;
   private int parseState = STATE_DOC;
@@ -33,7 +35,7 @@ public class KMLObjectReader
   public void open(Reader rdr)
   throws Exception
   {
-    fact = new WstxInputFactory();
+    WstxInputFactory fact = new WstxInputFactory();
     xmlRdr =  fact.createXMLStreamReader(rdr);
     model = new DocumentModel();
     placemarkParser = new PlacemarkParser(xmlRdr);

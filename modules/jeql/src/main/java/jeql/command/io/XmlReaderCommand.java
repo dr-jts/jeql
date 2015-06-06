@@ -7,11 +7,11 @@ import jeql.api.table.Table;
 import jeql.engine.Scope;
 import jeql.io.InputSource;
 
-public class XmlReaderCommand 
+public class XMLReaderCommand 
 extends TextFileReaderCmd
 {
 
-  public XmlReaderCommand() {
+  public XMLReaderCommand() {
     super();
   }
 

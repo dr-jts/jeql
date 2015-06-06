@@ -1,0 +1,14 @@
+/*================================
+  JEQL Unit Test - XMLReader
+================================*/
+
+XMLReader t data: $"
+<xml>
+<a>
+<aa>AAA</aa>
+<ab>BBB</ab>
+</a>
+</xml>
+";
+
+Print t;
