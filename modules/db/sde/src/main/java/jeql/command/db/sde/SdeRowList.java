@@ -4,7 +4,7 @@ import jeql.api.row.Row;
 import jeql.api.row.RowIterator;
 import jeql.api.row.RowList;
 import jeql.api.row.RowSchema;
-import jeql.engine.ExecutionException;
+import jeql.api.error.*;
 import jeql.std.geom.GeomFunction;
 
 import com.esri.sde.sdk.client.SeConnection;

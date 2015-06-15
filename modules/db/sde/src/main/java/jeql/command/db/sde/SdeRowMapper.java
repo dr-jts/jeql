@@ -8,7 +8,7 @@ import jeql.api.row.BasicRow;
 import jeql.api.row.Row;
 import jeql.api.row.RowSchema;
 import jeql.engine.ConfigurationException;
-import jeql.engine.ExecutionException;
+import jeql.api.error.*;
 import jeql.std.geom.GeomFunction;
 
 import com.esri.sde.sdk.client.SeColumnDefinition;

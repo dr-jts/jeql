@@ -3,6 +3,7 @@ package jeql.command.db.sde;
 import com.vividsolutions.jts.geom.Geometry;
 
 import jeql.api.table.Table;
+import jeql.api.error.*;
 import jeql.command.db.DbCommandBase;
 import jeql.engine.*;
 
