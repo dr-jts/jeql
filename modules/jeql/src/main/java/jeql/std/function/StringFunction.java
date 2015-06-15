@@ -7,6 +7,7 @@ import jeql.api.function.FunctionClass;
 import jeql.util.StringUtil;
 
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.WordUtils;
 
 
 public class StringFunction 
@@ -216,6 +217,16 @@ implements FunctionClass
   { 
     if (s == null) return s;
     return s.toUpperCase(); 
+  }
+  public static String toCapitals(String s) 
+  { 
+    if (s == null) return s;
+    return WordUtils.capitalize(s); 
+  }
+  public static String toCapitalsFull(String s) 
+  { 
+    if (s == null) return s;
+    return WordUtils.capitalizeFully(s); 
   }
   public static String trim(String s) 
   { 
