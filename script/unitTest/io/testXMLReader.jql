@@ -4,20 +4,28 @@
 
 XMLReader t data: $"
 <xml>
+<top a='foo'>
 <a>ZZZZ
 <aa x='XXX' y='YYY'>AAA</aa>
 <ab>BBB</ab>
-<ac/>
+<ac></ac>
 </a>
+</top>
 </xml>
 ";
 
-//Print t code:;
+Print t code:;
 
 te = select * from table (
-( "xml/a/aa", " x='XXX' y='YYY'", "AAA" )
-( "xml/a/ab", "", "BBB" )
-( "xml/a/ac", "", null )
+( "xml", "", null )
+( "xml/top", " a='foo'", null )
+( "xml/top/a", "", null )
+( "xml/top/a/aa", " x='XXX' y='YYY'", "AAA" )
+( "xml/top/a/ab", "", "BBB" )
+( "xml/top/a/ac", "", null )
+( "/xml/top/a", null, null )
+( "/xml/top", null, null )
+( "/xml", null, null )
 	) t(path,attr,val);
 
 AssertEqual t expected: te;

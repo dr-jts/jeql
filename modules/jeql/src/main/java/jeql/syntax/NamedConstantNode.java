@@ -32,6 +32,7 @@ public class NamedConstantNode
   
   public Class getType(Scope scope)
   {
+	if (value == null) return String.class;
     return value.getClass();
   }
    

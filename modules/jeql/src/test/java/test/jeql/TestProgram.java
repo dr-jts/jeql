@@ -84,7 +84,7 @@ public class TestProgram {
 //  execUnit("testExpression.jql");
 //  execUnit("testUnion.jql");
 //  execUnit("testRegEx.jql");
-    execUnit("io\\testXMLReader.jql");
+    execUnit("io/testXMLReader.jql");
 //  execUnit("geom\\testGeomValues.jql");
 //  execUnit("geom\\testGeomFunc.jql");
 //  execUnit("geom\\testGeomAggFunction2.jql");
@@ -212,7 +212,7 @@ public class TestProgram {
    */
   void execUnit(String scriptname)
   {
-    exec("..\\unitTest\\" + scriptname);
+    exec("unitTest/" + scriptname);
   }
   void exec(String filename)
   {

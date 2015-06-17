@@ -13,84 +13,120 @@ import com.ctc.wstx.stax.WstxInputFactory;
 
 public class XMLStackReader
 {
-  private DocumentModel model;
-  private XMLStreamReader xmlRdr;
-  private NameStack path;
+  private XMLStreamReader rdr;
+  private NameStack pathStk;
   private String value;
-  private String attr;
+private Object prevStart;
+private String prevAttr;
   
-  public XMLStackReader(Reader rdr)
+  public XMLStackReader(Reader inRdr)
   throws Exception
   {
     WstxInputFactory fact = new WstxInputFactory();
-    xmlRdr =  fact.createXMLStreamReader(rdr);
-    model = new DocumentModel();
-    path = new NameStack("/");
+    this.rdr =  fact.createXMLStreamReader(inRdr);
+    //model = new DocumentModel();
+    pathStk = new NameStack("/");
   }
   
   /**
-   * Returns next Placemark record
+   * Returns next XML Atom
    * @return
    * @throws XMLStreamException
    */
-  public String next()
+  public Atom next()
   throws XMLStreamException
   {
-    String name = null;
-    String lastStart = null;
-    while (xmlRdr.hasNext()) {
-      int event = xmlRdr.getEventType();
+	if (rdr == null) return null;
+    //String name = null;
+    //prevStart = null;
+	/*
+    if (endPath != null) {
+    	String save = endPath;
+    	endPath = null;
+    	return new Atom("/" + save);
+    }
+    */
+    while (rdr.hasNext()) {
+      int event = rdr.getEventType();
+      //System.out.println(event);
       if (event == XMLStreamConstants.START_ELEMENT) {
-        name = xmlRdr.getLocalName();
-        lastStart = name;
+        String name = rdr.getLocalName();
+        String attr = XMLParseUtil.readAttributes(rdr);
+        boolean isNewElement = prevStart != null && ! name.equals(prevStart);
+        Atom atom = null;
+        if (isNewElement) {
+        	atom = new Atom(pathStk.getNameList(), prevAttr, null);
+        }
+        prevStart = name;
+        prevAttr = attr;
         value = null;
-        attr = XMLParseUtil.readAttributes(xmlRdr);
-        path.push(name);
+        pathStk.push(name);
+        rdr.next();
+        if (atom != null) return atom;
       }
       else if (event == XMLStreamConstants.CHARACTERS) {
-        value = xmlRdr.getText();
+        value = rdr.getText();
+        rdr.next();
+        continue;
       }
       else if (event == XMLStreamConstants.END_ELEMENT) {
-        name = xmlRdr.getLocalName();
-        boolean isLeaf = name.equals(lastStart);
+        String name = rdr.getLocalName();
 //        System.out.println("/" + locName);
 //        value = "***" + locName;
-        String p = path.getNameList();
-        path.pop();
-        xmlRdr.next();
-        if (isLeaf) return p;
+        String startPath = pathStk.getNameList();
+        pathStk.pop();
+        rdr.next();
+        boolean isLeaf = name.equals(prevStart);
+        if (isLeaf) {
+        	prevStart = null;
+        	// can return value now
+        	return new Atom(startPath, prevAttr, value);
+        }
+        else {
+        	return new Atom("/" + startPath, null, null);
+        }
       }
       else if (event == XMLStreamConstants.END_DOCUMENT) {
-        break;
+    	rdr.close();
+    	rdr = null;
+        return null;
       }
-      
-      // consume the event
-      try {
-        xmlRdr.next();
-      }
-      catch (WstxIOException e) {
-        // can't do much about this, so carry on
-        e.printStackTrace();
-        throw e;
+      else {
+    	  rdr.next();
       }
     }
     return null;
   }
+
+//public String path() { return pathStk.getNameList(); }
   
-  public String path() { return path.getNameList(); }
-  
-  public String attr() { return attr; }
-  public String value() { return value; }
+  //public String attr() { return attr; }
+  //public String value() { return value; }
 
   public void close()
   {
     try {
-      xmlRdr.close();
+      rdr.close();
     }
     catch (XMLStreamException e) {
     }
   }
 
-  
+  public static class Atom
+  {
+	  String path;
+	  String attr;
+	  String value;
+
+	public Atom(String path) {
+		  this(path, "", null);
+	  }
+	public Atom(String path, String attr, String value)
+	{
+		this.path = path;
+		this.attr = attr;
+		this.value = value;
+	}
+  }
 
 }

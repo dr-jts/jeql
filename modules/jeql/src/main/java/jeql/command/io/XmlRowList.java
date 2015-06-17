@@ -13,6 +13,7 @@ import jeql.api.row.BasicRowList;
 import jeql.api.row.Row;
 import jeql.api.row.RowIterator;
 import jeql.api.row.RowSchema;
+import jeql.command.io.XMLStackReader.Atom;
 import jeql.io.InputSource;
 
 public class XmlRowList 
@@ -44,11 +45,7 @@ extends BasicRowList
   
   private class XmlRowIterator implements RowIterator
   {
-    //private String lineBuffer = null;
-    private boolean isClosed = false;
-    private Stack tagStack;
     private XMLStackReader xmlRdr;
-    //private LineNumberReader rdr;
     
     public XmlRowIterator(RowSchema schema, InputSource src) throws Exception
     {
@@ -63,39 +60,34 @@ extends BasicRowList
     
     public Row next()
     {
-      String path = null;
-      String attr = null;
-      String value = null;
+      Atom atom = null;
       try {
-        path = xmlRdr.next();
-        attr = xmlRdr.attr();
-        value = xmlRdr.value();
+        atom = xmlRdr.next();
       }
       catch (XMLStreamException e) {
         // TODO Auto-generated catch block
         e.printStackTrace();
       }
       // if at end, can close input
-      if (path == null) {
+      if (atom == null) {
         close();
         return null;
       }
-      return createRow(path, attr, value);
+	return createRow(atom);
     }
       
     private void close()
     {
       if (xmlRdr != null) {  xmlRdr.close(); }
       xmlRdr = null;
-      isClosed = true;
     }
     
-    private Row createRow(String path, String attr, String value)
+    private Row createRow(Atom atom)
     {
       BasicRow row = new BasicRow(schema.size());
-      row.setValue(0, path);
-      row.setValue(1, attr);
-      row.setValue(2, value);
+      row.setValue(0, atom.path);
+      row.setValue(1, atom.attr);
+      row.setValue(2, atom.value);
       return row;
     }
     
