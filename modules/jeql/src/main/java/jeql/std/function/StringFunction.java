@@ -228,6 +228,16 @@ implements FunctionClass
     if (s == null) return s;
     return WordUtils.capitalizeFully(s); 
   }
+  public static String uncapitalize(String s) 
+  { 
+    if (s == null) return s;
+    return WordUtils.uncapitalize(s); 
+  }
+  public static String initials(String s) 
+  { 
+    if (s == null) return s;
+    return WordUtils.initials(s); 
+  }
   public static String trim(String s) 
   { 
     if (s == null) return s;
