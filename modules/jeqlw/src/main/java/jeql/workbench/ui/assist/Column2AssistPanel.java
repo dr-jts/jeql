@@ -73,5 +73,13 @@ public abstract class Column2AssistPanel extends JPanel
   {
     listModel.addElement(codeSnip);
   }
+  protected void add(String displayText)
+  {
+    listModel.addElement(new CodeSnippet(displayText));
+  }
+  protected void add(String displayText, String codeText)
+  {
+    listModel.addElement(new CodeSnippet(displayText, codeText));
+  }
 
 }
