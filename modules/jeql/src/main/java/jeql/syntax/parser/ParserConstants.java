@@ -121,17 +121,17 @@ public interface ParserConstants {
   /** RegularExpression Id. */
   int S_IDENTIFIER = 59;
   /** RegularExpression Id. */
-  int LETTER = 60;
+  int S_QUOTED_IDENTIFIER = 60;
   /** RegularExpression Id. */
-  int SPECIAL_CHARS = 61;
+  int LETTER = 61;
   /** RegularExpression Id. */
-  int S_STRING_LITERAL = 62;
+  int SPECIAL_CHARS = 62;
   /** RegularExpression Id. */
-  int S_RAW_STRING_LITERAL = 63;
+  int S_STRING_LITERAL = 63;
   /** RegularExpression Id. */
-  int S_RICH_STRING_LITERAL = 64;
+  int S_RAW_STRING_LITERAL = 64;
   /** RegularExpression Id. */
-  int S_QUOTED_IDENTIFIER = 65;
+  int S_RICH_STRING_LITERAL = 65;
   /** RegularExpression Id. */
   int S_CMD_PARAM_NAME = 66;
   /** RegularExpression Id. */
@@ -252,12 +252,12 @@ public interface ParserConstants {
     "<DIGIT>",
     "<S_CONST_LITERAL>",
     "<S_IDENTIFIER>",
+    "<S_QUOTED_IDENTIFIER>",
     "<LETTER>",
     "<SPECIAL_CHARS>",
     "<S_STRING_LITERAL>",
     "<S_RAW_STRING_LITERAL>",
     "<S_RICH_STRING_LITERAL>",
-    "<S_QUOTED_IDENTIFIER>",
     "<S_CMD_PARAM_NAME>",
     "\"=\"",
     "\"*\"",

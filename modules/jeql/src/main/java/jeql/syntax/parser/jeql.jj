@@ -144,6 +144,8 @@ TOKEN : /* Literal Constants */
 TOKEN:  /* Identifiers and strings */
 {
     < S_IDENTIFIER: ( <LETTER> | <SPECIAL_CHARS> )+ ( <DIGIT> | <LETTER> | <SPECIAL_CHARS> )* >
+|   < S_QUOTED_IDENTIFIER: "[" ( <LETTER> | <SPECIAL_CHARS> )+ ( <DIGIT> | <LETTER> | <SPECIAL_CHARS> | " " )* ( <DIGIT> | <LETTER> | <SPECIAL_CHARS> ) "]" >
+
 |   < #LETTER: ["a"-"z", "A"-"Z"] >
 |   < #SPECIAL_CHARS: "$" | "_">
 
@@ -195,7 +197,6 @@ TOKEN:  /* Identifiers and strings */
       )*
       "'"
   >
-|   < S_QUOTED_IDENTIFIER: "[" (~["\n","\r","\""])* "]" >
 }
 
 TOKEN:  /* Command parameter names */

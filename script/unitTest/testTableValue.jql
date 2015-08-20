@@ -36,5 +36,9 @@ AssertEqual value: t1 expected: t2;
 
 //Print t2;
 
+// Test syntax with numbers only
+t2 = select * from [ [1, 1] [2, 2] ];
+
+
 
 
