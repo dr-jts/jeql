@@ -9,6 +9,8 @@ Test TABLE value syntax & semantics
 	
 ================================*/
 
+// OLD - table paren values
+
 t1 = select * from table ( ( 10 - 9, "aa" ), ( 10 / 5, "b") );
 
 t2 = select * from table t(a, b) ( (1, "a" + "a" ) (2, "b") );
