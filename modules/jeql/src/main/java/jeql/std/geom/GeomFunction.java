@@ -273,6 +273,11 @@ implements FunctionClass
           { new Coordinate(x0, y0), new Coordinate(x1, y1) });
   }
 
+  public static Geometry createLine(Geometry geom)
+  {
+    return geomFactory.createLineString(connectPts(geom, false));
+  }
+
   public static Geometry createLineFromPoints(Point p0, Point p1)
   {
     return geomFactory.createLineString(
@@ -302,6 +307,11 @@ implements FunctionClass
             p2.getCoordinate(),
             p0.getCoordinate()
         }), null);
+  }
+
+  public static Geometry createPolygon(Geometry geom)
+  {
+    return geomFactory.createPolygon(connectPts(geom, true));
   }
 
   public static Geometry createPolygon(Point p0, Point p1, Point p2, Point p3)
@@ -448,8 +458,6 @@ implements FunctionClass
     return md.getMinimumRectangle();
   }
   
-
-  
   /**
    * Creates a GeometryCollection from two geometries A and B.
    * 
@@ -462,6 +470,12 @@ implements FunctionClass
   public static Geometry collect(Geometry a, Geometry b)
   {
     Geometry[] gs = new Geometry[] { a, b };
+    return geomFactory.createGeometryCollection(gs);
+  }
+  
+  public static Geometry collect(Geometry a, Geometry b, Geometry c)
+  {
+    Geometry[] gs = new Geometry[] { a, b, c };
     return geomFactory.createGeometryCollection(gs);
   }
   
@@ -509,6 +523,14 @@ implements FunctionClass
     pts.add(geom.getCoordinates(), true);
     return geom.getFactory().createLineString(
           CoordinateArrays.toCoordinateArray(pts));
+  }
+ 
+  static Coordinate[] connectPts(Geometry geom, boolean close)
+  {
+    CoordinateList pts = new CoordinateList();
+    pts.add(geom.getCoordinates(), true);
+    if (close) pts.closeRing();
+    return CoordinateArrays.toCoordinateArray(pts);
   }
  
   public static Geometry lineConnectNoRepeated(Geometry geom)
