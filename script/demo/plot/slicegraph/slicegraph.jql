@@ -5,38 +5,36 @@ Visualize a grid dataset as a SliceGraph (AKA LneGraph)
 DATA_SCALE = .008; 
 
 TextReader t file: "world_pop_lores.grid";
-//TextReader t file: "data.grid";
+
+//--- convert grid file to individual coordinate data rows
 RE_NUM = \"[\d\.]+";
-t =select rowNum() y, line from t;
-t =select y, splitIndex x, Val.toDouble(splitValue) data   from t split by RegEx.splitByMatch(line, RE_NUM);
-//t =select * from t where x < 450;
-t =select 	10 * (172 - y) y ,
+t = select rowNum() y, line from t;
+t = select y, splitIndex x, Val.toDouble(splitValue) data from t split by RegEx.splitByMatch(line, RE_NUM);
+
+//--- scale x,y,data to image size; raise non-zero data by a small amount for appearance
+t = select 10 * (172 - y) y ,
 	6 * x x ,
-	//VAL_SCALE * Val.toDouble(splitValue) val 
 	( data > 0 ?    2.0 + data * DATA_SCALE    : 0.0  ) data 
 	from t;
 
-t =select y, x, geomConnect( Geom.createPoint(  x, y + data ) ) line from t group by y;
-t =select y, y2, 
+//--- create slice lines
+t = select y, x, geomConnect( Geom.createPoint(  x, y + data ) ) line from t group by y;
+
+//--- create masking polygon, base lines for rendering
+//--- include symbolization, and sort geometry for rendering
+t = select y, 
+  styleStroke,  2 styleStrokeWidth,  #ffffff styleFill,
 	case y2 
-	when #poly then Geom.createPolygon ( Geom.collect ( line, LINESTRING( 500 1, 1 1) ) )
-	when #line then Geom.difference( line, baseline ) 
-	when #water then Geom.intersection( line,  baseline )
+	 when #poly then Geom.createPolygon ( Geom.collect ( line, LINESTRING( 2000 1, 1 1) ) )
+	 when #line then Geom.difference( line, baseline ) 
+	 when #water then Geom.intersection( line,  baseline )
 	end geom
 	let 
 		baseline = Geom.createLine(0, y, 3000, y )
 	from t 
-	join [ tt( y2 ) [ #poly ] [ #line ]  [ #water ] ] tt;  
-t =select y, y2, geom from t order by y desc;
-t =select geom, 
-	case y2
-		when #poly then null
-		when #line then #222222
-		when #water then #EEEEEE
-		end styleStroke,
-	2 styleStrokeWidth, 
-	#ffffff styleFill 
-	from t;
+	join [ tt( y2, styleStroke ) [ #poly, null ] [ #line, #222222  ]  [ #water, #EEEEEE ] ] tt
+	order by y desc;
+
 //Print t;
 
 Plot data: t
