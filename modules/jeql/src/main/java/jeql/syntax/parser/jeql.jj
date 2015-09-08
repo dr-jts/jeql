@@ -145,6 +145,7 @@ TOKEN:  /* Identifiers and strings */
 {
     < S_IDENTIFIER: ( <LETTER> | <SPECIAL_CHARS> )+ ( <DIGIT> | <LETTER> | <SPECIAL_CHARS> )* >
 |   < S_QUOTED_IDENTIFIER: "[" ( <LETTER> | <SPECIAL_CHARS> )+ ( <DIGIT> | <LETTER> | <SPECIAL_CHARS> | " " )* ( <DIGIT> | <LETTER> | <SPECIAL_CHARS> ) "]" >
+|   < S_KEY_IDENTIFIER: <S_IDENTIFIER> ":" >
 
 |   < #LETTER: ["a"-"z", "A"-"Z"] >
 |   < #SPECIAL_CHARS: "$" | "_">
@@ -197,11 +198,6 @@ TOKEN:  /* Identifiers and strings */
       )*
       "'"
   >
-}
-
-TOKEN:  /* Command parameter names */
-{
-    < S_CMD_PARAM_NAME: <S_IDENTIFIER> ":" >
 }
 
 TOKEN:  
@@ -433,7 +429,7 @@ CommandParameterNode CommandParam():
 }
 {
    (
-	<S_CMD_PARAM_NAME>
+	<S_KEY_IDENTIFIER>
     	{     	name = token.image;  line = token.beginLine;	}
     	
 	[ LOOKAHEAD(2) expr= ExpressionOrSelect() ]
@@ -445,7 +441,6 @@ CommandParameterNode CommandParam():
 		return node;
 	}
 }
-
 
 /* ------------ SELECT clause ----------------------*/
 
@@ -513,7 +508,7 @@ SelectItemList SelectList():
     item= SelectItem() 
     		{ list.add(item);  }
     
-    ("," item=SelectItem() 
+    ( ","  item=SelectItem() 
       		{ list.add(item);  }
     )*
   )    
@@ -524,14 +519,14 @@ SelectItemNode SelectItem():
 {
 	ParseTreeNode expr = null;
 	Token nameTok;
-	Token alias = null;
+  Token alias = null;
 }
 {
   (
         LOOKAHEAD(2) 
         expr = StarredTableRef()
         
-    |   expr= Expression()    // Column or Expression
+    |   [ alias= <S_KEY_IDENTIFIER> ] expr= Expression()    // Column or Expression
 
         [ LOOKAHEAD(2) [ <K_AS> ] alias= <S_IDENTIFIER>] // Column Alias
   )    

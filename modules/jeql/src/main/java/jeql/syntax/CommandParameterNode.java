@@ -1,6 +1,7 @@
 package jeql.syntax;
 
 import jeql.engine.Scope;
+import jeql.syntax.util.IdentifierUtil;
 
 public class CommandParameterNode 
   extends ParseTreeNode
@@ -15,7 +16,7 @@ public class CommandParameterNode
    */
   public CommandParameterNode(String name, ParseTreeNode e) {
     // strip trailing ':'
-    this.name = name.substring(0, name.length() - 1);
+    this.name = IdentifierUtil.keyIdentifier(name);
     this.e = e;
   }
 

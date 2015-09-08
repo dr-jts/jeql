@@ -4,16 +4,27 @@ Test SELECT statement
 	
 ================================*/
 
-t1 = select * from table ( 
+t = table tbl(a, b) ( 
 		(10, "a"), 
 		(11, "c"), 
 		(3, "d"), 
 		(2, "b"), 
 		(2, "a"), 
 		(2, "c") 
-			) tbl(a, b);
+			) ;
+
+t1 = select * from t;
 
 select * from t1;
+
+t1 = select 	c: a, 
+		d: b 	from t;
+
+t2 = select cc: c, dd: d from t1;
+
+
+
+
 
 
 

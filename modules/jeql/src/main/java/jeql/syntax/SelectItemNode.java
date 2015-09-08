@@ -2,6 +2,7 @@ package jeql.syntax;
 
 import jeql.api.row.RowSchema;
 import jeql.engine.Scope;
+import jeql.syntax.util.IdentifierUtil;
 
 
 /**
@@ -22,7 +23,7 @@ public class SelectItemNode
 
   public SelectItemNode(ParseTreeNode expr, String alias) {
     this(expr);
-    this.alias = alias;
+    this.alias = IdentifierUtil.keyIdentifier(alias);
   }
 
   public String getName(int colNum) 
