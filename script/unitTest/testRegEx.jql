@@ -11,13 +11,35 @@ Assert RegEx.matches("abcd-;,", \"\D*");
 Assert RegEx.matches("12345abcd", \"\d*\D*");
 Assert RegEx.matches("abcd \t12345", \"\D*\s\s\d*");
 
+// Pattern to match integer numbers 
+RE_NUM_INT = \"[\d]+";
+
+Assert RegEx.matches( "123", 	RE_NUM_INT);
+Assert RegEx.matches( "0", 	RE_NUM_INT);
+Assert not RegEx.matches( "123.", 	RE_NUM_INT);
+Assert not RegEx.matches( "123.45", 	RE_NUM_INT);
+Assert not RegEx.matches( ".45", 	RE_NUM_INT);
+Assert not RegEx.matches( "0.45", 	RE_NUM_INT);
+Assert not RegEx.matches( "123.45E23", 	RE_NUM_INT);
+
+// Pattern to match decimal numbers 
+RE_NUM_DEC = \"[\d\.]+";
+
+Assert RegEx.matches( "123.45", RE_NUM_DEC);
+Assert RegEx.matches( "123.", 	RE_NUM_DEC);
+Assert RegEx.matches( ".45", 	RE_NUM_DEC);
+Assert RegEx.matches( "0.45", 	RE_NUM_DEC);
+Assert RegEx.matches( "123", 	RE_NUM_DEC);
+Assert not RegEx.matches( "123.45E23", RE_NUM_DEC);
+
 // Pattern to match numbers in scientific notation
-numPat = \"\d*\.\d*([Ee]?[\+\-]?\d+)?";
-Assert RegEx.matches("123.45", numPat);
-Assert RegEx.matches("123.", numPat);
-Assert not RegEx.matches("123", numPat);
-Assert RegEx.matches(".45", numPat);
-Assert RegEx.matches("123.45E23", numPat);
+RE_NUM_SCI = \"\d*\.\d*([Ee]?[\+\-]?\d+)?";
+
+Assert RegEx.matches( "123.45", 	RE_NUM_SCI);
+Assert RegEx.matches( "123.", 		RE_NUM_SCI);
+Assert RegEx.matches( ".45", 		RE_NUM_SCI);
+Assert RegEx.matches( "123.45E23", 	RE_NUM_SCI);
+Assert not RegEx.matches( "123", 	RE_NUM_SCI);
 
 // matching entire input
 
