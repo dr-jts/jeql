@@ -1,38 +1,44 @@
 /*=============================
-Visualize a grid dataset as a SliceGraph (AKA LneGraph)
+Visualize a grid dataset as a SliceGraph (AKA LineGraph)
 =============================*/
 
 DATA_SCALE = .008; 
 
 TextReader t file: "world_pop_lores.grid";
 
-//--- convert grid file to individual coordinate data rows
-RE_NUM = \"[\d\.]+";
-t = select rowNum() y, line from t;
-t = select y, splitIndex x, Val.toDouble(splitValue) data from t split by RegEx.splitByMatch(line, RE_NUM);
+//--- convert grid file to individual data cell rows [ x y data ]
+RE_DEC_NUM = \"[\d\.]+";  // matches a decimal number
+t = select y: rowNum(), line from t;
+t = select y, x: splitIndex, data: Val.toDouble(splitValue) from t split by RegEx.splitByMatch(line, RE_DEC_NUM);
 
 //--- scale x,y,data to image size; raise non-zero data by a small amount for appearance
-t = select 10 * (172 - y) y ,
-	6 * x x ,
-	( data > 0 ?    2.0 + data * DATA_SCALE    : 0.0  ) data 
+t = select 	y: 10 * (172 - y) ,
+		x: 6 * x ,
+		data: ( data > 0 ?    2.0 + data * DATA_SCALE    : 0.0  ) 
 	from t;
 
 //--- create slice lines
 t = select y, x, geomConnect( Geom.createPoint(  x, y + data ) ) line from t group by y;
 
-//--- create masking polygon, base lines for rendering
-//--- include symbolization, and sort geometry for rendering
+//--- create mask polygon, data and water lines for rendering
+//--- include symbolization for the graphic elements
+//--- sort all geometry for rendering
 t = select y, 
-  styleStroke,  2 styleStrokeWidth,  #ffffff styleFill,
-	case y2 
-	 when #poly then Geom.createPolygon ( Geom.collect ( line, LINESTRING( 2000 1, 1 1) ) )
-	 when #line then Geom.difference( line, baseline ) 
-	 when #water then Geom.intersection( line,  baseline )
-	end geom
+  	styleStroke,  
+	styleStrokeWidth: 2,  
+	styleFill: #ffffff,
+	geom: case element 
+	 	when #mask  then Geom.createPolygon ( Geom.collect ( line, LINESTRING( 2000 1, 1 1) ) )
+	 	when #line  then Geom.difference( line, baseline ) 
+	 	when #water then Geom.intersection( line,  baseline )
+		end
 	let 
 		baseline = Geom.createLine(0, y, 3000, y )
 	from t 
-	join [ tt( y2, styleStroke ) [ #poly, null ] [ #line, #222222  ]  [ #water, #EEEEEE ] ] tt
+	join [ tt( element, styleStroke ) 
+		[ #mask, null ] 
+		[ #line, #222222  ]  
+		[ #water, #EEEEEE ]   ] tt
 	order by y desc;
 
 //Print t;
