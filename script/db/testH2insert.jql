@@ -2,7 +2,7 @@
 import jeql.command.db.DbWriter;
 import jeql.command.db.DbExec;
 
-DbExec 	class: "org.h2.Driver"
+DbExec 	driver: "org.h2.Driver"
 	url: "jdbc:h2:tcp://localhost/~/test"
 	user: "sa"
 //	password: ""
@@ -19,7 +19,7 @@ t = select
 		from Generate.sequence(1, 5);
 	
 DbWriter t
-	class: "org.h2.Driver"
+	driver: "org.h2.Driver"
 	url: "jdbc:h2:tcp://localhost/~/test"
 	user: "sa"
 	password: ""
@@ -35,7 +35,7 @@ t2 = select
 		from Generate.sequence(200, 205);
 	
 DbWriter t2
-	class: "org.h2.Driver"
+	driver: "org.h2.Driver"
 	url: "jdbc:h2:tcp://localhost/~/test"
 	user: "sa"
 	password: ""
@@ -50,7 +50,7 @@ t3 = select
 		from Generate.sequence(1, 10);
 		
 DbWriter t3
-	class: "org.h2.Driver"
+	driver: "org.h2.Driver"
 	url: "jdbc:h2:tcp://localhost/~/test"
 	user: "sa"
 	password: ""
