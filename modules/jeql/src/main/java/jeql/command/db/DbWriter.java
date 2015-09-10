@@ -1,9 +1,12 @@
 package jeql.command.db;
 
+import java.sql.Clob;
 import java.sql.Connection;
+import java.sql.ParameterMetaData;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 
 import jeql.api.error.DbException;
 import jeql.api.error.ExecutionException;
@@ -22,7 +25,7 @@ import jeql.engine.Scope;
 public class DbWriter 
   extends DbCommandBase 
 {
-	protected String tableName;
+  protected String tableName;
   protected Table tbl = null;
   protected String values = null;
   protected String sql = null;
@@ -182,7 +185,15 @@ public class DbWriter
       insertSQL = createInsertPreparedSQL(schema);
     
     prepStmt = conn.prepareStatement(insertSQL);
-    int numParam = prepStmt.getParameterMetaData().getParameterCount();
+    ParameterMetaData metadata = prepStmt.getParameterMetaData();
+    int numParam = metadata.getParameterCount();
+    
+    /*
+    String[] paramClassName = new String[numParam];
+    for (int i = 0; i < numParam; i++) {
+      paramClassName[i] = metadata.getParameterClassName(i);
+    }
+    */
     
     int batchCount = 0;
     int commitCount = 0;
@@ -190,7 +201,7 @@ public class DbWriter
       Row row = rs.next();
       if (row == null) // done writing
         break;
-      addRow(prepStmt, numParam, row);
+      addRow(prepStmt, numParam, row, schema);
       batchCount += 1;
       commitCount += 1;
       if (batchCount == batchSize) {
@@ -254,15 +265,38 @@ public class DbWriter
     return buf.toString();
   }
 
-  private void addRow(PreparedStatement prepStmt, int numParam, Row row)
+  private void addRow(PreparedStatement prepStmt, int numParam, Row row, RowSchema schema)
   throws SQLException
   {
     int num = Math.min(numParam, row.size());
 
     for (int i = 0; i < num; i++) {
-      prepStmt.setObject(i+1, row.getValue(i));
+      try {
+        if (schema.getType(i) == String.class) {
+          setString(prepStmt, i, (String) row.getValue(i));
+        }
+        else {
+          prepStmt.setObject(i+1, row.getValue(i));
+        }
+      }
+      catch (SQLException ex) {
+        throw new DbException("column " + schema.getName(i) + "[" + i + "] : " 
+            + ex.getMessage(), ex);
+      }
     }
     prepStmt.addBatch();
+  }
+
+  private static final int MAX_SAFE_STRING_SIZE = 2000;
+
+  private void setString(PreparedStatement prepStmt, int i, String s) throws SQLException {
+    if (s.length() < MAX_SAFE_STRING_SIZE) {
+      prepStmt.setString(i+1, s);
+      return;
+    }
+    Clob clob = conn.createClob();
+    clob.setString(1, s);
+    prepStmt.setClob(i+1, clob);
   }
 
 }
