@@ -290,7 +290,7 @@ public class DbWriter
   private static final int MAX_SAFE_STRING_SIZE = 2000;
 
   private void setString(PreparedStatement prepStmt, int i, String s) throws SQLException {
-    if (s.length() < MAX_SAFE_STRING_SIZE) {
+    if (s == null || s.length() < MAX_SAFE_STRING_SIZE) {
       prepStmt.setString(i+1, s);
       return;
     }
