@@ -20,6 +20,9 @@ import jeql.util.TypeUtil;
  * The counter value is reset whenever the value of reset-val changes.
  * The initial value of INDEX(...) is 1.
  * 
+ * This allows assigning sequence numbers to streams of 
+ * changing values where the values are not known in advance.
+ * 
  * @author Martin Davis
  *
  */
@@ -29,7 +32,6 @@ public class IndexFunctionEvaluator
   private int argCount = 0;
   private ParseTreeNode incCondExpr;
   private ParseTreeNode resetExpr = null;
-  private int initialValue = 0;
   public static final String FN_NAME = "index";
   
   public IndexFunctionEvaluator() 

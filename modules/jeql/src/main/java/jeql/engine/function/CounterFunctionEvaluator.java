@@ -20,6 +20,10 @@ import jeql.util.TypeUtil;
  * The counter value is reset whenever resetCondExpr is true.
  * The initial value of COUNTER(...) is 1.
  * 
+ * This allows assigning sequence numbers to streams
+ * which contian tag values that are fixed and known in advance.
+ * An example is a stream of table cells, where the row and cell delimiters are known.
+ * 
  * @author Martin Davis
  *
  */
