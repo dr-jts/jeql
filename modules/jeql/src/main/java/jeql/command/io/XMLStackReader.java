@@ -6,9 +6,6 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import jeql.command.io.kml.DocumentModel;
-
-import com.ctc.wstx.exc.WstxIOException;
 import com.ctc.wstx.stax.WstxInputFactory;
 
 public class XMLStackReader
@@ -18,14 +15,17 @@ public class XMLStackReader
   private String value;
 private Object prevStart;
 private String prevAttr;
+private boolean includeAllEndElements;
+  private Atom atomBuffer = null;
   
-  public XMLStackReader(Reader inRdr)
+  public XMLStackReader(Reader inRdr, boolean includeAllEndElements)
   throws Exception
   {
     WstxInputFactory fact = new WstxInputFactory();
     this.rdr =  fact.createXMLStreamReader(inRdr);
     //model = new DocumentModel();
     pathStk = new NameStack("/");
+    this.includeAllEndElements = includeAllEndElements;
   }
   
   /**
@@ -47,6 +47,13 @@ private String prevAttr;
     }
     */
     while (rdr.hasNext()) {
+      
+      if (atomBuffer != null) {
+        Atom atom = atomBuffer;
+        atomBuffer = null;
+        return atom;
+      }
+      
       int event = rdr.getEventType();
       //System.out.println(event);
       if (event == XMLStreamConstants.START_ELEMENT) {
@@ -77,13 +84,22 @@ private String prevAttr;
         pathStk.pop();
         rdr.next();
         boolean isLeaf = name.equals(prevStart);
+        Atom leaf = null;
         if (isLeaf) {
         	prevStart = null;
         	// can return value now
-        	return new Atom(startPath, prevAttr, value);
+        	leaf = new Atom(startPath, prevAttr, value);
         }
-        else {
-        	return new Atom("/" + startPath, null, null);
+        if (! isLeaf || includeAllEndElements) {
+          Atom endElt = new Atom("/" + startPath, null, null);
+          if (leaf != null) {
+            atomBuffer = endElt;
+            return leaf;
+          }
+          else {
+            atomBuffer = null;
+            return endElt;
+          }
         }
       }
       else if (event == XMLStreamConstants.END_DOCUMENT) {
@@ -97,11 +113,6 @@ private String prevAttr;
     }
     return null;
   }
-
-//public String path() { return pathStk.getNameList(); }
-  
-  //public String attr() { return attr; }
-  //public String value() { return value; }
 
   public void close()
   {

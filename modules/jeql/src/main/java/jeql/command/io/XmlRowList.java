@@ -22,10 +22,12 @@ extends BasicRowList
   public static final String COL_VAL = "value";
   
   private InputSource src;
+  private boolean includeAllEndElements;
   
-  public XmlRowList(InputSource src) 
+  public XmlRowList(InputSource src, boolean includeAllEndElements) 
   {
     this.src = src;
+    this.includeAllEndElements = includeAllEndElements;
     schema = new RowSchema(
         new String[] { COL_PATH, COL_ATTR, COL_VAL }, 
         new Class[] { String.class, String.class, String.class } );
@@ -48,7 +50,7 @@ extends BasicRowList
     public XmlRowIterator(RowSchema schema, InputSource src) throws Exception
     {
       LineNumberReader rdr = new LineNumberReader(new InputStreamReader(src.createStream()));
-      xmlRdr = new XMLStackReader(rdr);
+      xmlRdr = new XMLStackReader(rdr, includeAllEndElements);
     }
     
     public RowSchema getSchema()

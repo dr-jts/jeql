@@ -15,6 +15,15 @@ import com.vividsolutions.jts.io.gml2.GMLWriter;
 
 // TODO: allow output of nested column values (using _ as tag sep)
 
+/**
+ * Outputs XML with defined tags for table and row tags.
+ * Column tags are defined by column names.
+ * Also allows outputing custom XML attributes for table element.
+ * Geometries are written in GML2 format (to write them as WKT, convert them to a WKT string in JEQL)
+ * 
+ * @author Martin Davis
+ *
+ */
 public class XMLWriterCommand 
 extends TableFileWriterCmd
 {
