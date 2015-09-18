@@ -1,0 +1,45 @@
+/*================================
+
+Test INDEX function
+
+INDEX allows generating sequence IDs for rows, based on unknown column values
+	
+================================*/
+
+
+in1 = select * from [
+[ "blue" ]
+[ "blue" ]
+[ "blue" ]
+[ "red" ]
+[ "red" ]
+[ "green" ]
+[ "green" ]
+[ "green" ]
+[ "green" ]
+[ "yellow" ]
+[ "yellow" ]
+] t(tag);
+
+t1 = select 
+  i: index(tag ),
+ tag from in1;
+
+Print t1 code:;
+
+tExp1 = select * from table ( 
+( 1, "blue" )
+( 1, "blue" )
+( 1, "blue" )
+( 2, "red" )
+( 2, "red" )
+( 3, "green" )
+( 3, "green" )
+( 3, "green" )
+( 3, "green" )
+( 4, "yellow" )
+( 4, "yellow" )
+ );
+
+AssertEqual t1 expected: tExp1;
+
