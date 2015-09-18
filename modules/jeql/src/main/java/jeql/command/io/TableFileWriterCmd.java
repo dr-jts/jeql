@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.StringWriter;
 
 import jeql.api.table.Table;
 import jeql.engine.EngineContext;
@@ -15,6 +16,7 @@ implements TableWriterCmd
   protected String filename = null;
   protected Table tbl = null;
   protected PrintWriter writer = null;
+  private StringWriter stringWriter;
 
   public TableFileWriterCmd() {
   }
@@ -22,6 +24,11 @@ implements TableWriterCmd
   public void setFile(String filename)
   {
     this.filename = filename;
+  }
+  
+  public String getOutputString()
+  {
+    return stringWriter.toString();
   }
   
   public void setDefault(Table tbl)
@@ -36,10 +43,15 @@ implements TableWriterCmd
   }
    
   protected PrintWriter getWriter() throws IOException {
-    if (filename != null) {
-      writer = new PrintWriter(new FileWriter(new File(filename)));
-    } else {
+    if (filename == null) {
       writer = getSystemOutWriter();
+    }
+    else if (filename.equalsIgnoreCase("string:")) {
+      stringWriter = new StringWriter();
+      writer = new PrintWriter(stringWriter);
+    }
+    else {
+      writer = new PrintWriter(filename);
     }
     return writer;
   }
