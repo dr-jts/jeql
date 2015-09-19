@@ -3,7 +3,7 @@ package jeql.command.io.kml;
 import java.io.PrintWriter;
 
 import jeql.api.row.Row;
-import jeql.command.io.XmlDataWriter;
+import jeql.command.io.xml.XmlDataWriter;
 import jeql.util.StringUtil;
 
 public class XMLWriter

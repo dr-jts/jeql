@@ -1,4 +1,4 @@
-package jeql.command.io;
+package jeql.command.io.xml;
 
 import java.io.IOException;
 import java.io.Writer;

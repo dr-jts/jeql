@@ -1,4 +1,4 @@
-package jeql.command.io;
+package jeql.command.io.xml;
 
 
 import java.io.IOException;
@@ -8,6 +8,8 @@ import jeql.api.row.Row;
 import jeql.api.row.RowIterator;
 import jeql.api.row.RowSchema;
 import jeql.api.table.Table;
+import jeql.command.io.IOConstants;
+import jeql.command.io.TableFileWriterCmd;
 import jeql.engine.Scope;
 
 import com.vividsolutions.jts.geom.Geometry;

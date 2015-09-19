@@ -1,10 +1,12 @@
-package jeql.command.io;
+package jeql.command.io.xml;
 
 import java.io.Reader;
 
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+
+import jeql.command.io.NameStack;
 
 import com.ctc.wstx.stax.WstxInputFactory;
 

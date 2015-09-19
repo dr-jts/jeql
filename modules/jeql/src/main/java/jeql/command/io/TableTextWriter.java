@@ -10,6 +10,12 @@ import jeql.engine.EngineContext;
 import jeql.util.ClassUtil;
 import jeql.util.TypeUtil;
 
+/**
+ * Writes out a table with specified delimiters.
+ * 
+ * @author mdavis
+ *
+ */
 public class TableTextWriter 
 {
   public static void writeTbl(Table t, boolean showHeader, int limit) {

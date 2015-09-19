@@ -1,4 +1,4 @@
-package jeql.command.io;
+package jeql.command.io.xml;
 
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
@@ -11,7 +11,7 @@ import jeql.api.row.BasicRowList;
 import jeql.api.row.Row;
 import jeql.api.row.RowIterator;
 import jeql.api.row.RowSchema;
-import jeql.command.io.XMLStackReader.Atom;
+import jeql.command.io.xml.XMLStackReader.Atom;
 import jeql.io.InputSource;
 
 public class XmlRowList 

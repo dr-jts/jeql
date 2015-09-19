@@ -3,7 +3,7 @@ package jeql.command.io.kml;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import jeql.command.io.XMLParseUtil;
+import jeql.command.io.xml.XMLParseUtil;
 
 public class StyleParser {
 

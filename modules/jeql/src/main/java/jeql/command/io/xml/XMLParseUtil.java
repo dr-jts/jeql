@@ -1,4 +1,4 @@
-package jeql.command.io;
+package jeql.command.io.xml;
 
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;

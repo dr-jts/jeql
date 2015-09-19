@@ -10,7 +10,7 @@ import jeql.api.row.RowSchema;
 import jeql.api.row.RowUtil;
 import jeql.api.table.Table;
 import jeql.command.io.TableFileWriterCmd;
-import jeql.command.io.XmlDataWriter;
+import jeql.command.io.xml.XmlDataWriter;
 import jeql.engine.Scope;
 
 import com.vividsolutions.jts.geom.Geometry;

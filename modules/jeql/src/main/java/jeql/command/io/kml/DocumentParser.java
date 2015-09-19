@@ -4,7 +4,7 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import jeql.command.io.XMLParseUtil;
+import jeql.command.io.xml.XMLParseUtil;
 
 public class DocumentParser {
 

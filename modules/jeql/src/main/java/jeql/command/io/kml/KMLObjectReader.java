@@ -7,7 +7,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 import jeql.command.io.NameStack;
-import jeql.command.io.XMLParseUtil;
+import jeql.command.io.xml.XMLParseUtil;
 
 import com.ctc.wstx.exc.WstxIOException;
 import com.ctc.wstx.stax.WstxInputFactory;

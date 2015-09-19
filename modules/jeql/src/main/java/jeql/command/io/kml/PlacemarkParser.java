@@ -9,7 +9,7 @@ import java.util.List;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import jeql.command.io.XMLParseUtil;
+import jeql.command.io.xml.XMLParseUtil;
 import jeql.std.geom.GeomFunction;
 
 import com.vividsolutions.jts.geom.Coordinate;
