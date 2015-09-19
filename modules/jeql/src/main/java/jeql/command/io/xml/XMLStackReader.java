@@ -86,23 +86,21 @@ private boolean includeAllEndElements;
         pathStk.pop();
         rdr.next();
         boolean isLeaf = name.equals(prevStart);
-        Atom leaf = null;
+        //Atom leaf = null;
         if (isLeaf) {
-        	prevStart = null;
-        	// can return value now
-        	leaf = new Atom(startPath, prevAttr, value);
-        }
-        if (! isLeaf || includeAllEndElements) {
-          Atom endElt = new Atom("/" + startPath, null, null);
-          if (leaf != null) {
-            atomBuffer = endElt;
-            return leaf;
-          }
-          else {
-            atomBuffer = null;
-            return endElt;
-          }
-        }
+	    	prevStart = null;
+	    	// can return value now
+	    	Atom leaf = new Atom(startPath, prevAttr, value);
+	    	if (includeAllEndElements) {
+	          Atom endElt = new Atom("/" + startPath, null, null);
+	          atomBuffer = endElt;
+	         }
+	         return leaf;
+	      
+      	}
+        // end element for non-leaf
+      	Atom endElt = new Atom("/" + startPath, null, null);
+      	return endElt;        
       }
       else if (event == XMLStreamConstants.END_DOCUMENT) {
     	rdr.close();

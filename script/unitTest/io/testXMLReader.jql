@@ -9,6 +9,7 @@ XMLReader t data: $"
 <aa x='XXX' y='YYY'>AAA</aa>
 <ab>BBB</ab>
 <ac></ac>
+<ad x='X'/>
 </a>
 </top>
 </xml>
@@ -23,6 +24,7 @@ te = select * from table (
 ( "xml/top/a/aa", " x='XXX' y='YYY'", "AAA" )
 ( "xml/top/a/ab", "", "BBB" )
 ( "xml/top/a/ac", "", null )
+( "xml/top/a/ad", " x='X'", null )
 ( "/xml/top/a", null, null )
 ( "/xml/top", null, null )
 ( "/xml", null, null )
