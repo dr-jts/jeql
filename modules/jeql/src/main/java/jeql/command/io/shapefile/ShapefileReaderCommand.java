@@ -1,6 +1,7 @@
-package jeql.command.io;
+package jeql.command.io.shapefile;
 
 import jeql.api.table.Table;
+import jeql.command.io.TableFileReaderCmd;
 import jeql.engine.Scope;
 import jeql.io.InputSource;
 import jeql.io.shapefile.ShapefileRowList;

@@ -1,6 +1,7 @@
-package jeql.command.io;
+package jeql.command.io.shapefile;
 
 import jeql.api.table.Table;
+import jeql.command.io.TableFileWriterCmd;
 import jeql.io.shapefile.ShapefileWriter;
 
 public class ShapefileWriterCommand 

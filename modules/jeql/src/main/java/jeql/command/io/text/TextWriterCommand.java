@@ -1,6 +1,8 @@
-package jeql.command.io;
+package jeql.command.io.text;
 
 import jeql.api.table.Table;
+import jeql.command.io.TableTextFileWriterCmd;
+import jeql.command.io.TableTextWriter;
 import jeql.engine.Scope;
 import jeql.util.SystemUtil;
 

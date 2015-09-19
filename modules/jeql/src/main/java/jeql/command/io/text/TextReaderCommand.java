@@ -1,7 +1,8 @@
-package jeql.command.io;
+package jeql.command.io.text;
 
 import jeql.api.row.RowList;
 import jeql.api.table.Table;
+import jeql.command.io.TextFileReaderCmd;
 import jeql.engine.Scope;
 import jeql.io.InputSource;
 

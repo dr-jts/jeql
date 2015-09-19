@@ -1,4 +1,4 @@
-package jeql.command.io;
+package jeql.command.io.text;
 
 
 import java.io.IOException;
