@@ -19,6 +19,7 @@ implements FunctionClass
   public static int indexOfFromPos(String s, String subStr, int pos) { return s.indexOf(subStr, pos); }
   public static int lastIndexOf(String s, String subStr) { return s.lastIndexOf(subStr); }
   public static int lastIndexOfFromPos(String s, String subStr, int pos) { return s.lastIndexOf(subStr, pos); }
+  
   public static String leftStr(String s, int count)
   {
     if (count < 0) count = 0;
@@ -26,6 +27,23 @@ implements FunctionClass
       count = s.length();
     return s.substring(0, count);
   }
+  public static String rightStr(String s, int count)
+  {
+    if (count < 0) count = 0;
+    int start = s.length() - count;
+    if (start < 0) start = 0;
+    return s.substring(start, s.length());
+  }
+  public static String midStr(String s, int leftSkip, int rightSkip)
+  {
+    if (leftSkip < 0) leftSkip = 0;
+    if (rightSkip < 0) rightSkip = 0;
+    
+    int len = s.length() - leftSkip - rightSkip;
+    if (len <= 0) return "";
+    return s.substring(leftSkip, len + 1);
+  }
+  
   public static int length(String s) 
   { 
     if (s == null) return 0;
@@ -174,15 +192,7 @@ implements FunctionClass
     }
     return items;
   }
-  
-  public static String rightStr(String s, int count)
-  {
-    if (count < 0) count = 0;
-    int start = s.length() - count;
-    if (start < 0) start = 0;
-    return s.substring(start, s.length());
-  }
-  
+    
   public static boolean startsWith(String s, String prefix) 
   { return s.startsWith(prefix); }
   
