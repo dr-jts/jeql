@@ -121,6 +121,7 @@ html_theme_options = {
     "relbartextcolor" : "lightgray",
     "relbarlinkcolor" : "lightgray",
     "sidebarbgcolor": "DarkSlateBlue",
+    "headbgcolor": "lightblue",
     "externalrefs" : "true"
 }
 
