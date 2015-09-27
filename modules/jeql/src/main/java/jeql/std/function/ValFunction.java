@@ -1,6 +1,7 @@
 package jeql.std.function;
 
 import java.util.Date;
+import java.util.UUID;
 
 import jeql.api.function.FunctionClass;
 import jeql.util.TypeUtil;
@@ -188,5 +189,7 @@ implements FunctionClass
     return false;
   }
 
-
+  public static String uuid() {
+	  return UUID.randomUUID().toString();
+  }
 }

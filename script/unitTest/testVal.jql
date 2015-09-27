@@ -58,6 +58,12 @@ Assert Val.toDouble("0X", 1.9) == 1.9;
 Assert Val.toDouble("X", 1.9) == 1.9;
 Assert Val.toDouble(null, 1.9) == 1.9;
 
+//==========  UUIDs  =========
+
+RE_UUID = \'([a-f\d]{8}(-[a-f\d]{4}){3}-[a-f\d]{12}?)';
+
+Assert Val.uuid() ~ RE_UUID ;
+
 //==========  Val pseudo-function  =========
 
 t = select i from table ( (9.3 )) t(i);
