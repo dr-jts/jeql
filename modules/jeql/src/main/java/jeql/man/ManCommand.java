@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Iterator;
 
+import jeql.api.annotation.Metadata;
 import jeql.api.command.Command;
 import jeql.api.row.ArrayRowList;
 import jeql.api.row.BasicRow;
@@ -21,24 +22,28 @@ implements Command
   private RowSchema functionsSchema = new RowSchema(
       new String[] {
           "module",
+          "index",
           "name",
           "type",
           "description"
       },
       new Class[] {
-         String.class, String.class, String.class, String.class 
+         String.class, Integer.class, String.class, String.class, String.class 
       });
 
   private RowSchema functionParamSchema = new RowSchema(
       new String[] {
           "module",
+          "index",
           "name",
           "type",
-          "name",
-          "description"
+          "description",
+          "paramindex",
+          "paramname",
+          "paramtype"
       },
       new Class[] {
-         String.class, String.class, String.class, String.class, String.class 
+         String.class, Integer.class, String.class, String.class, String.class, Integer.class, String.class, String.class 
       });
 
   private Table functions;
@@ -49,11 +54,13 @@ implements Command
     
   }
   
+  @Metadata (description = "Gets function descriptions" )
   public Table getFunctions()
   {
     return functions;
   }
   
+  @Metadata (description = "Gets function and parameter descriptions" )
   public Table getFunctionParams()
   {
     return functionParam;
@@ -78,14 +85,14 @@ implements Command
       String funcName = (String) i.next();
       
       Collection methods = reg.getFunctionMethods(funcName);
-      
+      int im = 0;
       for (Iterator j = methods.iterator(); j.hasNext(); ) {
         Method meth = (Method) j.next();
         
         genFunction(funcName,
-            meth,
+            meth, im,
             funcRL, funcParamRL);
-        
+        im++;
       }
     }
     functions = new Table(funcRL);
@@ -93,17 +100,18 @@ implements Command
   }
   
   private void genFunction(String funcName, Method meth, 
-      ArrayRowList funcRL, ArrayRowList funcParamRL)
+      int index, ArrayRowList funcRL, ArrayRowList funcParamRL)
   {
     String moduleName = FunctionRegistry.moduleName(funcName);
     String name = ClassUtil.classname(funcName);
-    Class retType = meth.getReturnType();
-    String type = ClassUtil.classname(retType);
+    Class retTypeClz = meth.getReturnType();
+    String retType = ClassUtil.classname(retTypeClz);
     
     funcRL.add(new BasicRow(new Object[] {
         moduleName,
+        index,
         name,
-        type,
+        retType,
         ManUtil.description(meth)
     }));
     
@@ -114,10 +122,13 @@ implements Command
       String pname = ManUtil.name(panno[i]);
       funcParamRL.add(new BasicRow(new Object[] {
           moduleName,
+          index,
           name,
-          ClassUtil.classname(param[i].getName()),
+          retType,
+          ManUtil.description(meth),
+          i,
           pname,
-          ManUtil.description(meth)
+          ClassUtil.classname(param[i].getName())
       }));
     }
   }

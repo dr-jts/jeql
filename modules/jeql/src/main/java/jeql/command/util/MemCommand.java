@@ -1,6 +1,6 @@
 package jeql.command.util;
 
-import jeql.api.annotation.ManDoc;
+import jeql.api.annotation.Metadata;
 import jeql.api.command.Command;
 import jeql.api.row.ArrayRowList;
 import jeql.api.row.Row;
@@ -9,8 +9,8 @@ import jeql.api.row.RowList;
 import jeql.api.table.Table;
 import jeql.engine.Scope;
 
-@ManDoc (
-  description = "Materializes a table in memory, to improve performance"
+@Metadata (
+  description = "Materializes a table in memory"
 )
 public class MemCommand 
 implements Command
@@ -27,7 +27,7 @@ implements Command
    this.inputTbl = inputTbl;  
   }
   
-  @ManDoc (
+  @Metadata (
       description = "Table to memorize",
       isRequired = true
     )
@@ -36,7 +36,7 @@ implements Command
    return memTbl;  
   }
   
-  @ManDoc (
+  @Metadata (
       description = "Limits the number of rows memorized"
     )
   public void setLimit(int limit)
@@ -44,7 +44,7 @@ implements Command
    this.limit = limit;  
   }
   
-  @ManDoc (
+  @Metadata (
       description = "SELECT expression to memorize"
     )
   public void setAs(Table inputTbl)

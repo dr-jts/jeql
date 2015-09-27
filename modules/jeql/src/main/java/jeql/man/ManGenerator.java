@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 
-import jeql.api.annotation.ManDoc;
+import jeql.api.annotation.Metadata;
 import jeql.engine.CommandInvoker;
 import jeql.engine.CommandRegistry;
 import jeql.engine.EngineContext;

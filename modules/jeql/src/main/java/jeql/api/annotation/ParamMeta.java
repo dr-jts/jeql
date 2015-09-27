@@ -3,7 +3,8 @@ package jeql.api.annotation;
 import java.lang.annotation.*;
 
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ManDoc
+public @interface ParamMeta
+
 {
   String name() default "";
   String description() default "";

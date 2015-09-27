@@ -3,13 +3,13 @@ package jeql.man;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
-import jeql.api.annotation.ManDoc;
+import jeql.api.annotation.Metadata;
 
 public class ManUtil
 {
   public static String description(Class<?> clz)
   {
-    ManDoc doc = clz.getAnnotation(ManDoc.class);
+    Metadata doc = clz.getAnnotation(Metadata.class);
     if (doc != null)
       return doc.description();
     return "";
@@ -18,8 +18,8 @@ public class ManUtil
   public static String name(Annotation[] anno)
   {
     for (int i = 0; i < anno.length; i++) {
-      if (anno[i] instanceof ManDoc) {
-        ManDoc doc = (ManDoc) anno[i];
+      if (anno[i] instanceof Metadata) {
+        Metadata doc = (Metadata) anno[i];
         if (doc != null)
           return doc.name();
       }
@@ -29,18 +29,14 @@ public class ManUtil
   
   public static String name(Method m)
   {
-    ManDoc doc = m.getAnnotation(ManDoc.class);
-    if (doc != null)
-      return doc.name();
-    return "";
+    Metadata doc = m.getAnnotation(Metadata.class);
+    return (doc == null) ? "" : doc.name();
   }
   
   public static String description(Method m)
   {
-    ManDoc doc = m.getAnnotation(ManDoc.class);
-    if (doc != null)
-      return doc.description();
-    return "";
+    Metadata doc = m.getAnnotation(Metadata.class);
+    return (doc == null) ? "" : doc.description();
   }
 
 }

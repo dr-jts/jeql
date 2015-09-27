@@ -3,14 +3,14 @@ package jeql.command.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import jeql.api.annotation.ManDoc;
+import jeql.api.annotation.Metadata;
 import jeql.api.command.Command;
 import jeql.api.row.RowList;
 import jeql.api.table.Table;
 import jeql.engine.Scope;
 import jeql.engine.query.UnionRowList;
 
-@ManDoc (
+@Metadata (
     description = "Unions a set of tables (with identical schemas)"
   )
 public class UnionCommand 
@@ -22,7 +22,7 @@ implements Command
   public UnionCommand() {
   }
 
-  @ManDoc (
+  @Metadata (
       description = "Union result"
     )
   public Table getDefault()
@@ -30,7 +30,7 @@ implements Command
    return unionTbl;  
   }
   
-  @ManDoc (
+  @Metadata (
       description = "Table to union",
       isRequired = true,
       isMultiple = true

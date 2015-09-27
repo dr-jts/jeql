@@ -1,24 +1,24 @@
 package jeql.std.geom;
 
-import jeql.api.annotation.ManDoc;
+import jeql.api.annotation.Metadata;
 
 import com.vividsolutions.jts.geom.*;
 import com.vividsolutions.jts.linearref.LengthIndexedLine;
 
-@ManDoc (
+@Metadata (
     description = "Functions for Linear Referencing"
   )
 public class LinearRefFunction {
 
 	static GeometryFactory geomFact = new GeometryFactory();
 	
-	@ManDoc (
+	@Metadata (
 	    description = "Projects a point onto a line"
 	  )
 	public static double project(
-	    @ManDoc ( name="line" )
+	    @Metadata ( name="line" )
 	    Geometry line, 
-	    @ManDoc ( name="point" )
+	    @Metadata ( name="point" )
 	    Geometry pt)
 	{
 		LengthIndexedLine lil = new LengthIndexedLine(line);

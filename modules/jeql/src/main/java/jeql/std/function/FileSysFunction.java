@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import jeql.api.annotation.ManDoc;
+import jeql.api.annotation.Metadata;
 import jeql.api.function.FunctionClass;
 import jeql.api.row.ArrayRowList;
 import jeql.api.row.BasicRow;
@@ -163,7 +163,7 @@ implements FunctionClass
   }
 
   
-  @ManDoc (
+  @Metadata (
       description = "Lists all files in a directory tree"
     )
   public static Table listAllFiles(String dirname) 
@@ -171,15 +171,13 @@ implements FunctionClass
     return listAllFilesFiltered(dirname, null, false);
   }
 
-  @ManDoc (
-      description = "Lists all files in a directory tree"
-    )
+  @Metadata (description = "Lists all files in a directory tree" )
   public static Table listAllDirsAndFiles(String dirname) 
   {
     return listAllFilesFiltered(dirname, null, true);
   }
 
-  @ManDoc (
+  @Metadata (
       description = "Lists all files in a directory tree which match a pattern"
     )
   public static Table listAllFiles(String dirname, String pattern) 
