@@ -28,7 +28,7 @@ Assert val(tc) == 2;
 t1 = select a,b from 
 	[ t(a, b, c) 
 		[ 2-1, "a", 99 ] 
-		[ 1+1, String.leftStr("b", 1), 99 ] 
+		[ 1+1, String.leftStr("bb", 1), 99 ] 
 	];
 t2 = select * from [ [1, "a"] [2, "b"] ];
 
@@ -37,7 +37,7 @@ AssertEqual value: t1 expected: t2;
 //Print t2;
 
 // Test syntax with numbers only
-t2 = select * from [ [1, 1] [2, 2] ];
+t2 = select * from [ [ 1, 1 ]  [ 2, 2 ] ];
 
 
 
