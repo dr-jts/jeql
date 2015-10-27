@@ -39,7 +39,7 @@ public class GeomProcFunction implements FunctionClass {
 		List lines = LineStringExtracter.getLines(geom);
 		Polygonizer polygonizer = new Polygonizer();
 		polygonizer.add(lines);
-		return polygonizer.getGeometry();
+		return geom.getFactory().buildGeometry(polygonizer.getPolygons());
 	}
 
 }
