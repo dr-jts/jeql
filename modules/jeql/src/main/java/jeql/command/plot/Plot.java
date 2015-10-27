@@ -13,7 +13,9 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import jeql.awt.geom.DefaultPointConverter;
 import jeql.awt.geom.Java2DConverter;
+import jeql.awt.geom.PointConverter;
 import jeql.util.ColorUtil;
 import jeql.util.ImageUtil;
 
@@ -124,7 +126,7 @@ public class Plot
   }
   
   private Java2DConverter shapeConverter;
-  private ModelPointConverter ptConverter;
+  private PointConverter ptConverter;
 
   public Java2DConverter getConverter() {
     if (shapeConverter != null) return shapeConverter;
@@ -134,6 +136,7 @@ public class Plot
       shapeConverter = new Java2DConverter(ptConverter);
     }
     else {
+    	ptConverter = new DefaultPointConverter();
       shapeConverter = new Java2DConverter();
     }
     return shapeConverter;
@@ -172,7 +175,7 @@ public class Plot
    *
    */
   private static class ModelPointConverter
-  implements Java2DConverter.PointConverter
+  implements PointConverter
   {
     private double scale = 1.0;
     private double worldMinX = 0.0;

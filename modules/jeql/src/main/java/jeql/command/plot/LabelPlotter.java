@@ -76,7 +76,7 @@ public class LabelPlotter
     
     geomIndex = SchemaUtil.getColumnWithType(schema, Geometry.class);
     labelIndex = SchemaUtil.getColumnIndex(schema, StyleConstants.LABEL);
-    labelColorIndex = SchemaUtil.getColumnIndex(schema, StyleConstants.FONT_COLOR);
+    labelColorIndex = SchemaUtil.getColumnIndex(schema, StyleConstants.LABEL_COLOR);
     labelSizeIndex = SchemaUtil.getColumnIndex(schema, StyleConstants.FONT_SIZE);
     labelHaloSizeIndex = SchemaUtil.getColumnIndex(schema, StyleConstants.HALO_RADIUS);
     labelHaloColorIndex = SchemaUtil.getColumnIndex(schema, StyleConstants.HALO_COLOR);

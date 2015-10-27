@@ -122,19 +122,6 @@ public class Java2DConverter {
     return viewPoint;
   }
 
-	public static interface PointConverter {
-		public Point2D toView(Coordinate modelCoordinate);
-	}
-
-	private static class DefaultPointConverter
-	implements PointConverter
-	{
-		public Point2D toView(Coordinate modelCoordinate)
-		{
-			Point2D p = new Point2D.Double(Math.round(modelCoordinate.x), Math.round(modelCoordinate.y));
-			return p;
-		}
-	}
 	/**
 	 * If you pass in a general GeometryCollection, note that a Shape cannot
 	 * preserve information about which elements are 1D and which are 2D.

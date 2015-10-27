@@ -11,18 +11,21 @@ gridSize = 10;
 * Tests a variety of combinations of stroke, strokeWidth and fill
 */
 t = select i,
-	tot % 5 != 0 ? Color.toRGBA(Val.toInt(255 * iFrac), Val.toInt(255 * jFrac), 0, 180) : null styleFill,
-	tot % 2 == 0 ? Color.toRGB(0, Val.toInt(255 * iFrac), Val.toInt(255 * jFrac)) : null styleStroke,
-	tot % 4 == 0 ? 4 : null styleStrokeWidth,
-	Geom.buffer(Geom.createPoint(x, y), 0.8 * radius)
-	with {
-		iFrac = (i - 1.0) / gridSize;
-		jFrac = (j - 1.0) / gridSize;
-		radius = sz / 10.0;
-		x = i * radius;
-		y = j * radius;
-		tot = i + j;
-	}
+	styleFill: tot % 5 != 0 ? Color.toRGBA(Val.toInt(255 * iFrac), Val.toInt(255 * jFrac), 0, 180) : null,
+	styleStroke: tot % 2 == 0 ? Color.toRGB(0, Val.toInt(255 * iFrac), Val.toInt(255 * jFrac)) : null,
+	styleStrokeWidth: tot % 4 == 0 ? 4 : null,
+	styleLabel: i+','+j,
+	styleLabelColor: #ff0000,
+
+	Geom.buffer(Geom.createPoint(x, y), 0.4 * radius)
+	let
+		iFrac = (i - 1.0) / gridSize,
+		jFrac = (j - 1.0) / gridSize,
+		radius = sz / 20.0,
+		x = i * radius,
+		y = j * radius,
+		tot = i + j
+	
 	from Generate.grid(1,gridSize,1,gridSize);
 
 Plot data: t file: "plotDot.png";
