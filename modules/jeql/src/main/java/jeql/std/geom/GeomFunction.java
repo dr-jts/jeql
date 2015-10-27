@@ -1,12 +1,19 @@
 package jeql.std.geom;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
+
 import jeql.api.function.FunctionClass;
 import jeql.jts.geom.util.GeometricShapeFactoryExt;
 import jeql.jts.geom.util.ShapeUtil;
+
+
 
 
 
@@ -38,6 +45,7 @@ import com.vividsolutions.jts.io.WKBReader;
 import com.vividsolutions.jts.io.WKBWriter;
 import com.vividsolutions.jts.io.WKTReader;
 import com.vividsolutions.jts.io.WKTWriter;
+import com.vividsolutions.jts.io.gml2.GMLReader;
 import com.vividsolutions.jts.io.gml2.GMLWriter;
 import com.vividsolutions.jts.operation.distance.DistanceOp;
 import com.vividsolutions.jts.operation.linemerge.LineMerger;
@@ -192,6 +200,15 @@ implements FunctionClass
   public static String toWKB(Geometry g, int dimension) {
     WKBWriter writer = new WKBWriter(dimension);
     return WKBWriter.bytesToHex(writer.write(g));
+  }
+  
+  public static Geometry fromGML2(String gml) throws Exception
+  {
+    String gmlTrim = gml.trim();
+    if (gmlTrim.length() <= 0) return null;
+    
+    GMLReader rdr = new GMLReader();
+    return rdr.read(gml, geomFactory);
   }
   
   public static String toGML2(Geometry g)
