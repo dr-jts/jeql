@@ -19,6 +19,7 @@ import javax.swing.border.EmptyBorder;
 import jeql.engine.EngineContext;
 import jeql.engine.FunctionRegistry;
 import jeql.man.ManGenerator;
+import jeql.man.ManUtil;
 import jeql.workbench.Workbench;
 
 public class FunctionAssistPanel extends JPanel
@@ -73,7 +74,7 @@ public class FunctionAssistPanel extends JPanel
 
     funcList.addMouseListener(new MouseAdapter() {
       public void mouseClicked(MouseEvent e) {
-        CodeSnippet snip = (CodeSnippet) funcList.getSelectedValue();
+        CodeSnippet snip = CommandAssistPanel.getCodeSnip(funcList);
         codeAssistPanel.showDoc(snip.getDoc());
         if (e.getClickCount() == 2) {
           Workbench.controller().insertCodeSnippet(snip);
@@ -165,6 +166,7 @@ public class FunctionAssistPanel extends JPanel
         funcListModel.addElement(CodeSnippet.code2(
             FunctionRegistry.functionName(name) +" ( " + ManGenerator.functionParamList(meth)+" )"
             + " -> " + FunctionRegistry.resultType(meth), 
+            ManUtil.description(meth),
             name+ "( ", " )"));
       }
     }
@@ -190,8 +192,8 @@ public class FunctionAssistPanel extends JPanel
       for (Iterator j = methods.iterator(); j.hasNext();) {
         Method meth = (Method) j.next();
         funcListModel.addElement(CodeSnippet.code2(
-            FunctionRegistry.functionName(name) +" ( " + ManGenerator.functionParamList(meth)+" )", 
-            name+ "( ", " )"));
+            FunctionRegistry.functionName(name) +" ( " + ManGenerator.functionParamList(meth) + " )", 
+            name + "( ", " )"));
       }
     }
   }
@@ -201,23 +203,23 @@ public class FunctionAssistPanel extends JPanel
 
     funcListModel.addElement(CodeSnippet.code2(
         "counter ( boolean, ... )", 
-        "Returns a count value which increments whenever all condition values are true", 
+        "Returns a count value, which increments when all condition values are true.", 
         "counter( ", " )"));
     funcListModel.addElement(CodeSnippet.code2(
         "index ( value )", 
-        "Returns a count value which increments whenever the input value changes", 
+        "Returns an index value, which increments when the input value changes.", 
         "index( ", " )"));
     funcListModel.addElement(CodeSnippet.code2(
         "keep ( value, boolean [ , init-value ] )", 
-        "Returns the value from the last row where condition was true, or init-value if null",
+        "Returns the input value from the last call where condition was true.  First call returns init-value or null.",
         "keep (", " )"));
     funcListModel.addElement(CodeSnippet.code2(
         "prev ( value [ , init-value ] )", 
-        "Preserves a value from the previous row, or returns init-value if null",
+        "Returns the input value from the previous row.  First call returns init-value or null",
         "prev( ", " )" ));
     funcListModel.addElement(CodeSnippet.code2(
         "rownum ()", 
-        "Returns the current row number",
+        "Returns the current row number in the stream.",
         "rownm( "," )" ));
 
   }

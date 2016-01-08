@@ -57,7 +57,7 @@ public class CodeAssistPanel extends JPanel
 
     tabPane.setTabPlacement(JTabbedPane.LEFT);
     
-    CommandAssistPanel cmdPanel = new CommandAssistPanel();
+    CommandAssistPanel cmdPanel = new CommandAssistPanel(this);
     tabPane.add(cmdPanel, "Commands");
     FunctionAssistPanel funcPanel = new FunctionAssistPanel(this);
     tabPane.add(funcPanel, "Functions");
