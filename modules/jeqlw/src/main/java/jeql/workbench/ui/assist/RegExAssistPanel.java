@@ -4,18 +4,18 @@ package jeql.workbench.ui.assist;
 public class RegExAssistPanel extends Column2AssistPanel
 {  
 
-  public RegExAssistPanel()
+  public RegExAssistPanel(CodeAssistPanel codeAssistPanel)
   {
-    super();
+    super(codeAssistPanel);
   }
 
   public void populateList()
   {
-    add(new CodeSnippet("Characters", ""));
-    add(new CodeSnippet("x -  The character x", "x"));
-    add(new CodeSnippet("\\\\ - The backslash character", "\\\\"));
-    add(new CodeSnippet("\\0n -  The character with octal value 0n (0 <= n <= 7)", "\\0n"));
-    add(new CodeSnippet("\\0nn - The character with octal value 0nn (0 <= n <= 7)", "\\0nn"));
-    add(new CodeSnippet("\\0mnn - The character with octal value 0mnn (0 <= m <= 3, 0 <= n <= 7)", "\\0mnn"));
+    add(CodeSnippet.doc("Characters"));
+    add(CodeSnippet.code("x", "The character x", "x"));
+    add(CodeSnippet.code("\\\\", "The backslash character", "\\\\"));
+    add(CodeSnippet.code("\\0n", "The character with octal value 0n (0 <= n <= 7)", "\\0n"));
+    add(CodeSnippet.code("\\0nn", "The character with octal value 0nn (0 <= n <= 7)", "\\0nn"));
+    add(CodeSnippet.code("\\0mnn", "The character with octal value 0mnn (0 <= m <= 3, 0 <= n <= 7)", "\\0mnn"));
   }
 }

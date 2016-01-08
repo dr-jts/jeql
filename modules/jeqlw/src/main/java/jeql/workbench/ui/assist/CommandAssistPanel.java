@@ -101,7 +101,7 @@ public class CommandAssistPanel extends JPanel
     
     for (Iterator i = cmdNames.iterator(); i.hasNext(); ) {
       String name = (String) i.next();
-      cmdListModel.addElement(new CodeSnippet(name, name + " ", ";"));
+      cmdListModel.addElement(CodeSnippet.code2(name, name + " ", ";"));
       //cmdListModel.addElement(new CodeSnippet(name, name+ " "));
       //writer.writeCommand(name, ManUtil.manDescription(invoker.getCommandClass()));
     }
@@ -126,7 +126,7 @@ public class CommandAssistPanel extends JPanel
     if (params.containsKey(CommandInvoker.DEFAULT_METHOD_NAME)) {
       //System.out.println(PARAM_INDENT + params.get(CommandInvoker.DEFAULT_METHOD_NAME));
       CommandParamMethod param = (CommandParamMethod) params.get(CommandInvoker.DEFAULT_METHOD_NAME);
-      paramListModel.addElement(new CodeSnippet("<default>", ""));
+      paramListModel.addElement(CodeSnippet.doc("<default>", ""));
       /*
       writer.writeCommandParam(param.getIOTag(), param.getDisplayName(), 
           param.getArgTypeList(), param.getDescription());
@@ -138,7 +138,7 @@ public class CommandAssistPanel extends JPanel
         continue;
       CommandParamMethod param = (CommandParamMethod) params.get(paramName);
       String name = param.getDisplayName() + ": ";
-      paramListModel.addElement(new CodeSnippet(name, name));
+      paramListModel.addElement(CodeSnippet.code(name, name));
 
       /*
       writer.writeCommandParam(param.getIOTag(), param.getDisplayName(), 

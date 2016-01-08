@@ -27,9 +27,11 @@ public class FunctionAssistPanel extends JPanel
   private JList modList = new JList(modListModel);
   private DefaultListModel funcListModel = new DefaultListModel();
   private JList funcList = new JList(funcListModel);
+  private CodeAssistPanel codeAssistPanel;
 
-  public FunctionAssistPanel()
+  public FunctionAssistPanel(CodeAssistPanel codeAssistPanel)
   {
+    this.codeAssistPanel = codeAssistPanel;
     try {
       initUI();
       populateModuleList();
@@ -50,6 +52,7 @@ public class FunctionAssistPanel extends JPanel
     modList.addMouseListener(new MouseAdapter() {
       public void mouseClicked(MouseEvent e) {
         populateFunctionList();
+        codeAssistPanel.showDoc("");
         if (e.getClickCount() == 2) {
           // TODO: display doc
           //Workbench.controller().insertCode(getCode());
@@ -70,8 +73,10 @@ public class FunctionAssistPanel extends JPanel
 
     funcList.addMouseListener(new MouseAdapter() {
       public void mouseClicked(MouseEvent e) {
+        CodeSnippet snip = (CodeSnippet) funcList.getSelectedValue();
+        codeAssistPanel.showDoc(snip.getDoc());
         if (e.getClickCount() == 2) {
-          Workbench.controller().insertCodeSnippet((CodeSnippet) funcList.getSelectedValue());
+          Workbench.controller().insertCodeSnippet(snip);
         }
       }
     });
@@ -91,6 +96,9 @@ public class FunctionAssistPanel extends JPanel
     if (moduleName == AGG_FUNS) {
       populateAggFunctionList();
     }
+    else if (moduleName == STREAM_FUNS) {
+      populateStreamFunctionList();
+    }
     else {
       populateFunctionList(moduleName);
     }
@@ -103,6 +111,7 @@ public class FunctionAssistPanel extends JPanel
   }
     
   private static final String AGG_FUNS = "Aggregate Functions";
+  private static final String STREAM_FUNS = "Stream Functions";
   
   /**
    * List is built dynamically to allow for imports
@@ -113,6 +122,9 @@ public class FunctionAssistPanel extends JPanel
     
     // add entry for aggregate functions
     modListModel.addElement(AGG_FUNS);
+    
+    // add entry for aggregate functions
+    modListModel.addElement(STREAM_FUNS);
     
     FunctionRegistry reg = EngineContext.getInstance().getFunctionRegistry();
     Collection funcNames = reg.getFunctionNames();
@@ -150,7 +162,7 @@ public class FunctionAssistPanel extends JPanel
       Collection methods = reg.getFunctionMethods(name);
       for (Iterator j = methods.iterator(); j.hasNext();) {
         Method meth = (Method) j.next();
-        funcListModel.addElement(new CodeSnippet(
+        funcListModel.addElement(CodeSnippet.code2(
             FunctionRegistry.functionName(name) +" ( " + ManGenerator.functionParamList(meth)+" )"
             + " -> " + FunctionRegistry.resultType(meth), 
             name+ "( ", " )"));
@@ -177,12 +189,39 @@ public class FunctionAssistPanel extends JPanel
       Collection methods = reg.getFunctionMethods(name);
       for (Iterator j = methods.iterator(); j.hasNext();) {
         Method meth = (Method) j.next();
-        funcListModel.addElement(new CodeSnippet(
+        funcListModel.addElement(CodeSnippet.code2(
             FunctionRegistry.functionName(name) +" ( " + ManGenerator.functionParamList(meth)+" )", 
             name+ "( ", " )"));
       }
     }
   }
+  public void populateStreamFunctionList()
+  {
+    funcListModel.clear();
+
+    funcListModel.addElement(CodeSnippet.code2(
+        "counter ( boolean, ... )", 
+        "Returns a count value which increments whenever all condition values are true", 
+        "counter( ", " )"));
+    funcListModel.addElement(CodeSnippet.code2(
+        "index ( value )", 
+        "Returns a count value which increments whenever the input value changes", 
+        "index( ", " )"));
+    funcListModel.addElement(CodeSnippet.code2(
+        "keep ( value, boolean [ , init-value ] )", 
+        "Returns the value from the last row where condition was true, or init-value if null",
+        "keep (", " )"));
+    funcListModel.addElement(CodeSnippet.code2(
+        "prev ( value [ , init-value ] )", 
+        "Preserves a value from the previous row, or returns init-value if null",
+        "prev( ", " )" ));
+    funcListModel.addElement(CodeSnippet.code2(
+        "rownum ()", 
+        "Returns the current row number",
+        "rownm( "," )" ));
+
+  }
+  /*
   public void OLDpopulateAggFunctionList()
   {
     funcListModel.clear();
@@ -196,5 +235,6 @@ public class FunctionAssistPanel extends JPanel
         + " -> ", 
         aggFunName+ "( ", " )");
   }
+  */
 
 }

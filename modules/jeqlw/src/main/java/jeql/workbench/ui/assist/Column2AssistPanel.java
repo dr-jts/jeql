@@ -29,9 +29,11 @@ public abstract class Column2AssistPanel extends JPanel
 {  
   private DefaultListModel listModel = new DefaultListModel();
   private JList list = new JList(listModel);
+  private CodeAssistPanel codeAssistPanel;
 
-  public Column2AssistPanel()
+  public Column2AssistPanel(CodeAssistPanel codeAssistPanel)
   {
+    this.codeAssistPanel = codeAssistPanel;
     try {
       initUI();
       listModel.clear();
@@ -52,8 +54,10 @@ public abstract class Column2AssistPanel extends JPanel
 
     MouseListener mouseListener = new MouseAdapter() {
       public void mouseClicked(MouseEvent e) {
+        CodeSnippet snip = (CodeSnippet) list.getSelectedValue();
+        codeAssistPanel.showDoc(snip.getDoc());
         if (e.getClickCount() == 2) {
-          Workbench.controller().insertCodeSnippet((CodeSnippet) list.getSelectedValue());
+          Workbench.controller().insertCodeSnippet(snip);
         }
       }
     };
@@ -75,11 +79,11 @@ public abstract class Column2AssistPanel extends JPanel
   }
   protected void add(String displayText)
   {
-    listModel.addElement(new CodeSnippet(displayText));
+    listModel.addElement(CodeSnippet.doc(displayText));
   }
   protected void add(String displayText, String codeText)
   {
-    listModel.addElement(new CodeSnippet(displayText, codeText));
+    listModel.addElement(CodeSnippet.code(displayText, codeText));
   }
 
 }
