@@ -149,25 +149,19 @@ public class FunctionAssistPanel extends JPanel
 
     // TODO: make this more efficient
     FunctionRegistry reg = EngineContext.getInstance().getFunctionRegistry();
-    Collection funcNames = reg.getFunctionNames();
-    for (Iterator i = funcNames.iterator(); i.hasNext(); ) {
-      String name = (String) i.next();
-      
+    for (String fname : reg.getFunctionNames() ) {
       // add module names
-      String module = FunctionRegistry.moduleName(name);
+      String module = FunctionRegistry.moduleName(fname);
       // only add module name once
-      if (! module.equals(moduleName))
-        continue;
+      if (! module.equals(moduleName)) continue;
         
       // add functions
-      Collection methods = reg.getFunctionMethods(name);
-      for (Iterator j = methods.iterator(); j.hasNext();) {
-        Method meth = (Method) j.next();
+      for (Method meth :  reg.getFunctionMethods(fname) ) {
         funcListModel.addElement(CodeSnippet.code2(
-            FunctionRegistry.functionName(name) +" ( " + ManGenerator.functionParamList(meth)+" )"
+            FunctionRegistry.functionName(fname) +" ( " + ManGenerator.functionParamList(meth) + " )"
             + " -> " + FunctionRegistry.resultType(meth), 
             ManUtil.description(meth),
-            name+ "( ", " )"));
+            fname + "( ", " )"));
       }
     }
   }
@@ -177,23 +171,17 @@ public class FunctionAssistPanel extends JPanel
 
     // TODO: make this more efficient
     FunctionRegistry reg = EngineContext.getInstance().getFunctionRegistry();
-    Collection funcNames = reg.getFunctionNames();
-    for (Iterator i = funcNames.iterator(); i.hasNext(); ) {
-      String name = (String) i.next();
-      
+    for (String fname : reg.getFunctionNames() ) {
       // add module names
-      String module = FunctionRegistry.moduleName(name);
-      // only add module name once
-      if (module != "")
-        continue;
+      String module = FunctionRegistry.moduleName(fname);
+      // only add aggregate functions
+      if (module != "") continue;
         
       // add functions
-      Collection methods = reg.getFunctionMethods(name);
-      for (Iterator j = methods.iterator(); j.hasNext();) {
-        Method meth = (Method) j.next();
+      for (Method meth :  reg.getFunctionMethods(fname) ) {
         funcListModel.addElement(CodeSnippet.code2(
-            FunctionRegistry.functionName(name) +" ( " + ManGenerator.functionParamList(meth) + " )", 
-            name + "( ", " )"));
+            FunctionRegistry.functionName(fname) +" ( " + ManGenerator.functionParamList(meth) + " )", 
+            fname + "( ", " )"));
       }
     }
   }
