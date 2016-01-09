@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -147,7 +148,7 @@ public class FunctionRegistry
     return nArgs;
   }
   
-  private Set functionClasses = new HashSet();
+  private Map<String, Class> functionClasses = new HashMap<String, Class>();
   private Map functionMap = new MultiMap(new TreeMap());
   
   public FunctionRegistry() {
@@ -203,21 +204,21 @@ public class FunctionRegistry
     register(jqlClassName, functionClass, allowReplacement);
   }
   
-  private void register(String className, 
+  private void register(String modName, 
       Class functionClass, 
       boolean allowReplacement)
   {
     // only register once
-    if (! allowReplacement && functionClasses.contains(className))
-      throw new ConfigurationException("Function class " + className 
+    if (! allowReplacement && functionClasses.containsKey(modName))
+      throw new ConfigurationException("Function class " + modName 
           + " is already registered");
     
-    functionClasses.add(functionClass);
+    functionClasses.put(modName, functionClass);
     
     Method[] method = functionClass.getMethods();
     for (int i = 0; i < method.length; i++) {
       if (Modifier.isStatic(method[i].getModifiers()) ) {
-        String funcName = functionName(className, method[i].getName());
+        String funcName = functionName(modName, method[i].getName());
         int nArgs = userArgCount(method[i]);
         if (! allowReplacement && getMethod(funcName, nArgs) != null)
           throw new ConfigurationException("Function " + funcName 
@@ -227,22 +228,26 @@ public class FunctionRegistry
     }
   }
   
-  public Collection getFunctionNames()
+  /**
+   * 
+   * @return collection of values 'module.function'
+   */
+  public Collection<String> getFunctionNames()
   {
     return functionMap.keySet();
   }
  
-  public Collection getFunctionMethods(String moduleName)
+  public Collection<Method> getFunctionMethods(String functionName)
   {
-    Object item = functionMap.get(moduleName);
+    Object item = functionMap.get(functionName);
     if (item == null) 
-      return null;
+      return new ArrayList();
     if (item instanceof Method) {
       List l = new ArrayList();
       l.add(item);
       return l;
     }
-    return (Collection) item;
+    return (Collection<Method>) item;
   }
   
   /**

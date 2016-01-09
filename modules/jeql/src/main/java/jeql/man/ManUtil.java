@@ -39,4 +39,15 @@ public class ManUtil
     return (doc == null) ? "" : doc.description();
   }
 
+  public static boolean isMultiple(Method m)
+  {
+    Metadata doc = m.getAnnotation(Metadata.class);
+    return (doc == null) ? false :doc.isMultiple();
+  }
+  public static boolean isRequired(Method m)
+  {
+    Metadata doc = m.getAnnotation(Metadata.class);
+    return (doc == null) ? false :doc.isRequired();
+  }
+
 }

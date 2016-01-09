@@ -19,6 +19,7 @@ import javax.swing.border.EmptyBorder;
 import jeql.engine.EngineContext;
 import jeql.engine.FunctionRegistry;
 import jeql.man.ManGenerator;
+import jeql.man.ManUtil;
 import jeql.workbench.Workbench;
 
 public class FunctionAssistPanel extends JPanel
@@ -27,9 +28,11 @@ public class FunctionAssistPanel extends JPanel
   private JList modList = new JList(modListModel);
   private DefaultListModel funcListModel = new DefaultListModel();
   private JList funcList = new JList(funcListModel);
+  private CodeAssistPanel codeAssistPanel;
 
-  public FunctionAssistPanel()
+  public FunctionAssistPanel(CodeAssistPanel codeAssistPanel)
   {
+    this.codeAssistPanel = codeAssistPanel;
     try {
       initUI();
       populateModuleList();
@@ -50,6 +53,7 @@ public class FunctionAssistPanel extends JPanel
     modList.addMouseListener(new MouseAdapter() {
       public void mouseClicked(MouseEvent e) {
         populateFunctionList();
+        codeAssistPanel.showDoc("");
         if (e.getClickCount() == 2) {
           // TODO: display doc
           //Workbench.controller().insertCode(getCode());
@@ -70,8 +74,10 @@ public class FunctionAssistPanel extends JPanel
 
     funcList.addMouseListener(new MouseAdapter() {
       public void mouseClicked(MouseEvent e) {
+        CodeSnippet snip = CommandAssistPanel.getCodeSnip(funcList);
+        codeAssistPanel.showDoc(snip.getDoc());
         if (e.getClickCount() == 2) {
-          Workbench.controller().insertCodeSnippet((CodeSnippet) funcList.getSelectedValue());
+          Workbench.controller().insertCodeSnippet(snip);
         }
       }
     });
@@ -91,6 +97,9 @@ public class FunctionAssistPanel extends JPanel
     if (moduleName == AGG_FUNS) {
       populateAggFunctionList();
     }
+    else if (moduleName == STREAM_FUNS) {
+      populateStreamFunctionList();
+    }
     else {
       populateFunctionList(moduleName);
     }
@@ -103,6 +112,7 @@ public class FunctionAssistPanel extends JPanel
   }
     
   private static final String AGG_FUNS = "Aggregate Functions";
+  private static final String STREAM_FUNS = "Stream Functions";
   
   /**
    * List is built dynamically to allow for imports
@@ -113,6 +123,9 @@ public class FunctionAssistPanel extends JPanel
     
     // add entry for aggregate functions
     modListModel.addElement(AGG_FUNS);
+    
+    // add entry for aggregate functions
+    modListModel.addElement(STREAM_FUNS);
     
     FunctionRegistry reg = EngineContext.getInstance().getFunctionRegistry();
     Collection funcNames = reg.getFunctionNames();
@@ -136,24 +149,19 @@ public class FunctionAssistPanel extends JPanel
 
     // TODO: make this more efficient
     FunctionRegistry reg = EngineContext.getInstance().getFunctionRegistry();
-    Collection funcNames = reg.getFunctionNames();
-    for (Iterator i = funcNames.iterator(); i.hasNext(); ) {
-      String name = (String) i.next();
-      
+    for (String fname : reg.getFunctionNames() ) {
       // add module names
-      String module = FunctionRegistry.moduleName(name);
+      String module = FunctionRegistry.moduleName(fname);
       // only add module name once
-      if (! module.equals(moduleName))
-        continue;
+      if (! module.equals(moduleName)) continue;
         
       // add functions
-      Collection methods = reg.getFunctionMethods(name);
-      for (Iterator j = methods.iterator(); j.hasNext();) {
-        Method meth = (Method) j.next();
-        funcListModel.addElement(new CodeSnippet(
-            FunctionRegistry.functionName(name) +" ( " + ManGenerator.functionParamList(meth)+" )"
+      for (Method meth :  reg.getFunctionMethods(fname) ) {
+        funcListModel.addElement(CodeSnippet.code2(
+            FunctionRegistry.functionName(fname) +" ( " + ManGenerator.functionParamList(meth) + " )"
             + " -> " + FunctionRegistry.resultType(meth), 
-            name+ "( ", " )"));
+            ManUtil.description(meth),
+            fname + "( ", " )"));
       }
     }
   }
@@ -163,26 +171,47 @@ public class FunctionAssistPanel extends JPanel
 
     // TODO: make this more efficient
     FunctionRegistry reg = EngineContext.getInstance().getFunctionRegistry();
-    Collection funcNames = reg.getFunctionNames();
-    for (Iterator i = funcNames.iterator(); i.hasNext(); ) {
-      String name = (String) i.next();
-      
+    for (String fname : reg.getFunctionNames() ) {
       // add module names
-      String module = FunctionRegistry.moduleName(name);
-      // only add module name once
-      if (module != "")
-        continue;
+      String module = FunctionRegistry.moduleName(fname);
+      // only add aggregate functions
+      if (module != "") continue;
         
       // add functions
-      Collection methods = reg.getFunctionMethods(name);
-      for (Iterator j = methods.iterator(); j.hasNext();) {
-        Method meth = (Method) j.next();
-        funcListModel.addElement(new CodeSnippet(
-            FunctionRegistry.functionName(name) +" ( " + ManGenerator.functionParamList(meth)+" )", 
-            name+ "( ", " )"));
+      for (Method meth :  reg.getFunctionMethods(fname) ) {
+        funcListModel.addElement(CodeSnippet.code2(
+            FunctionRegistry.functionName(fname) +" ( " + ManGenerator.functionParamList(meth) + " )", 
+            fname + "( ", " )"));
       }
     }
   }
+  public void populateStreamFunctionList()
+  {
+    funcListModel.clear();
+
+    funcListModel.addElement(CodeSnippet.code2(
+        "counter ( boolean, ... )", 
+        "Returns a count value, which increments when all condition values are true.", 
+        "counter( ", " )"));
+    funcListModel.addElement(CodeSnippet.code2(
+        "index ( value )", 
+        "Returns an index value, which increments when the input value changes.", 
+        "index( ", " )"));
+    funcListModel.addElement(CodeSnippet.code2(
+        "keep ( value, boolean [ , init-value ] )", 
+        "Returns the input value from the last call where condition was true.  First call returns init-value or null.",
+        "keep (", " )"));
+    funcListModel.addElement(CodeSnippet.code2(
+        "prev ( value [ , init-value ] )", 
+        "Returns the input value from the previous row.  First call returns init-value or null",
+        "prev( ", " )" ));
+    funcListModel.addElement(CodeSnippet.code2(
+        "rownum ()", 
+        "Returns the current row number in the stream.",
+        "rownm( "," )" ));
+
+  }
+  /*
   public void OLDpopulateAggFunctionList()
   {
     funcListModel.clear();
@@ -196,5 +225,6 @@ public class FunctionAssistPanel extends JPanel
         + " -> ", 
         aggFunName+ "( ", " )");
   }
+  */
 
 }

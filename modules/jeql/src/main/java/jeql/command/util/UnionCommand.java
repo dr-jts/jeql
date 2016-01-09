@@ -23,7 +23,7 @@ implements Command
   }
 
   @Metadata (
-      description = "Union result"
+      description = "Union result table"
     )
   public Table getDefault()
   {

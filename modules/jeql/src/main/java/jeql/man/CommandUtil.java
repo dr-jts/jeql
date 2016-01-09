@@ -8,9 +8,9 @@ import jeql.engine.CommandInvoker;
 
 public class CommandUtil {
 
-  public static Map getParameters(Class cmdClass)
+  public static Map<String, CommandParamMethod> getParameters(Class cmdClass)
   {
-    Map paramMap = new TreeMap();
+    Map<String, CommandParamMethod> paramMap = new TreeMap<String, CommandParamMethod>();
     Method[] methods = cmdClass.getMethods();
     for (int i = 0; i < methods.length; i++) {
       Method method = methods[i];
@@ -40,7 +40,7 @@ public class CommandUtil {
     return methName.startsWith(CommandInvoker.GET_PREFIX);
   }
   
-  private static void addMethod(Map paramMap, Method method, boolean isInput)
+  private static void addMethod(Map<String, CommandParamMethod> paramMap, Method method, boolean isInput)
   {
     String rawName = method.getName().substring(3);
     String name = rawName.substring(0, 1).toLowerCase()

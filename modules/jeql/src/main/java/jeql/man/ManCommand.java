@@ -54,13 +54,13 @@ implements Command
     
   }
   
-  @Metadata (description = "Gets function descriptions" )
+  @Metadata (description = "Gets table of function definitions" )
   public Table getFunctions()
   {
     return functions;
   }
   
-  @Metadata (description = "Gets function and parameter descriptions" )
+  @Metadata (description = "Gets table of function and parameter definitions" )
   public Table getFunctionParams()
   {
     return functionParam;

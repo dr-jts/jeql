@@ -3,10 +3,14 @@ package jeql.engine;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.Map;
 
 import jeql.api.command.Command;
 import jeql.api.error.ExecutionException;
 import jeql.api.error.JeqlException;
+import jeql.man.CommandParamMethod;
+import jeql.man.CommandUtil;
+import jeql.man.ManUtil;
 import jeql.monitor.Monitor;
 import jeql.syntax.CommandParameterNode;
 
@@ -35,6 +39,12 @@ public class CommandInvoker
   }
 
   public String getName() { return cmdName; }
+  
+  public String getDescription() { return ManUtil.description(cmdClass); }
+  
+  public Map<String, CommandParamMethod> getParameters() {
+     return CommandUtil.getParameters(getCommandClass());
+  }
   
   public Class getCommandClass()
   {

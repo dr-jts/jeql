@@ -40,7 +40,7 @@ public class CommandRegistry
 {
   public static final String CMD_SUFFIX = "Command";
 
-  private Map procMap = new TreeMap();
+  private Map<String, CommandInvoker> procMap = new TreeMap<String, CommandInvoker>();
   
   public CommandRegistry() {
     init();
@@ -116,8 +116,12 @@ public class CommandRegistry
      return (CommandInvoker) procMap.get(name);
   }
   
-  public Collection getCommandNames()
+  public Collection<String> getCommandNames()
   {
     return procMap.keySet();
+  }
+  public Collection<CommandInvoker> getCommands()
+  {
+    return procMap.values();
   }
 }

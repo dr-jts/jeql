@@ -21,18 +21,25 @@ import jeql.engine.CommandRegistry;
 import jeql.engine.EngineContext;
 import jeql.man.CommandParamMethod;
 import jeql.man.CommandUtil;
+import jeql.man.ManUtil;
 import jeql.workbench.Workbench;
 
 public class CommandAssistPanel extends JPanel
 {  
+  public static CodeSnippet getCodeSnip(JList list)
+  {
+    return (CodeSnippet) list.getSelectedValue();
+  }
+  
   private DefaultListModel cmdListModel = new DefaultListModel();
   private JList cmdList = new JList(cmdListModel);
   private DefaultListModel paramListModel = new DefaultListModel();
   private JList paramList = new JList(paramListModel);
+  private CodeAssistPanel codeAssistPanel;
 
-  public CommandAssistPanel()
+  public CommandAssistPanel(CodeAssistPanel codeAssistPanel)
   {
-    try {
+    this.codeAssistPanel = codeAssistPanel;    try {
       initUI();
       populateCmdList();
     }
@@ -52,8 +59,10 @@ public class CommandAssistPanel extends JPanel
     cmdList.addMouseListener(new MouseAdapter() {
       public void mouseClicked(MouseEvent e) {
         populateParamList();
+        CodeSnippet snip = getCodeSnip(cmdList);
+        codeAssistPanel.showDoc(snip.getDoc());
         if (e.getClickCount() == 2) {
-          Workbench.controller().insertCodeSnippet((CodeSnippet) cmdList.getSelectedValue());
+          Workbench.controller().insertCodeSnippet(snip);
         }
       }
     });
@@ -70,8 +79,10 @@ public class CommandAssistPanel extends JPanel
 
     paramList.addMouseListener(new MouseAdapter() {
       public void mouseClicked(MouseEvent e) {
+        CodeSnippet snip = getCodeSnip(paramList);
+        codeAssistPanel.showDoc(snip.getDoc());
         if (e.getClickCount() == 2) {
-          Workbench.controller().insertCodeSnippet((CodeSnippet) paramList.getSelectedValue());
+          Workbench.controller().insertCodeSnippet(getCodeSnip(paramList));
         }
       }
     });
@@ -86,27 +97,21 @@ public class CommandAssistPanel extends JPanel
 
   }
   
-  private String getCode()
-  {
-    CodeSnippet snip = (CodeSnippet) paramList.getSelectedValue();
-    return snip.getCode();
-  }
+
   
   public void populateCmdList()
   {
     cmdListModel.clear();
     
     CommandRegistry reg = EngineContext.getInstance().geCommandRegistry();
-    Collection cmdNames = reg.getCommandNames();
-    
-    for (Iterator i = cmdNames.iterator(); i.hasNext(); ) {
-      String name = (String) i.next();
-      cmdListModel.addElement(new CodeSnippet(name, name + " ", ";"));
-      //cmdListModel.addElement(new CodeSnippet(name, name+ " "));
-      //writer.writeCommand(name, ManUtil.manDescription(invoker.getCommandClass()));
+    for (CommandInvoker ci : reg.getCommands() ) {
+      cmdListModel.addElement(CodeSnippet.code2(
+          ci.getName(), 
+          ci.getDescription(),
+          ci.getName() + " ", ";"));
     }
-
   }
+
 
   private void populateParamList()
   {
@@ -118,34 +123,35 @@ public class CommandAssistPanel extends JPanel
   {
     paramListModel.clear();
 
-    CommandInvoker invoker = EngineContext.getInstance().geCommandRegistry().getCommand(cmdName);
-
-    Map params = CommandUtil.getParameters(invoker.getCommandClass());
+    Map<String, CommandParamMethod> params = EngineContext.getInstance().geCommandRegistry().getCommand(cmdName).getParameters();
     
     // output default first
     if (params.containsKey(CommandInvoker.DEFAULT_METHOD_NAME)) {
       //System.out.println(PARAM_INDENT + params.get(CommandInvoker.DEFAULT_METHOD_NAME));
-      CommandParamMethod param = (CommandParamMethod) params.get(CommandInvoker.DEFAULT_METHOD_NAME);
-      paramListModel.addElement(new CodeSnippet("<default>", ""));
+      CommandParamMethod param = params.get(CommandInvoker.DEFAULT_METHOD_NAME);
+      paramListModel.addElement(CodeSnippet.doc(
+          param.toStringSpec(), 
+          param.getDescription() ));
       /*
       writer.writeCommandParam(param.getIOTag(), param.getDisplayName(), 
           param.getArgTypeList(), param.getDescription());
           */
     }
-    for (Iterator i = params.keySet().iterator(); i.hasNext(); ) {
-      String paramName = (String) i.next();
+    for (String paramName : params.keySet() ) {
       if (paramName.equals(CommandInvoker.DEFAULT_METHOD_NAME))
         continue;
-      CommandParamMethod param = (CommandParamMethod) params.get(paramName);
+      CommandParamMethod param = params.get(paramName);
       String name = param.getDisplayName() + ": ";
-      paramListModel.addElement(new CodeSnippet(name, name));
+      paramListModel.addElement(CodeSnippet.code(
+          param.toStringSpec(), 
+          param.getDescription(),
+          name ));
 
       /*
       writer.writeCommandParam(param.getIOTag(), param.getDisplayName(), 
           param.getArgTypeList(), param.getDescription());
           */  
     }
+
   }
-
-
 }

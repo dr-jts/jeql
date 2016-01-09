@@ -77,8 +77,17 @@ public class CommandParamMethod {
 
   public String toString()
   {
-    return getIOTag() + " " + getDisplayName() 
-    + ": " +  getArgTypeList()
-    + " - " + ManUtil.description(method);
+    return toStringSpec() + " - " + ManUtil.description(method);
+  }
+  
+  public String toStringSpec()
+  {
+    return getIOTag() 
+        + " " 
+        + (ManUtil.isRequired(getMethod()) ? "*" : "")
+        + (ManUtil.isMultiple(getMethod()) ? "+" : "")
+        + " "
+        + getDisplayName() + ": " 
+        + getArgTypeList();
   }
 }

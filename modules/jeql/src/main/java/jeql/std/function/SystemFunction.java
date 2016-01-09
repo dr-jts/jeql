@@ -4,14 +4,21 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
+import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.Map;
 
+import jeql.api.annotation.Metadata;
 import jeql.api.function.FunctionClass;
 import jeql.api.row.ArrayRowList;
 import jeql.api.row.BasicRow;
 import jeql.api.row.RowSchema;
 import jeql.api.table.Table;
+import jeql.engine.EngineContext;
+import jeql.engine.FunctionRegistry;
+import jeql.man.ManGenerator;
+import jeql.man.ManUtil;
+import jeql.workbench.ui.assist.CodeSnippet;
 
 public class SystemFunction 
 implements FunctionClass
@@ -71,6 +78,36 @@ implements FunctionClass
     }
     Table t = new Table(rs);
     return t;
+  }
+  
+  @Metadata (description = "Returns a table of function definitions" )
+  public static Table functions() 
+  {
+    RowSchema schema = new RowSchema(5);
+    schema.setColumnDef(0, "class", String.class);
+    schema.setColumnDef(1, "name", String.class);
+    schema.setColumnDef(2, "resultType", String.class);
+    schema.setColumnDef(3, "args", String.class);
+    schema.setColumnDef(4, "description", String.class);
+    ArrayRowList rs = new ArrayRowList(schema);
+
+    FunctionRegistry reg = EngineContext.getInstance().getFunctionRegistry();
+    for (String fname : reg.getFunctionNames() ) {
+      String module = FunctionRegistry.moduleName(fname);
+        
+      for (Method meth :  reg.getFunctionMethods(fname) ) {
+        BasicRow row = new BasicRow(schema.size());
+        
+        row.setValue(0, module);
+        row.setValue(1, FunctionRegistry.functionName(fname) );
+        row.setValue(2, FunctionRegistry.resultType(meth) );
+        row.setValue(3, ManGenerator.functionParamList(meth) );
+        row.setValue(4, ManUtil.description(meth) );
+        
+        rs.add(row);
+      }
+    }
+    return  new Table(rs);
   }
 
 }

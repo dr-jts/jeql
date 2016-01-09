@@ -19,6 +19,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import jeql.engine.EngineContext;
 import jeql.engine.FunctionRegistry;
@@ -44,25 +46,26 @@ public class CodeAssistPanel extends JPanel
   {
     //-----------  Doc panel
     JPanel docPanel = new JPanel();
-    JTextArea docText = new JTextArea();
-    docText.setFont(new java.awt.Font("Monospaced", 0, 12));
+    docText = new JTextArea();
+    docText.setFont(new java.awt.Font("Sanserif", 0, 11));
     docText.setEditable(false);
     docText.setBackground(WorkbenchSettings.HELP_BACKGROUND_CLR);
+    docText.setLineWrap(true);
 
     docPanel.setLayout(new BorderLayout());
     docPanel.add(new JScrollPane(docText), BorderLayout.CENTER);
 
     tabPane.setTabPlacement(JTabbedPane.LEFT);
     
-    CommandAssistPanel cmdPanel = new CommandAssistPanel();
+    CommandAssistPanel cmdPanel = new CommandAssistPanel(this);
     tabPane.add(cmdPanel, "Commands");
-    FunctionAssistPanel funcPanel = new FunctionAssistPanel();
+    FunctionAssistPanel funcPanel = new FunctionAssistPanel(this);
     tabPane.add(funcPanel, "Functions");
-    SelectAssistPanel selectPanel = new SelectAssistPanel();
+    SelectAssistPanel selectPanel = new SelectAssistPanel(this);
     tabPane.add(selectPanel, "Select");
-    OperatorAssistPanel opPanel = new OperatorAssistPanel();
+    OperatorAssistPanel opPanel = new OperatorAssistPanel(this);
     tabPane.add(opPanel, "Operators");
-    RegExAssistPanel rePanel = new RegExAssistPanel();
+    RegExAssistPanel rePanel = new RegExAssistPanel(this);
     tabPane.add(rePanel, "RegEx");
     
     // Main split pane
@@ -78,6 +81,17 @@ public class CodeAssistPanel extends JPanel
     setPreferredSize(new Dimension(900, 300));
     setLayout(new BorderLayout());
     add(splitPane, BorderLayout.CENTER);
+    
+    tabPane.addChangeListener(new ChangeListener() {
+      public void stateChanged(ChangeEvent e) {
+        showDoc("");
+      }
+  });
+  }
+
+  public void showDoc(String displayText) {
+    docText.setText(displayText);
+    
   }
   
 
