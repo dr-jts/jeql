@@ -158,16 +158,14 @@ public class ManGenerator
     if (params.containsKey(CommandInvoker.DEFAULT_METHOD_NAME)) {
       //System.out.println(PARAM_INDENT + params.get(CommandInvoker.DEFAULT_METHOD_NAME));
       CommandParamMethod param = (CommandParamMethod) params.get(CommandInvoker.DEFAULT_METHOD_NAME);
-      writer.writeCommandParam(param.getIOTag(), param.getDisplayName(), 
-          param.getArgTypeList(), param.getDescription());
+      writer.writeCommandParam(param);
     }
     for (Iterator i = params.keySet().iterator(); i.hasNext(); ) {
       String paramName = (String) i.next();
       if (paramName.equals(CommandInvoker.DEFAULT_METHOD_NAME))
         continue;
       CommandParamMethod param = (CommandParamMethod) params.get(paramName);
-      writer.writeCommandParam(param.getIOTag(), param.getDisplayName(), 
-          param.getArgTypeList(), param.getDescription());
+      writer.writeCommandParam(param);
     }
 
   }

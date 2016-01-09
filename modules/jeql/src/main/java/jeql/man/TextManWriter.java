@@ -75,12 +75,10 @@ public class TextManWriter
 
   }
   
-  public void writeCommandParam(String ioTag, String name, String argList, String description)
+  public void writeCommandParam(CommandParamMethod param)
   {
     writer.print(PARAM_INDENT);
-    writer.println(ioTag + " " + name + 
-        ": " +  argList
-        + " - " + description);
+    writer.println(param);
   }
 
 }

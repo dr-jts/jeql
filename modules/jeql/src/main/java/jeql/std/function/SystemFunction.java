@@ -8,6 +8,7 @@ import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.Map;
 
+import jeql.api.annotation.Metadata;
 import jeql.api.function.FunctionClass;
 import jeql.api.row.ArrayRowList;
 import jeql.api.row.BasicRow;
@@ -79,6 +80,7 @@ implements FunctionClass
     return t;
   }
   
+  @Metadata (description = "Returns a table of function definitions" )
   public static Table functions() 
   {
     RowSchema schema = new RowSchema(5);

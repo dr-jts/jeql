@@ -21,6 +21,7 @@ import jeql.engine.CommandRegistry;
 import jeql.engine.EngineContext;
 import jeql.man.CommandParamMethod;
 import jeql.man.CommandUtil;
+import jeql.man.ManUtil;
 import jeql.workbench.Workbench;
 
 public class CommandAssistPanel extends JPanel
@@ -129,7 +130,7 @@ public class CommandAssistPanel extends JPanel
       //System.out.println(PARAM_INDENT + params.get(CommandInvoker.DEFAULT_METHOD_NAME));
       CommandParamMethod param = params.get(CommandInvoker.DEFAULT_METHOD_NAME);
       paramListModel.addElement(CodeSnippet.doc(
-          param.getIOTag() + "<default>: " + param.getArgTypeList(), 
+          param.toStringSpec(), 
           param.getDescription() ));
       /*
       writer.writeCommandParam(param.getIOTag(), param.getDisplayName(), 
@@ -142,7 +143,7 @@ public class CommandAssistPanel extends JPanel
       CommandParamMethod param = params.get(paramName);
       String name = param.getDisplayName() + ": ";
       paramListModel.addElement(CodeSnippet.code(
-          param.getIOTag() + " " + name + param.getArgTypeList(), 
+          param.toStringSpec(), 
           param.getDescription(),
           name ));
 
@@ -151,7 +152,6 @@ public class CommandAssistPanel extends JPanel
           param.getArgTypeList(), param.getDescription());
           */  
     }
+
   }
-
-
 }
