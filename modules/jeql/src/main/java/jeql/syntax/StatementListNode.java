@@ -48,8 +48,12 @@ public class StatementListNode
       Object stmtResult = evalStmt(scope, node);
       
       // only some kinds of statements return a reportable result
-      if (node instanceof SelectNode)
+      Object lastTbl = null;
+      if (node instanceof SelectNode || node instanceof AssignmentNode) {
         result = stmtResult;
+        lastTbl = result;
+      }
+      scope.setVariable(Scope.LAST_TABLE, lastTbl);
     }
     return result;
   }
