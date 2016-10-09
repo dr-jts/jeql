@@ -16,7 +16,6 @@ import jeql.api.row.RowSchema;
 import jeql.api.table.Table;
 import jeql.engine.EngineContext;
 import jeql.engine.FunctionRegistry;
-import jeql.man.ManGenerator;
 import jeql.man.ManUtil;
 import jeql.workbench.ui.assist.CodeSnippet;
 
@@ -101,7 +100,7 @@ implements FunctionClass
         row.setValue(0, module);
         row.setValue(1, FunctionRegistry.functionName(fname) );
         row.setValue(2, FunctionRegistry.resultType(meth) );
-        row.setValue(3, ManGenerator.functionParamList(meth) );
+        row.setValue(3, ManUtil.paramTypeList(meth) );
         row.setValue(4, ManUtil.description(meth) );
         
         rs.add(row);

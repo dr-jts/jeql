@@ -166,13 +166,17 @@ implements FunctionClass
   @Metadata (
       description = "Lists all files in a directory tree"
     )
-  public static Table listAllFiles(String dirname) 
+  public static Table listAllFiles(
+		  @Metadata (name = "dirName", description = "directory name or path"   )
+  			String dirname) 
   {
     return listAllFilesFiltered(dirname, null, false);
   }
 
   @Metadata (description = "Lists all files in a directory tree" )
-  public static Table listAllDirsAndFiles(String dirname) 
+  public static Table listAllDirsAndFiles(
+		  @Metadata (name = "dirName", description = "directory name or path"   )
+		  String dirname) 
   {
     return listAllFilesFiltered(dirname, null, true);
   }
@@ -180,7 +184,11 @@ implements FunctionClass
   @Metadata (
       description = "Lists all files in a directory tree which match a pattern"
     )
-  public static Table listAllFiles(String dirname, String pattern) 
+  public static Table listAllFiles(
+		  @Metadata (name = "dirName", description = "directory name or path"   )
+		  String dirname,
+		  @Metadata (name = "pattern", description = "filename pattern"   )
+		  String pattern) 
   {
     if (pattern.startsWith("*."))
       return listAllFilesFiltered(dirname, new ExtensionFilenameFilter(FileFunction.ext(pattern)), false);
