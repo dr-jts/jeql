@@ -66,11 +66,11 @@ public class ManUtil
     return desc + values;
   }
 
-  public static String functionDescription(Method m)
+  public static String functionDoc(Method m)
   {
     Metadata doc = m.getAnnotation(Metadata.class);
     String desc = (doc == null) ? "" : doc.description();
-    return desc + ManGenerator.functionParamDoc(m);
+    return desc + "\n\n" + ManGenerator.functionParamDoc(m);
   }
 
   public static boolean isMultiple(Method m)

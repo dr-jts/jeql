@@ -56,6 +56,7 @@ public class NetFunction
     return readURL(urlStr, true);
   }
   
+  @Metadata (description = "Reads text data from a URL" )
   public static String readURL(String urlStr, 
 		  @Metadata(name = "addEOL",
 		  	description = "If true append EOL to lines read"
@@ -64,6 +65,7 @@ public class NetFunction
       return readURL(urlStr, addEOL, -1);
   }
   
+  @Metadata (description = "Reads text data from a URL" )
   public static String readURL(String urlStr,
 		  @Metadata(name = "addEOL",
 		  	description = "If true append EOL to lines read"
