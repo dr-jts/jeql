@@ -60,7 +60,7 @@ public class CommandParamMethod {
   {
     if (isInput)
       return methodParamList(method);
-    return ManGenerator.methodReturnType(method);
+    return ManUtil.returnType(method);
   }
   
   public static String methodParamList(Method meth)
@@ -90,4 +90,8 @@ public class CommandParamMethod {
         + getDisplayName() + ": " 
         + getArgTypeList();
   }
+
+public String getDoc() {
+	return ManUtil.commandParamDoc(method);
+}
 }

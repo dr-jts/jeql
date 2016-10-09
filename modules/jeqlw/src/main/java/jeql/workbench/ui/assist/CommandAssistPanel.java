@@ -129,9 +129,11 @@ public class CommandAssistPanel extends JPanel
     if (params.containsKey(CommandInvoker.DEFAULT_METHOD_NAME)) {
       //System.out.println(PARAM_INDENT + params.get(CommandInvoker.DEFAULT_METHOD_NAME));
       CommandParamMethod param = params.get(CommandInvoker.DEFAULT_METHOD_NAME);
-      paramListModel.addElement(CodeSnippet.doc(
+      String name = null;
+      paramListModel.addElement(CodeSnippet.code(
           param.toStringSpec(), 
-          param.getDescription() ));
+          param.getDoc(),
+          name));
       /*
       writer.writeCommandParam(param.getIOTag(), param.getDisplayName(), 
           param.getArgTypeList(), param.getDescription());
@@ -144,7 +146,7 @@ public class CommandAssistPanel extends JPanel
       String name = param.getDisplayName() + ": ";
       paramListModel.addElement(CodeSnippet.code(
           param.toStringSpec(), 
-          param.getDescription(),
+          param.getDoc(),
           name ));
 
       /*

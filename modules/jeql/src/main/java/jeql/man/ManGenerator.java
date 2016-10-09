@@ -19,12 +19,6 @@ import jeql.util.StringUtil;
 
 public class ManGenerator 
 {
-  private static String getClassBaseName(String classname)
-  {
-    int lastDotIndex = classname.lastIndexOf(".");
-    return classname.substring(lastDotIndex + 1);
-  }
-
   public static void generate(EngineContext context, Writer writer)
   {
     ManGenerator mg = new ManGenerator(context);
@@ -118,43 +112,6 @@ public class ManGenerator
     }
     writer.writeFunctionClose();
   }
-  
-  public static String functionParamList(Method meth)
-  {
-    StringBuffer pd = new StringBuffer();
-    Class[] param = meth.getParameterTypes();
-    for (int i = 0; i < param.length; i++) {
-      if (i > 0)
-        pd.append(", ");
-      pd.append(ClassUtil.classname(param[i]));
-    }
-    return pd.toString();
-  }
-  
-  public static String functionParamDoc(Method meth)
-  {
-    StringBuffer pd = new StringBuffer();
-    Class[] param = meth.getParameterTypes();
-    Annotation[][] anno = meth.getParameterAnnotations();
-    for (int i = 0; i < param.length; i++) {
-      if (i > 0)
-        pd.append("\n");
-      
-      String annoName = ManUtil.name(anno[i]);
-      String name = annoName.length() == 0 ? ("arg" + i) : annoName;
-      pd.append(name + ": ");
-      pd.append(ClassUtil.classname(param[i]));
-      pd.append(" ");
-      pd.append(ManUtil.description(anno[i]));
-    }
-    return pd.toString();
-  }
-  
-  public static String methodReturnType(Method meth)
-  {
-    return getClassBaseName(meth.getReturnType().getName());
-  }
-  
   
   void writeCommands()
   {

@@ -18,7 +18,6 @@ import javax.swing.border.EmptyBorder;
 
 import jeql.engine.EngineContext;
 import jeql.engine.FunctionRegistry;
-import jeql.man.ManGenerator;
 import jeql.man.ManUtil;
 import jeql.workbench.Workbench;
 
@@ -157,12 +156,16 @@ public class FunctionAssistPanel extends JPanel
         
       // add functions
       for (Method meth :  reg.getFunctionMethods(fname) ) {
-        funcListModel.addElement(CodeSnippet.code2(
-            FunctionRegistry.functionName(fname) +" ( " + ManGenerator.functionParamList(meth) + " )"
-            + " -> " + FunctionRegistry.resultType(meth), 
-            ManUtil.functionDoc(meth),
-            fname + "( ", 
-            " )"));
+        funcListModel.addElement( CodeSnippet.code2(
+        		
+            FunctionRegistry.functionName(fname) 
+            + " ( " + ManUtil.paramTypeList(meth) + " )"
+            + " -> " + ManUtil.returnType(meth), 
+            
+            FunctionRegistry.functionName(fname) + "\n\n" + ManUtil.functionDoc(meth),
+            
+            fname + "( ", " )"
+            ));
       }
     }
   }
@@ -181,7 +184,7 @@ public class FunctionAssistPanel extends JPanel
       // add functions
       for (Method meth :  reg.getFunctionMethods(fname) ) {
         funcListModel.addElement(CodeSnippet.code2(
-            FunctionRegistry.functionName(fname) +" ( " + ManGenerator.functionParamList(meth) + " )", 
+            FunctionRegistry.functionName(fname) +" ( " + ManUtil.paramTypeList(meth) + " )", 
             fname + "( ", " )"));
       }
     }
