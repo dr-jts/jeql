@@ -53,6 +53,11 @@ implements Command
     getPlot().setBorderColor(color);
   }
   
+  public void setDefault(Table dataTbl) 
+  {
+	getPlotter().addData(dataTbl);
+  }
+
   public void setData(Table tbl)
   {
     getPlotter().addData(tbl);
