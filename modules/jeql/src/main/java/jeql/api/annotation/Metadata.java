@@ -10,4 +10,6 @@ public @interface Metadata
   String description() default "";
   boolean isRequired() default false;
   boolean isMultiple() default false;
+  String[] values() default {};
+
 }

@@ -3,6 +3,7 @@ package jeql.command.chart;
 
 import java.util.Arrays;
 
+import jeql.api.annotation.Metadata;
 import jeql.api.command.Command;
 import jeql.api.error.IllegalValueException;
 import jeql.api.table.Table;
@@ -79,6 +80,18 @@ implements Command
 		param.setTitle(title);
 	}
 
+	@Metadata (
+		description = "Type of chart",
+		values = {
+				BaseChart.CHART_TYPE_BAR, 
+				BaseChart.CHART_TYPE_BAR_STACKED, 
+				BaseChart.CHART_TYPE_LINE,
+				BaseChart.CHART_TYPE_PIE, 
+				BaseChart.CHART_TYPE_XY, 
+				BaseChart.CHART_TYPE_XY_STEP, 
+				BaseChart.CHART_TYPE_POLAR
+			}
+	)
 	public void setType(String chartTypeStr) 
 	{
 		String chartType = BaseChart.getChartType(chartTypeStr);

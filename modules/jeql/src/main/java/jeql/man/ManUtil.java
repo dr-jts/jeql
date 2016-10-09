@@ -36,7 +36,15 @@ public class ManUtil
   public static String description(Method m)
   {
     Metadata doc = m.getAnnotation(Metadata.class);
-    return (doc == null) ? "" : doc.description();
+    String desc = (doc == null) ? "" : doc.description();
+    String values = "";
+    if (doc != null) {
+    	String[] vals = doc.values();
+    	if (vals.length > 0) {
+    		values = "\n[ Values: " + String.join(", ", vals) + " ]";
+    	}
+    }
+    return desc + values;
   }
 
   public static boolean isMultiple(Method m)
