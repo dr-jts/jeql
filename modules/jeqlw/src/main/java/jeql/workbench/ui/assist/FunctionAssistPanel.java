@@ -160,8 +160,9 @@ public class FunctionAssistPanel extends JPanel
         funcListModel.addElement(CodeSnippet.code2(
             FunctionRegistry.functionName(fname) +" ( " + ManGenerator.functionParamList(meth) + " )"
             + " -> " + FunctionRegistry.resultType(meth), 
-            ManUtil.description(meth),
-            fname + "( ", " )"));
+            ManUtil.description(meth) + "\n" +  ManGenerator.functionParamDoc(meth),
+            fname + "( ", 
+            " )"));
       }
     }
   }

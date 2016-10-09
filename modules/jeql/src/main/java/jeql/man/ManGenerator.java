@@ -131,6 +131,25 @@ public class ManGenerator
     return pd.toString();
   }
   
+  public static String functionParamDoc(Method meth)
+  {
+    StringBuffer pd = new StringBuffer();
+    Class[] param = meth.getParameterTypes();
+    Annotation[][] anno = meth.getParameterAnnotations();
+    for (int i = 0; i < param.length; i++) {
+      if (i > 0)
+        pd.append("\n");
+      
+      String annoName = ManUtil.name(anno[i]);
+      String name = annoName.length() == 0 ? ("arg" + i) : annoName;
+      pd.append(name + ": ");
+      pd.append(ClassUtil.classname(param[i]));
+      pd.append(" ");
+      pd.append(ManUtil.description(anno[i]));
+    }
+    return pd.toString();
+  }
+  
   public static String methodReturnType(Method meth)
   {
     return getClassBaseName(meth.getReturnType().getName());

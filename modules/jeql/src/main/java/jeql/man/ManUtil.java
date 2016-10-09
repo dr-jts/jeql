@@ -33,7 +33,26 @@ public class ManUtil
     return (doc == null) ? "" : doc.name();
   }
   
+  public static String description(Annotation[] anno)
+  {
+    for (int i = 0; i < anno.length; i++) {
+      if (anno[i] instanceof Metadata) {
+        Metadata doc = (Metadata) anno[i];
+        if (doc != null)
+          return doc.description();
+      }
+    }
+    return "";
+  }
+  
   public static String description(Method m)
+  {
+    Metadata doc = m.getAnnotation(Metadata.class);
+    String desc = (doc == null) ? "" : doc.description();
+    return desc;
+  }
+
+  public static String commandParamDescription(Method m)
   {
     Metadata doc = m.getAnnotation(Metadata.class);
     String desc = (doc == null) ? "" : doc.description();
@@ -45,6 +64,13 @@ public class ManUtil
     	}
     }
     return desc + values;
+  }
+
+  public static String functionDescription(Method m)
+  {
+    Metadata doc = m.getAnnotation(Metadata.class);
+    String desc = (doc == null) ? "" : doc.description();
+    return desc + ManGenerator.functionParamDoc(m);
   }
 
   public static boolean isMultiple(Method m)

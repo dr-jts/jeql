@@ -7,6 +7,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 
+import jeql.api.annotation.Metadata;
 import jeql.api.function.FunctionClass;
 import jeql.util.URLParamEncoder;
 
@@ -55,10 +56,23 @@ public class NetFunction
     return readURL(urlStr, true);
   }
   
-  public static String readURL(String urlStr, boolean addEOL) {
+  public static String readURL(String urlStr, 
+		  @Metadata(name = "addEOL",
+		  	description = "If true append EOL to lines read"
+		  ) 
+  			boolean addEOL) {
       return readURL(urlStr, addEOL, -1);
   }
-  public static String readURL(String urlStr, boolean addEOL, int timeout) {
+  
+  public static String readURL(String urlStr,
+		  @Metadata(name = "addEOL",
+		  	description = "If true append EOL to lines read"
+		  ) 
+		  boolean addEOL, 
+		  @Metadata(name = "timeout",
+		  	description = "Timeout in milliseconds"
+		  ) 
+		  int timeout) {
     StringBuffer buf = new StringBuffer();
     BufferedReader bufReader = null;
     try {
