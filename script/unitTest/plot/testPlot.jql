@@ -17,7 +17,7 @@ t = select i,
 	styleLabel: i+','+j,
 	styleLabelColor: #ff0000,
 
-	Geom.buffer(Geom.createPoint(x, y), 0.4 * radius)
+	geom: Geom.buffer(Geom.createPoint(x, y), 0.4 * radius)
 	let
 		iFrac = (i - 1.0) / gridSize,
 		jFrac = (j - 1.0) / gridSize,
@@ -28,7 +28,11 @@ t = select i,
 	
 	from Generate.grid(1,gridSize,1,gridSize);
 
-Plot data: t file: "plotDot.png";
+extent = val(select geomExtent(geom) from t);
+
+Plot t 
+	extent: extent
+	file: "plotDot.png";
 
 
 	
