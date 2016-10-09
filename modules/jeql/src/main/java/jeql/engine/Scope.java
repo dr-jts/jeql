@@ -10,6 +10,8 @@ import jeql.api.table.Table;
  */
 public interface Scope
 {
+  static String LAST_TABLE = "$$";
+  
   Table resolveTable(String name);
   
   EngineContext getContext();

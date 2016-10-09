@@ -3,6 +3,7 @@ package jeql.engine.query;
 import java.util.Iterator;
 import java.util.List;
 
+import jeql.api.error.ExecutionException;
 import jeql.api.row.RowList;
 import jeql.api.table.Table;
 import jeql.engine.CompilationException;
@@ -213,7 +214,7 @@ public class SelectEvaluator
     if (! select.hasFromList()) {
       throw new CompilationException(select, "Empty/Missing FROM clause not supported");
     }
-    else if (select.getFromList().size() == 1) {
+    if (select.getFromList().size() == 1) {
       baseRS = buildSingleTableRowStream();
     }
     else {
@@ -252,6 +253,17 @@ public class SelectEvaluator
     return rowStr;
   }
   
+  /*
+  private RowList buildNoTableRowStream()
+  {
+    Object lastObj = baseScope.getVariable(Scope.LAST_TABLE);
+    if (lastObj instanceof Table) {
+      Table tbl = (Table) lastObj;
+      return tbl.getRows();
+    }
+    throw new ExecutionException(select, "No default table computed");
+  }
+  */
   private RowList buildSingleTableRowStream()
   {
     return baseScope.getFromTable(0).getRows();
