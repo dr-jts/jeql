@@ -4,9 +4,10 @@ Test Chart command
   
 ================================*/
 
-t1 = select * from [ [1, 1 ] [2, 2 ] [3, 3 ] ];
+t1 = [ [1, 1 ] [2, 2 ] [3, 3 ] ];
 
-t2 = select * from [ [1, 1.5] [2, 2.5 ] [3, 3.5 ] ];
+t2 = [ t(descrip, x, y) 
+	["item 1", 1, 1.5] ["item 2", 2, 2.5 ] ["item 3", 3, 3.5 ] ];
 
 Chart 
   data: t1 name: "Series 1" 
