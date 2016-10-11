@@ -30,7 +30,7 @@ t1 = select a,b from
 		[ 2-1, "a", 99 ] 
 		[ 1+1, String.leftStr("bb", 1), 99 ] 
 	];
-t2 = select * from [ [1, "a"] [2, "b"] ];
+t2 = [ [1, "a"] [2, "b"] ];
 
 AssertEqual value: t1 expected: t2;
 
