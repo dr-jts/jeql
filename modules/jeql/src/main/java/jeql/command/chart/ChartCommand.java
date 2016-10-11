@@ -9,6 +9,7 @@ import jeql.api.error.IllegalValueException;
 import jeql.api.table.Table;
 import jeql.engine.Scope;
 
+@Metadata (description = "Generate charts for datasets")
 public class ChartCommand 
 implements Command 
 {
@@ -102,13 +103,13 @@ implements Command
 		
 	}
 
-	@Metadata (description = "Dataset to display on chart")
+	@Metadata (description = "Dataset to display on chart (schema may have columns x and y)")
   public void setDefault(Table dataTbl) 
   {
     param.setSeries(0, dataTbl);
   }
 
-  @Metadata (description = "Dataset to display on chart", isMultiple = true)
+  @Metadata (description = "Dataset to display on chart (schema may have columns x and y)", isMultiple = true)
   public void setData(Table dataTbl) 
   {
     param.addSeries(dataTbl);
