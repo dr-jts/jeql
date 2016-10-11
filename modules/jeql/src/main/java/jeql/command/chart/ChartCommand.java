@@ -102,20 +102,22 @@ implements Command
 		
 	}
 
+	@Metadata (description = "Dataset to display on chart")
   public void setDefault(Table dataTbl) 
   {
     param.setSeries(0, dataTbl);
   }
 
+  @Metadata (description = "Dataset to display on chart", isMultiple = true)
   public void setData(Table dataTbl) 
   {
     param.addSeries(dataTbl);
   }
 
-	public void setName(String name) 
-	{
-		param.addSeriesKey(name);
-	}
+  @Metadata (description = "Dataset name", isMultiple = true)
+  public void setName(String name) {
+    param.addSeriesKey(name);
+  }
 
   public void setBackground(String color)
   {
