@@ -1,8 +1,10 @@
 package jeql.command.test;
 
+import jeql.api.annotation.Metadata;
 import jeql.api.command.Command;
 import jeql.api.error.JeqlException;
 import jeql.api.table.Table;
+import jeql.command.chart.BaseChart;
 import jeql.engine.Scope;
 
 /**
@@ -12,6 +14,7 @@ import jeql.engine.Scope;
  * @author Martin Davis
  *
  */
+@Metadata ( description = "Checks that a computed expression has a given expected value, throws an error if not.")  
 public class AssertCommand 
 implements Command
 {
@@ -23,20 +26,24 @@ implements Command
   public AssertCommand() {
   }
   
+  @Metadata ( description = "Actual value")  
   public void setDefault(Object actual)
   {
    this.actual = actual;  
   }
   
+  @Metadata ( description = "Expected value is false")  
   public void setFails(boolean isFailExpected)
   {
     isFailExpected = true;
   }
   
+  @Metadata ( description = "Expected value")  
   public void setEquals(Object expected) {
     setExpected(expected);
   }
   
+  @Metadata ( description = "Expected value")  
   public void setExpected(Object expected) {
     this.expected = expected;
     isExpectedSet = true;
