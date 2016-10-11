@@ -123,7 +123,7 @@ public interface ParserConstants {
   /** RegularExpression Id. */
   int S_QUOTED_IDENTIFIER = 60;
   /** RegularExpression Id. */
-  int S_KEY_IDENTIFIER = 61;
+  int S_IDENTIFIER_KEY = 61;
   /** RegularExpression Id. */
   int LETTER = 62;
   /** RegularExpression Id. */
@@ -253,7 +253,7 @@ public interface ParserConstants {
     "<S_CONST_LITERAL>",
     "<S_IDENTIFIER>",
     "<S_QUOTED_IDENTIFIER>",
-    "<S_KEY_IDENTIFIER>",
+    "<S_IDENTIFIER_KEY>",
     "<LETTER>",
     "<SPECIAL_CHARS>",
     "<S_STRING_LITERAL>",

@@ -1,0 +1,17 @@
+/*================================
+
+Test assignment (definition statement)
+	
+================================*/
+
+x: 1;
+y: 2;
+z: x + y;
+
+AssertEqual z expected: x + y;
+
+
+
+
+
+
