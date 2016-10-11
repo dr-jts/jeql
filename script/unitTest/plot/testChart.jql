@@ -1,0 +1,24 @@
+/*================================
+
+Test Chart command
+  
+================================*/
+
+t1 = select * from [ [1, 1 ] [2, 2 ] [3, 3 ] ];
+
+t2 = select * from [ [1, 1.5] [2, 2.5 ] [3, 3.5 ] ];
+
+Chart 
+  data: t1 name: "Series 1" 
+  data: t2 name: "Series 2"
+  extrude:
+  showItemLabels:
+  background: "004444"
+  color: "ffffaa"
+  width: 500 
+  title: "Test Chart"
+  subtitle: "Two datasets shown in Bar chart"
+  xAxisTitle: "Items"
+  yAxisTitle: "Value"
+  file: "chart.png";
+  
