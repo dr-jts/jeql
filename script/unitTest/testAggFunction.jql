@@ -26,12 +26,10 @@ Print gr1;
 AssertEqual gr1 expected: expected1;
 
 //-------------------------------------------------
-tmax = select max(a) from t1;
-Assert val(tmax) == 11;
+Assert val( select max(a) from t1 ) equals: 11;
 
 //-------------------------------------------------
-tmin = select min(a) from t1;
-Assert val(tmin) == 2;
+Assert val( select min(a) from t1 ) == 2;
 
 //-------------------------------------------------
 tavg = select avg(a) from t1;

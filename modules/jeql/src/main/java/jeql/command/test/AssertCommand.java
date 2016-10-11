@@ -2,6 +2,7 @@ package jeql.command.test;
 
 import jeql.api.command.Command;
 import jeql.api.error.JeqlException;
+import jeql.api.table.Table;
 import jeql.engine.Scope;
 
 /**
@@ -14,15 +15,17 @@ import jeql.engine.Scope;
 public class AssertCommand 
 implements Command
 {
-  private Object cond;
+  private Object actual;
+  private Object expected;
+  private boolean isExpectedSet = false;
   private boolean isFailExpected;
   
   public AssertCommand() {
   }
   
-  public void setDefault(Object cond)
+  public void setDefault(Object actual)
   {
-   this.cond = cond;  
+   this.actual = actual;  
   }
   
   public void setFails(boolean isFailExpected)
@@ -30,12 +33,30 @@ implements Command
     isFailExpected = true;
   }
   
+  public void setEquals(Object expected) {
+    setExpected(expected);
+  }
+  
+  public void setExpected(Object expected) {
+    this.expected = expected;
+    isExpectedSet = true;
+  }
+  
   public void execute(Scope scope)
   {
-    boolean bool = ((Boolean) cond).booleanValue();
-    if (! bool) {
-      reportFailure("");
+    if (! isExpectedSet) {
+      expected = true;
     }
+    if (isFailExpected) {
+      boolean bool = ((Boolean) actual).booleanValue();
+      if (! bool) {
+        reportFailure("");
+      }
+      return;
+    }
+    String errMsg = AssertUtil.checkEqual(actual, expected);
+    if (errMsg != null)
+      reportFailure(errMsg);
   }
 
   private void reportFailure(String msg)
