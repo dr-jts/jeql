@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 
 import jeql.api.annotation.Metadata;
 import jeql.util.ClassUtil;
+import jeql.util.StringUtil;
 
 public class ManUtil {
 	public static String description(Class<?> clz) {
@@ -52,7 +53,7 @@ public class ManUtil {
 		if (doc != null) {
 			String[] vals = doc.values();
 			if (vals.length > 0) {
-				values = "[ Values: " + String.join(", ", vals) + " ]";
+				values = "[ Values: " + StringUtil.join(", ", vals) + " ]";
 			}
 		}
 		return values;

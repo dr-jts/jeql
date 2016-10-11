@@ -108,4 +108,13 @@ public class StringUtil
       return b.toString();
   }
 
+  public static String join( String sep, String[] val) {
+    StringBuilder sbStr = new StringBuilder();
+    for (int i = 0, il = val.length; i < il; i++) {
+      if (i > 0)
+        sbStr.append(sep);
+      sbStr.append(val[i]);
+    }
+    return sbStr.toString();
+  }
 }
