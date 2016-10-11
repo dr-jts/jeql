@@ -146,7 +146,7 @@ public class CommandAssistPanel extends JPanel
       String name = param.getDisplayName() + ": ";
       paramListModel.addElement(CodeSnippet.code(
           param.toStringSpec(), 
-          param.getDoc(),
+          "Parameter  " + name + "\n\n" + param.getDoc(),
           name ));
 
       /*
