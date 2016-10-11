@@ -69,7 +69,24 @@ public class ManUtil {
 		return (doc == null) ? false : doc.isRequired();
 	}
 
-	public static String returnType(Method meth) {
+        public static String multiplicityCode(Method method) {
+          String code = " ";
+          if (isRequired(method)) {
+            code = isMultiple(method) ? "+" : "!";
+          }
+          else {
+            code = isMultiple(method) ? "*" : " ";
+          }
+          return code;
+        }
+        
+        public static String multiplicitySpec(Method method) {
+          String code = ( isRequired(method) ? "Required" : "Optional" )
+            + ( isMultiple(method) ? "; Multipe" : "");
+          return code;
+        }
+        
+        public static String resultType(Method meth) {
 		return ClassUtil.classname(meth.getReturnType().getName());
 	}
 
@@ -104,9 +121,7 @@ public class ManUtil {
 	public static String functionDoc(Method m) {
 		return description(m) + "\n\n" + functionParamDoc(m);
 	}
-	public static String commandParamDoc(Method m) {
-		return description(m) + "\n\n" + values(m);
-	}
+
 
 
 

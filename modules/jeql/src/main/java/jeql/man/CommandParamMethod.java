@@ -60,7 +60,7 @@ public class CommandParamMethod {
   {
     if (isInput)
       return methodParamList(method);
-    return ManUtil.returnType(method);
+    return ManUtil.resultType(method);
   }
   
   public static String methodParamList(Method meth)
@@ -84,14 +84,29 @@ public class CommandParamMethod {
   {
     return getIOTag() 
         + " " 
-        + (ManUtil.isRequired(getMethod()) ? "*" : "")
-        + (ManUtil.isMultiple(getMethod()) ? "+" : "")
+        + ManUtil.multiplicityCode(method)
         + " "
         + getDisplayName() + ": " 
         + getArgTypeList();
   }
 
-public String getDoc() {
-	return ManUtil.commandParamDoc(method);
-}
+  public String getDoc() {
+  	return
+  	   "Parameter  "  + getDisplayName() + ": " + getArgTypeList() 
+  	   + "\n" + inputOutput() + " ( " + ManUtil.multiplicitySpec(method) + " )"
+  	   + "\n\n" + ManUtil.description(method) 
+  	   + "\n\n" + ManUtil.values(method);
+  	   
+  }
+
+  private String inputOutput() {
+    String io = isInput ? "Input " : "";
+    if (isOutput) {
+      if (io.length() > 0) io += "/ ";
+      io += "Output";
+    }
+    
+    if (io.length() > 0) io += " ";
+    return io;
+  }
 }

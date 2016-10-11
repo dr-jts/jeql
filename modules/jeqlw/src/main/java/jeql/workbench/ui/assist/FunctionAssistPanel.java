@@ -160,7 +160,7 @@ public class FunctionAssistPanel extends JPanel
         		
             FunctionRegistry.functionName(fname) 
             + " ( " + ManUtil.paramTypeList(meth) + " )"
-            + " -> " + ManUtil.returnType(meth), 
+            + " -> " + ManUtil.resultType(meth), 
             
             FunctionRegistry.functionName(fname) + "\n\n" + ManUtil.functionDoc(meth),
             
