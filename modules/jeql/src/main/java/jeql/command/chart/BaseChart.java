@@ -9,6 +9,7 @@ import jeql.api.table.Table;
 
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.title.LegendTitle;
 import org.jfree.chart.title.TextTitle;
 
 public abstract class BaseChart 
@@ -82,6 +83,9 @@ public abstract class BaseChart
 
 		if (param.subtitle != null)
 			chart.addSubtitle(new TextTitle(param.subtitle));
+		
+                if (param.showLegend)
+                  chart.addLegend(new LegendTitle(chart.getPlot()));
 		
 		String fileExt = filenameExtension(filename);
 		if (fileExt.equalsIgnoreCase("jpg") || fileExt.equalsIgnoreCase("jpeg"))

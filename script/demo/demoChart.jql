@@ -6,7 +6,7 @@ Test Chart command
 
 t1 = [ [1, 1 ] [2, 2 ] [3, 3 ] ];
 
-t2 = [ t(description, x, y) 
+t2 = [ t(descrip, x, y) 
 	["item 1", 1, 1.5] ["item 2", 2, 2.5 ] ["item 3", 3, 3.5 ] ];
 
 Chart 

@@ -77,9 +77,12 @@ public class ChartParameters
 		if (rot < -1.0) rot = -1.0;
 		this.itemLabelRotation = rot;
 	}
-	public void setSubtitle(String subtitle) {
-		this.subtitle = subtitle;
-	}
+        public void setLegend(boolean showLegend) {
+          this.showLegend = showLegend;
+  }
+        public void setSubtitle(String subtitle) {
+          this.subtitle = subtitle;
+  }
 	
 	public void setTitle(String title) {
 		this.title = title;

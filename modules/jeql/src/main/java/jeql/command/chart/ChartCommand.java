@@ -73,9 +73,13 @@ implements Command
 	{
 		param.setItemLabelRotation(itemLabelAngle);
 	}
-	public void setSubtitle(String subtitle) {
-		param.setSubtitle(subtitle);
-	}
+        public void setSubtitle(String subtitle) {
+          param.setSubtitle(subtitle);
+  }
+        @Metadata(description = "Show legend (default = true)")
+        public void setLegend(boolean showLegend) {
+          param.setLegend(showLegend);
+  }
 
 	public void setTitle(String title) {
 		param.setTitle(title);
@@ -103,19 +107,19 @@ implements Command
 		
 	}
 
-	@Metadata (description = "Dataset to display on chart (schema may have columns x and y)")
+	@Metadata (description = "Dataset to display on chart (schema can have columns x, y)")
   public void setDefault(Table dataTbl) 
   {
     param.setSeries(0, dataTbl);
   }
 
-  @Metadata (description = "Dataset to display on chart (schema may have columns x and y)", isMultiple = true)
+  @Metadata (description = "Dataset to display on chart (schema can have columns x, y)", isMultiple = true)
   public void setData(Table dataTbl) 
   {
     param.addSeries(dataTbl);
   }
 
-  @Metadata (description = "Dataset name", isMultiple = true)
+  @Metadata (description = "Dataset name.  Must appear BEFORE data: parameter", isMultiple = true)
   public void setName(String name) {
     param.addSeriesKey(name);
   }
