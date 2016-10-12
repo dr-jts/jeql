@@ -1,9 +1,9 @@
 package jeql.syntax;
 
-import jeql.api.row.RowList;
 import jeql.api.table.Table;
 import jeql.engine.Scope;
 import jeql.monitor.Monitor;
+import jeql.syntax.util.IdentifierUtil;
 
 public class AssignmentNode 
   extends ParseTreeNode
@@ -13,7 +13,7 @@ public class AssignmentNode
   
   public AssignmentNode(String lhs, 
       ParseTreeNode rhs) {
-    this.lhs = lhs;
+	this.lhs = IdentifierUtil.keyIdentifier(lhs);
     this.rhs = rhs;
   }
 
