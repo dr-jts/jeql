@@ -19,6 +19,7 @@ implements FunctionClass
    */
   public static int count(String s, String regex)
   {
+    if (s == null) return 0;
     Pattern pat = Pattern.compile(regex);
     Matcher mat = pat.matcher(s);
     int count = 0;
@@ -37,6 +38,7 @@ implements FunctionClass
    */
   public static boolean matches(String s, String regex) 
   { 
+    if (s == null) return false;
     return s.matches(regex); 
   }
   /**
@@ -48,6 +50,7 @@ implements FunctionClass
    */
   public static boolean find(String s, String regex) 
   { 
+    if (s == null) return false;
     Pattern pat = Pattern.compile(regex);
     Matcher mat = pat.matcher(s);
     return mat.find();
@@ -65,6 +68,8 @@ implements FunctionClass
    */
   public static String extract(String s, String regex) 
   {
+    if (s == null) return null;
+
     Pattern pat = Pattern.compile(regex);
     Matcher mat = pat.matcher(s);
     boolean isMatched = mat.find();
@@ -87,6 +92,8 @@ implements FunctionClass
    */
   public static String extract(String s, String regex, int groupNum) 
   {
+    if (s == null) return null;
+    
     Pattern pat = Pattern.compile(regex);
     Matcher mat = pat.matcher(s);
     boolean isMatched = mat.find();
@@ -104,6 +111,7 @@ implements FunctionClass
    */
   public static String splitAt(String s, String regex, int index)
   {
+    if (s == null) return null;
     String[] split = s.split(regex);
     if (index < split.length)
       return split[index];
@@ -119,6 +127,7 @@ implements FunctionClass
    */
   public static String replaceFirst(String s, String regex, String repStr)
   {
+    if (s == null) return null;
     Pattern pat = Pattern.compile(regex);
     Matcher mat = pat.matcher(s);
     return mat.replaceFirst(repStr);
@@ -133,6 +142,7 @@ implements FunctionClass
    */
   public static String replaceAll(String s, String regex, String repStr)
   {
+    if (s == null) return null;
     Pattern pat = Pattern.compile(regex);
     Matcher mat = pat.matcher(s);
     return mat.replaceAll(repStr);
@@ -147,6 +157,8 @@ implements FunctionClass
    */
   public static List<String> splitBySep(String s, String regex) {
     List<String> items = new ArrayList<String>();
+    if (s == null) return items;
+
     String[] splits = s.split(regex);
     for (int i = 0; i < splits.length; i++) {
       items.add(splits[i]);
@@ -164,6 +176,7 @@ implements FunctionClass
    */
   public static List<String> splitByMatch(String s, String regex) {
     List<String> items = new ArrayList<String>();
+    if (s == null) return items;
 
     Pattern pat = Pattern.compile(regex);
     Matcher mat = pat.matcher(s);

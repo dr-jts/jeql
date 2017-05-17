@@ -90,3 +90,10 @@ AssertEqual RegEx.replaceAll("xAx xBBBx", \"x(\w+)x", "$1") expected: "A BBB";
 AssertEqual RegEx.count("xAx xBBBx", \"x") expected: 4;
 AssertEqual RegEx.count("xAxA xBBBx", \"x[AB]") expected: 3;
 
+// null handling
+
+Assert RegEx.count(null, \"x") expected: 0;
+Assert not RegEx.matches(null, \"x");
+Assert not RegEx.find(null, \"x");
+Assert RegEx.extract(null, \"x(\w+)x", 1) expected: null;
+Assert RegEx.replaceAll(null, \"x(\w+)x", "$1") expected: null;
