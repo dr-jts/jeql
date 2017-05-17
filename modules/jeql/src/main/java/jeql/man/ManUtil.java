@@ -120,7 +120,7 @@ public class ManUtil {
   }
 
   public static String functionDoc(Method m) {
-    return description(m) + "\n\n" + functionParamDoc(m);
+    return functionParamDoc(m) + "\n\n" + description(m);
   }
 
 }
