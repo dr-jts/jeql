@@ -13,4 +13,26 @@ Assert 2 == StrMatch.levenshteinDistance("AAA", "AB");
 Assert 1 == StrMatch.levenshteinDistance("ABB", "AB");
 Assert 3 == StrMatch.levenshteinDistance("ABC", "DEF");
 
+Assert 0 == StrMatch.levenshteinDistance(null, null);
+Assert 3 == StrMatch.levenshteinDistance(null, "ABC");
+Assert 3 == StrMatch.levenshteinDistance("ABC", null);
+
+//----- Longest Common String ----
+
+Assert "" == StrMatch.longestCommonString("ABC", "DEF");
+Assert "ABC" == StrMatch.longestCommonString("ABC", "ABC");
+Assert "ABC" == StrMatch.longestCommonString("ZABC", "ABCD");
+Assert "ABC" == StrMatch.longestCommonString("ABCZZZABDC", "ABCD");
+
+Assert "" == StrMatch.longestCommonString("", "ABCD");
+Assert "" == StrMatch.longestCommonString(null, "ABCD");
+Assert "" == StrMatch.longestCommonString("AA", null);
+Assert "" == StrMatch.longestCommonString(null, null);
+
+//----- Longest Common Sequence ----
+
+Assert "ABC" == StrMatch.longestCommonSequence("A1B2C3", "ABC");
+Assert "ABC" == StrMatch.longestCommonSequence("A1B2C3ZZZABDC", "ABC");
+Assert "ABCD" == StrMatch.longestCommonSequence("ABCZZZABDC", "ABCD");
+
 
