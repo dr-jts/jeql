@@ -8,11 +8,6 @@ public class StrMatchFunction implements FunctionClass {
 			s = "";
 		if (t == null)
 			t = "";
-		/*
-		 * if (s == null || t == null) { throw new IllegalArgumentException(
-		 * "Strings must not be null"); }
-		 * 
-		 */
 
 		/*
 		 * The difference between this impl. and the previous is that, rather
@@ -76,8 +71,8 @@ public class StrMatchFunction implements FunctionClass {
 			d = _d;
 		}
 
-		// our last action in the above loop was to switch d and p, so p now
-		// actually has the most recent cost counts
+		// last action in the above loop was to switch d and p, so p now
+		// has the most recent cost counts
 		return p[n];
 	}
 
