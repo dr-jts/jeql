@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import jeql.api.annotation.Metadata;
 import jeql.api.function.FunctionClass;
 
 public class RegExFunction 
@@ -17,6 +18,7 @@ implements FunctionClass
    * @param regex
    * @return
    */
+  @Metadata (description = "Counts the number of occurences of a pattern" )
   public static int count(String s, String regex)
   {
     if (s == null) return 0;
@@ -36,6 +38,7 @@ implements FunctionClass
    * @param regex
    * @return
    */
+  @Metadata (description = "Tests whether the string matches the regex" )
   public static boolean matches(String s, String regex) 
   { 
     if (s == null) return false;
@@ -48,6 +51,7 @@ implements FunctionClass
    * @param regex
    * @return
    */
+  @Metadata (description = "Tests whether a substring matches the regex" )
   public static boolean find(String s, String regex) 
   { 
     if (s == null) return false;
@@ -66,6 +70,7 @@ implements FunctionClass
    * @param regex
    * @return
    */
+  @Metadata (description = "Extracts a substring which matches the regex or the first regex group, if present" )
   public static String extract(String s, String regex) 
   {
     if (s == null) return null;
@@ -90,6 +95,7 @@ implements FunctionClass
    * @return the string corresponding to the i'th group in the match
    * @return blank string if no match was found
    */
+  @Metadata (description = "Extracts a substring which matches the specified regex group" )
   public static String extract(String s, String regex, int groupNum) 
   {
     if (s == null) return null;
@@ -109,6 +115,7 @@ implements FunctionClass
    * @return the i'th split
    * @return null if the index is out of range
    */
+  @Metadata (description = "Splits the string on the regex and returns the specified substring" )
   public static String splitAt(String s, String regex, int index)
   {
     if (s == null) return null;
@@ -125,6 +132,7 @@ implements FunctionClass
    * @param repStr the replacement pattern (may contain references to capturing groups)
    * @return
    */
+  @Metadata (description = "Replaces the first substrings matching the regex with the given replacement string" )
   public static String replaceFirst(String s, String regex, String repStr)
   {
     if (s == null) return null;
@@ -140,6 +148,7 @@ implements FunctionClass
    * @param repStr the replacement pattern (may contain references to capturing groups)
    * @return
    */
+  @Metadata (description = "Replaces all substrings matching the regex with the given replacement string" )
   public static String replaceAll(String s, String regex, String repStr)
   {
     if (s == null) return null;
