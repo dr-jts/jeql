@@ -1,8 +1,12 @@
 package jeql.std.function;
 
+import jeql.api.annotation.Metadata;
 import jeql.api.function.FunctionClass;
 
+
 public class StrMatchFunction implements FunctionClass {
+	
+	@Metadata (description = "Computes the Levenstein (edit) distance between strings" )
 	public static int levenshteinDistance(String s, String t) {
 		if (s == null)
 			s = "";
@@ -76,6 +80,7 @@ public class StrMatchFunction implements FunctionClass {
 		return p[n];
 	}
 
+	@Metadata (description = "Computes the longest common contiguous substring in two strings" )
 	public static String longestCommonString(String str1, String str2) {
 
 		StringBuilder sb = new StringBuilder();
@@ -118,6 +123,7 @@ public class StrMatchFunction implements FunctionClass {
 		return sb.toString();
 	}
 
+	@Metadata (description = "Computes the longest common non-contiguous sequence of characters in two strings" )
 	public static String longestCommonSequence(String a, String b) {
 		int[][] lengths = new int[a.length() + 1][b.length() + 1];
 
