@@ -8,7 +8,7 @@ Test Date datatype
 
 Print Date.now();
 
-d = Val.toDate("Jan 3, 1994");
+d = Date.parse("2008 Jan 1", "yyyy MMM dd");
 Print d;
 
 // check that dates can be coerced to strings

@@ -52,11 +52,11 @@ Print t;
 
 //==========  Date type  =========
 
-d = Val.toDate("Jan 3, 1994");
+d = Date.parse("2008 Jan 3", "yyyy MMM dd");
 
 Print d;
 
-d2 = Val.toDate("Jan 4, 1994");
+d2 = Date.parse("2008 Jan 4", "yyyy MMM dd");
 
 Print Date.diff(d2, d);
 

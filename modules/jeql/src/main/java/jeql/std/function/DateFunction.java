@@ -68,6 +68,7 @@ public class DateFunction implements FunctionClass
   
   public static Date parse(String date, String format) 
   {
+	if (date == null) return null;
     DateFormat df = new SimpleDateFormat(format);
     try {
       return df.parse(date);
@@ -80,6 +81,7 @@ public class DateFunction implements FunctionClass
 
   public static String format(Date date, String format)
   {
+	if (date == null) return null;
     DateFormat df = new SimpleDateFormat(format);
     return df.format(date);
   }

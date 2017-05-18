@@ -82,8 +82,8 @@ public class TestProgram {
 //    execUnit("testCorrelatedSubquery.jql");
 //    execUnit("testStrMatch.jql");
 //  execUnit("testExpression.jql");
-//  execUnit("testUnion.jql");
-  execUnit("testAggStr.jql");
+  execUnit("testDate.jql");
+//  execUnit("testAggStr.jql");
 //    execUnit("io/testXMLReader.jql");
 //  execUnit("geom\\testGeomValues.jql");
 //  execUnit("geom\\testGeomFunc.jql");
