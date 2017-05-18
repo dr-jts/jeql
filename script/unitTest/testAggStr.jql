@@ -1,0 +1,45 @@
+/*================================
+
+Test Aggregate string function evaluation
+	
+================================*/
+
+t1 = select * from table ( 
+		("A", "a"), 
+		("C", "c"), 
+		("D", "d"), 
+		("B", "b"), 
+		("A", "a"), 
+		("C", "c") 
+			) tbl(a, b);
+
+//-------------------------------------------------
+gr1 = select conjoin(a, ",") from t1 group by b;
+
+expected1 = select * from table ( 
+( "A,A" )
+( "B" )
+( "C,C" )
+( "D" )
+);
+
+Print gr1;
+AssertEqual gr1 expected: expected1;
+
+//-------------------------------------------------
+gr1 = select concat(a) from t1 group by b;
+
+expected1 = select * from table ( 
+( "AA" )
+( "B" )
+( "CC" )
+( "D" )
+);
+
+Print gr1;
+AssertEqual gr1 expected: expected1;
+
+
+
+
+

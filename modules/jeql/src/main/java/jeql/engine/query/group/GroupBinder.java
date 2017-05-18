@@ -9,6 +9,7 @@ import jeql.engine.function.FunctionEvaluator;
 import jeql.engine.query.BaseQueryScope;
 import jeql.engine.query.QueryScope;
 import jeql.syntax.FunctionNode;
+import jeql.syntax.ParseTreeNode;
 import jeql.syntax.SelectNode;
 
 public class GroupBinder 
@@ -67,7 +68,7 @@ public class GroupBinder
       aggFunctions.add(aggFun);
       
       // add argument expression to args list
-      aggFunArgsList.add(funcNode.getArgs().get(0));
+      aggFunArgsList.add(funcNode.getArgs().toArray(new ParseTreeNode[0]));
       
       funcCount++;  
     }

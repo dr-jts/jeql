@@ -29,7 +29,11 @@ public class GeomUnionMemAggFunction
   public String getName() { return "GeomUnionMem"; }
   
   public Class getType() { return Geometry.class; } 
-  
+
+  public Class[] getParamTypes() {
+	  return new Class[] { Object.class };
+  }
+
   public Aggregator createAggregator()
   {
     return new GeomUnionMemAggregator();
@@ -40,9 +44,9 @@ public class GeomUnionMemAggFunction
   {
     private List geoms = new ArrayList();
 
-    public void addValue(Object obj)
+    public void addValue(Object[] arg)
     {
-      Geometry geom = (Geometry) obj;
+      Geometry geom = (Geometry) arg[0];
       geoms.add(geom);
     }
     

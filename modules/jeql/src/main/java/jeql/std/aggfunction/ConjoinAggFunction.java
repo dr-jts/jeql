@@ -5,38 +5,41 @@ import jeql.api.function.AggregateFunction;
 import jeql.api.function.Aggregator;
 import jeql.engine.Scope;
 
-public class ConcatAggFunction 
+public class ConjoinAggFunction 
   implements AggregateFunction
 {
 
   
-  public ConcatAggFunction() {
+  public ConjoinAggFunction() {
   }
   public void bind(Scope scope, List args)
   {
     
   }
-  public String getName() { return "Concat"; }
+  public String getName() { return "Conjoin"; }
   
   public Class getType() { return String.class; } 
 
   public Class[] getParamTypes() {
-	  return new Class[] { Object.class };
+	  return new Class[] { Object.class, String.class };
   }
 
   public Aggregator createAggregator()
   {
-    return new ConcatAggregator();
+    return new ConjoinAggregator();
   }
 
-  private static class ConcatAggregator 
+  private static class ConjoinAggregator 
     implements Aggregator
   {
     private StringBuffer concat = new StringBuffer();
 
-    public void addValue(Object[] arg)
+    public void addValue(Object[] args)
     {
-      concat.append(arg[0]);
+    	if (concat.length() != 0) {
+    		concat.append(args[1]);
+    	}
+      concat.append(args[0]);
     }
     
     public Object getResult() 

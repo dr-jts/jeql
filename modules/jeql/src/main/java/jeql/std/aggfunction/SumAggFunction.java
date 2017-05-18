@@ -21,7 +21,11 @@ public class SumAggFunction
   public String getName() { return "Sum"; }
   
   public Class getType() { return Double.class; } 
-  
+
+  public Class[] getParamTypes() {
+	  return new Class[] { Object.class };
+  }
+
   public Aggregator createAggregator()
   {
     return new SumAggregator();
@@ -32,9 +36,9 @@ public class SumAggFunction
   {
     private double sum = 0;
 
-    public void addValue(Object obj)
+    public void addValue(Object[] arg)
     {
-      sum += TypeUtil.toDouble(obj);
+      sum += TypeUtil.toDouble(arg[0]);
     }
     
     public Object getResult() 

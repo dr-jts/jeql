@@ -32,7 +32,11 @@ public class GeomConnectAggFunction
   public String getName() { return "GeomConnect"; }
   
   public Class getType() { return Geometry.class; } 
-  
+
+  public Class[] getParamTypes() {
+	  return new Class[] { Object.class };
+  }
+
   public Aggregator createAggregator()
   {
     return new GeomConnectAggregator();
@@ -44,9 +48,9 @@ public class GeomConnectAggFunction
     private GeometryFactory fact = null;
     private CoordinateList pts = new CoordinateList();
 
-    public void addValue(Object obj)
+    public void addValue(Object[] arg)
     {
-      Geometry geom = (Geometry) obj;
+      Geometry geom = (Geometry) arg[0];
       if (geom != null && fact == null) {
         fact = geom.getFactory();
       }

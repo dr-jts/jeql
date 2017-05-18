@@ -82,20 +82,33 @@ public class GroupByEvaluator
   void evalAggregators(Aggregator[] agg, QueryScope scope)
   {
     for (int i = 0; i < aggFunArgList.size(); i++) {
-      ParseTreeNode expr = (ParseTreeNode) aggFunArgList.get(i);
-      Object value = null;
-      // handle aggregator expressions of form f(*) (e.g. count - but this is more general)
-      if (TableRefNode.isStar(expr)) {
-        value = scope.getRow();
-      }
-      else {
-        value = expr.eval(scope);
-      }
-      agg[i].addValue(value);
+      ParseTreeNode[] args = (ParseTreeNode[]) aggFunArgList.get(i);
+      evalAgg(i, agg, args, scope);
     }
   }
 
-  Tuple extractGroupKey(Row row)
+	private void evalAgg(int i, Aggregator[] agg, ParseTreeNode[] args, QueryScope scope) {
+		ParseTreeNode expr = args[0];
+		Object[] argVal = null;
+		// handle aggregator expressions of form f(*) (e.g. count - but this is
+		// more general)
+		if (args.length == 1 && TableRefNode.isStar(expr)) {
+			argVal = new Object[] { scope.getRow() };
+		} else {
+			argVal = eval(args, scope);
+		}
+		agg[i].addValue(argVal);
+	}
+
+  private Object[] eval(ParseTreeNode[] args, QueryScope scope) {
+	  Object[] vals = new Object[args.length];
+	  for (int i = 0; i < args.length; i++) {
+		  vals[i] = args[i].eval(scope);
+	  }
+	  return vals;
+	}
+
+Tuple extractGroupKey(Row row)
   {
     if (groupKeyLen == 0)
       return null;

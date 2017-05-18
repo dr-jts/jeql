@@ -83,8 +83,8 @@ public class TestProgram {
 //    execUnit("testStrMatch.jql");
 //  execUnit("testExpression.jql");
 //  execUnit("testUnion.jql");
-//  execUnit("testRegEx.jql");
-    execUnit("io/testXMLReader.jql");
+  execUnit("testAggStr.jql");
+//    execUnit("io/testXMLReader.jql");
 //  execUnit("geom\\testGeomValues.jql");
 //  execUnit("geom\\testGeomFunc.jql");
 //  execUnit("geom\\testGeomAggFunction2.jql");
@@ -206,13 +206,13 @@ public class TestProgram {
   }
 
   /**
-   * Assumes run from repo "jeql/script/output" directory
+   * Assumes run from repo "jeql/script" directory
    * 
    * @param scriptname
    */
   void execUnit(String scriptname)
   {
-    exec("unitTest/" + scriptname);
+    exec("" + scriptname);
   }
   void exec(String filename)
   {

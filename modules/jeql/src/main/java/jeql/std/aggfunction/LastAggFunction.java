@@ -31,10 +31,10 @@ public class LastAggFunction
   {
     private Object result = null;
 
-    public void addValue(Object obj)
+    public void addValue(Object[] obj)
     {
-      if (obj != null)
-        result = obj;
+      if (obj[0] != null)
+        result = obj[0];
     }
     
     public Object getResult() 

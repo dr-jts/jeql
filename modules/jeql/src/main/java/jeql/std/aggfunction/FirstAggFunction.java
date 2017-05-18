@@ -42,10 +42,10 @@ public class FirstAggFunction
   {
     private Object result = null;
 
-    public void addValue(Object obj)
+    public void addValue(Object[] arg)
     {
       if (result == null)
-        result = obj;
+        result = arg[0];
     }
     
     public Object getResult() 

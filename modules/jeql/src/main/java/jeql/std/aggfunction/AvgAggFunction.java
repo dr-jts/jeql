@@ -22,7 +22,14 @@ public class AvgAggFunction
   public String getName() { return "Avg"; }
   
   public Class getType() { return Double.class; } 
-  
+
+  /**
+   * Currently only used for determining number of parameters
+   */
+  public Class[] getParamTypes() {
+	  return new Class[] { Object.class };
+  }
+
   public Aggregator createAggregator()
   {
     return new AvgAggregator();
@@ -34,10 +41,10 @@ public class AvgAggFunction
     private int count = 0;
     private double sum = 0;
 
-    public void addValue(Object obj)
+    public void addValue(Object[] arg)
     {
       count++;
-      sum += TypeUtil.toDouble(obj);
+      sum += TypeUtil.toDouble(arg[0]);
     }
     
     public Object getResult() 

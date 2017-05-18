@@ -9,6 +9,7 @@ import jeql.api.row.RowList;
 import jeql.api.table.Table;
 import jeql.std.aggfunction.AvgAggFunction;
 import jeql.std.aggfunction.ConcatAggFunction;
+import jeql.std.aggfunction.ConjoinAggFunction;
 import jeql.std.aggfunction.CountAggFunction;
 import jeql.std.aggfunction.FirstAggFunction;
 import jeql.std.aggfunction.GeomCollectAggFunction;
@@ -37,6 +38,7 @@ public class AggregateFunctions
   
   public static AggregateFunction avg() {   return new AvgAggFunction();  }
   public static AggregateFunction concat() {   return new ConcatAggFunction();  }
+  public static AggregateFunction conjoin() {   return new ConjoinAggFunction();  }
   public static AggregateFunction count()  {    return new CountAggFunction();  }
   public static AggregateFunction max() {    return new MaxAggFunction();  }
   public static AggregateFunction min() {    return new MinAggFunction();  }

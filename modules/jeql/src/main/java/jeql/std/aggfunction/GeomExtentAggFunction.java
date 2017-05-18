@@ -23,7 +23,11 @@ public class GeomExtentAggFunction
   public String getName() { return "GeomExtent"; }
   
   public Class getType() { return Geometry.class; } 
-  
+
+  public Class[] getParamTypes() {
+	  return new Class[] { Object.class };
+  }
+
   public Aggregator createAggregator()
   {
     return new GeomExtentAggregator();
@@ -35,9 +39,9 @@ public class GeomExtentAggFunction
     private GeometryFactory fact = null;
     private Envelope env = null;
 
-    public void addValue(Object obj)
+    public void addValue(Object[] arg)
     {
-      Geometry geom = (Geometry) obj;
+      Geometry geom = (Geometry) arg[0];
       if (geom != null && fact == null) {
         fact = geom.getFactory();
       }

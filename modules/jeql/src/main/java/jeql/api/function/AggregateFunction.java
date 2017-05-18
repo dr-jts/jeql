@@ -16,6 +16,8 @@ public interface AggregateFunction
   
   String getName();
   
+  Class[] getParamTypes();
+  
   /**
    * Gets the return type from this function
    * 

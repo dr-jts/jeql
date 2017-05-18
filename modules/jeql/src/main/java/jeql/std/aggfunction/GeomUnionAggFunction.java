@@ -21,7 +21,11 @@ public class GeomUnionAggFunction
   public String getName() { return "GeomUnion"; }
   
   public Class getType() { return Geometry.class; } 
-  
+
+  public Class[] getParamTypes() {
+	  return new Class[] { Object.class };
+  }
+
   public Aggregator createAggregator()
   {
     return new GeomUnionAggregator();
@@ -32,9 +36,9 @@ public class GeomUnionAggFunction
   {
     private Geometry unionGeom = null;
 
-    public void addValue(Object obj)
+    public void addValue(Object[] arg)
     {
-      Geometry geom = (Geometry) obj;
+      Geometry geom = (Geometry) arg[0];
       if (unionGeom == null)
         unionGeom = geom;
       else {

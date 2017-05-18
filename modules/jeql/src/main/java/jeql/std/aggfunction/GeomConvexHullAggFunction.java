@@ -28,7 +28,11 @@ public class GeomConvexHullAggFunction
   public String getName() { return "GeomConvexHull"; }
   
   public Class getType() { return Geometry.class; } 
-  
+
+  public Class[] getParamTypes() {
+	  return new Class[] { Object.class };
+  }
+
   public Aggregator createAggregator()
   {
     return new GeomConvexHullAggregator();
@@ -41,9 +45,9 @@ public class GeomConvexHullAggFunction
     private List pts = new ArrayList();
     private CoordinateExtracter coordExtracter = new CoordinateExtracter(pts);
 
-    public void addValue(Object obj)
+    public void addValue(Object[] arg)
     {
-      ((Geometry) obj).apply(coordExtracter);
+      ((Geometry) arg[0]).apply(coordExtracter);
     }
     
     

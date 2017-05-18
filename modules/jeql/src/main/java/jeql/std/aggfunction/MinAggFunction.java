@@ -24,10 +24,10 @@ public class MinAggFunction
     private Comparable min = null;
     private boolean seenRow = false;
     
-    public void addValue(Object obj)
+    public void addValue(Object[] arg)
     {
       seenRow = true;
-      Comparable val = (Comparable) obj;
+      Comparable val = (Comparable) arg[0];
       if (min == null)
         min = val;
       else if (min.compareTo(val) > 0)

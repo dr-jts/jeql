@@ -21,6 +21,10 @@ public class StdDevAggFunction
   
   public Class getType() { return Double.class; } 
   
+  public Class[] getParamTypes() {
+	  return new Class[] { Object.class };
+  }
+
   public Aggregator createAggregator()
   {
     return new StdDevAggregator();
@@ -33,10 +37,10 @@ public class StdDevAggFunction
     private double sum = 0.0;
     private double vpn = 0.0;
 
-    public void addValue(Object obj)
+    public void addValue(Object[] arg)
     {
       count++;
-      double x = TypeUtil.toDouble(obj);
+      double x = TypeUtil.toDouble(arg[0]);
       if (count > 1) {
         double xs = sum - (x * (count - 1));
         vpn += (xs * xs) / count / (count - 1);

@@ -34,7 +34,7 @@ public class FunctionNode
   private FunctionEvaluator funcEval = null;
   private String className = null;
   private String name;
-  private List args;
+  private List<?> args;
   
   public FunctionNode() 
   {
@@ -124,10 +124,8 @@ public class FunctionNode
         aggFunScope.addAggregateFunction(this);
       }
       
-      // check for arg count = 1
-      if (args.size() > 1) {
-        throw new CompilationException(this, "Aggregate function arg list must have length 1");
-      }
+      // check for arg count matching agg function parameters count
+      checkAggregateFunArgCount();
       
     }
     
@@ -160,6 +158,15 @@ public class FunctionNode
     }
 
   }
+
+	private void checkAggregateFunArgCount() {
+		AggregateFunction fn = ((AggregateFunctionEvaluator) funcEval).getFunction();
+		int numParam = fn.getParamTypes().length;
+		if (args.size() != numParam) {
+			throw new CompilationException(this,
+					"Aggregate function " + name + " has wrong number of arguments - expected " + numParam);
+		}
+	}
   
   private FunctionEvaluator createFunctionEvaluator(Scope scope)
   {

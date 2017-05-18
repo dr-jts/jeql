@@ -23,10 +23,10 @@ public class MaxAggFunction
     private Comparable max = null;
     private boolean seenRow = false;
     
-    public void addValue(Object obj)
+    public void addValue(Object[] arg)
     {
       seenRow = true;
-      Comparable val = (Comparable) obj;
+      Comparable val = (Comparable) arg[0];
       if (max == null)
         max = val;
       else if (max.compareTo(val) < 0)

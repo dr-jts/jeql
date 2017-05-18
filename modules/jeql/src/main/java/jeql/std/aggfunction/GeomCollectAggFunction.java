@@ -23,7 +23,11 @@ public class GeomCollectAggFunction
   public String getName() { return "GeomCollect"; }
   
   public Class getType() { return Geometry.class; } 
-  
+
+  public Class[] getParamTypes() {
+	  return new Class[] { Object.class };
+  }
+
   public Aggregator createAggregator()
   {
     return new GeomCollectAggregator();
@@ -35,9 +39,9 @@ public class GeomCollectAggFunction
     private GeometryFactory fact = null;
     private List geoms = new ArrayList();
 
-    public void addValue(Object obj)
+    public void addValue(Object[] arg)
     {
-      Geometry geom = (Geometry) obj;
+      Geometry geom = (Geometry) arg[0];
       if (geom != null && fact == null) {
         fact = geom.getFactory();
       }

@@ -18,4 +18,7 @@ implements AggregateFunction
   
   public Class getType() { return typeClass; } 
 
+  public Class[] getParamTypes() {
+	  return new Class[] { Object.class };
+  }
 }
