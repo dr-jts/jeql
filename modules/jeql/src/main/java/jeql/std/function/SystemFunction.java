@@ -17,7 +17,6 @@ import jeql.api.table.Table;
 import jeql.engine.EngineContext;
 import jeql.engine.FunctionRegistry;
 import jeql.man.ManUtil;
-import jeql.workbench.ui.assist.CodeSnippet;
 
 public class SystemFunction 
 implements FunctionClass
