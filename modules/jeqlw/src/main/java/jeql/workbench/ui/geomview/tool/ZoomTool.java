@@ -1,44 +1,13 @@
-
-
-/*
- * The JTS Topology Suite is a collection of Java classes that
- * implement the fundamental operations required to validate a given
- * geo-spatial data set to a known topological specification.
- *
- * Copyright (C) 2001 Vivid Solutions
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- * For more information, contact:
- *
- *     Vivid Solutions
- *     Suite #1A
- *     2328 Government Street
- *     Victoria BC  V8T 5G5
- *     Canada
- *
- *     (250)385-6040
- *     www.vividsolutions.com
- */
 package jeql.workbench.ui.geomview.tool;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 
-import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
 
 import jeql.workbench.images.IconLoader;
@@ -46,10 +15,6 @@ import jeql.workbench.ui.geomview.AppConstants;
 import jeql.workbench.ui.geomview.GeometryViewPanel;
 
 
-
-/**
- * @version 1.7
- */
 public class ZoomTool extends BasicTool 
 {
   private static ZoomTool singleton = null;
@@ -68,8 +33,8 @@ public class ZoomTool extends BasicTool
   private Cursor cursor = Cursor.getDefaultCursor();
   private Point zoomBoxStart = null;
   private Point zoomBoxEnd = null;
+  private Point2D mouseStartModel;
   
-
   public ZoomTool() { }
 
   public ZoomTool(double zoomFactor, Cursor cursor) {
@@ -85,58 +50,101 @@ public class ZoomTool extends BasicTool
   public void mouseClicked(MouseEvent mouseEvent) 
   {
     // determine if zoom in (left) or zoom out (right)
-    double realZoomFactor = SwingUtilities.isRightMouseButton(mouseEvent)
+    double realZoomFactor = isRight(mouseEvent)
          ? (1d / zoomFactor) : zoomFactor;
     Point center = mouseEvent.getPoint();
     panel().zoom(center, realZoomFactor);
   }
 
-  public void mousePressed(MouseEvent e)
+  public void mousePressed(MouseEvent mouseEvent)
   {
-  	zoomBoxStart = e.getPoint();
-  	zoomBoxEnd= e.getPoint();
+  	zoomBoxStart = mouseEvent.getPoint();
+  	zoomBoxEnd= mouseEvent.getPoint();
+  	mouseStartModel = null;
+  	if (isRight(mouseEvent)) {
+      mouseStartModel = toModel(mouseEvent.getPoint());
+  	}
   }
   
-  public void mouseReleased(MouseEvent e)
-  {
-  	// don't process this event if the mouse was clicked or dragged a very short distance
-  	if (! isSignificantMouseMove())
-  		return;
-  	
-    // zoom to extent box
-  	int centreX = (zoomBoxEnd.x + zoomBoxStart.x) / 2; 
-  	int centreY = (zoomBoxEnd.y + zoomBoxStart.y) / 2; 
-  	Point centre = new Point(centreX, centreY);
-  	
-  	int dx = Math.abs(zoomBoxEnd.x - zoomBoxStart.x);
-  	int dy = Math.abs(zoomBoxEnd.y - zoomBoxStart.y);
-  	// ensure deltas are valid
-  	if (dx <= 0) dx = 1;
-  	if (dy <= 0) dy = 1;
-  	
-		GeometryViewPanel panel = panel();
-		double widthFactor = panel.getSize().width / dx;
-		double heightFactor = panel.getSize().height / dy;
-		double zoomFactor = Math.min(widthFactor, heightFactor);
+  public void mouseReleased(MouseEvent mouseEvent) {
+    
+    // don't process this event if the mouse was clicked or dragged a very
+    // short distance
+    if (! isSignificantMouseMove())
+      return;
 
-//  	double zoomFactor = 2;
-  	panel().zoom(centre, zoomFactor);
+    if (! isRight(mouseEvent)) {
+      // left-drag does a zoom
+      zoomToBox();
+      return;
+    } else {
+      // right-drag does a pan
+      doPan(mouseEvent);
+    }
+
   }
-  
+
+  private void doPan(MouseEvent mouseEvent) {
+    Point2D mouseEndModel = toModel(mouseEvent.getPoint());
+    double dx = mouseEndModel.getX() - mouseStartModel.getX();
+    double dy = mouseEndModel.getY() - mouseStartModel.getY();
+    panel().zoomPan(dx, dy);
+  }
+
+  private boolean isRight(MouseEvent mouseEvent) {
+    return SwingUtilities.isRightMouseButton(mouseEvent);
+  }
+
+  private void zoomToBox() {
+    // zoom to extent box
+    int centreX = (zoomBoxEnd.x + zoomBoxStart.x) / 2;
+    int centreY = (zoomBoxEnd.y + zoomBoxStart.y) / 2;
+    Point centre = new Point(centreX, centreY);
+
+    int dx = Math.abs(zoomBoxEnd.x - zoomBoxStart.x);
+    int dy = Math.abs(zoomBoxEnd.y - zoomBoxStart.y);
+    // ensure deltas are valid
+    if (dx <= 0)
+      dx = 1;
+    if (dy <= 0)
+      dy = 1;
+
+    GeometryViewPanel panel = panel();
+    double widthFactor = panel.getSize().width / dx;
+    double heightFactor = panel.getSize().height / dy;
+    double zoomFactor = Math.min(widthFactor, heightFactor);
+
+    // double zoomFactor = 2;
+    panel().zoom(centre, zoomFactor);
+  }
+
   public void mouseDragged(MouseEvent e)
   {
-  	Point currPoint = e.getPoint();
   	Graphics g = panel().getGraphics();
   	g.setColor(AppConstants.BAND_CLR);
   	g.setXORMode(Color.white);
-  	// erase old rectangle
-  	drawRect(g);
+  	// erase old band
+  	drawBand(g);
 
-  	// draw new zoom box
+  	// draw new band
+  	Point currPoint = e.getPoint();
   	zoomBoxEnd = currPoint;
-  	drawRect(g);
+    drawBand(g);
   }
   
+  private void drawBand(Graphics g) {
+    if (isPan()) {
+      drawLine(g);
+    }
+    else {
+      drawRect(g);
+    }
+  }
+  
+  private boolean isPan() {
+    return mouseStartModel != null;
+  }
+
   public void activate() { }
   
   private static final int MIN_MOVEMENT = 3;
@@ -157,6 +165,10 @@ public class ZoomTool extends BasicTool
   	int width = Math.abs(zoomBoxEnd.x - zoomBoxStart.x);
   	int height = Math.abs(zoomBoxEnd.y - zoomBoxStart.y);
   	g.drawRect(base.x, base.y, width, height);
+  }
+  public void drawLine(Graphics g)
+  {
+    g.drawLine(zoomBoxStart.x, zoomBoxStart.y, zoomBoxEnd.x, zoomBoxEnd.y);
   }
   
 }
