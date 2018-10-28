@@ -13,10 +13,23 @@ public class StyleExtracter
 {
   public static final String DEFAULT_FILL = "5555ff80";
   public static final String DEFAULT_STROKE = "0000ffff";
+  public static final String DEFAULT_LABEL_CLR = "000000"; //"80ff80";
+  public static final String DEFAULT_HALO_CLR = null; //"ff6060";
+  public static final int DEFAULT_LABEL_SIZE = 12;
 
   private int strokeIndex;
   private int strokeWidthIndex;
   private int fillIndex;
+  private int labelIndex = -1;
+  private int labelColorIndex = -1;
+  private int labelSizeIndex = -1;
+  private int labelHaloSizeIndex = -1;
+  private int labelHaloColorIndex = -1;
+  private int labelRotateIndex = -1;
+  private int labelOffsetXIndex = -1;
+  private int labelOffsetYIndex = -1;
+  private int labelPointIndex;
+  
   private String defaultFill = null;
   private String defaultStroke = null;
   
@@ -26,6 +39,17 @@ public class StyleExtracter
     strokeIndex = SchemaUtil.getColumnIndex(schema, StyleConstants.STROKE, StyleConstants.COLOR);
     strokeWidthIndex = SchemaUtil.getColumnIndex(schema, StyleConstants.STROKE_WIDTH);
     fillIndex = SchemaUtil.getColumnIndex(schema, StyleConstants.FILL);
+    
+    labelIndex = SchemaUtil.getColumnIndex(schema, StyleConstants.LABEL);
+    labelColorIndex = SchemaUtil.getColumnIndex(schema, StyleConstants.LABEL_COLOR);
+    labelSizeIndex = SchemaUtil.getColumnIndex(schema, StyleConstants.FONT_SIZE);
+    labelHaloSizeIndex = SchemaUtil.getColumnIndex(schema, StyleConstants.HALO_RADIUS);
+    labelHaloColorIndex = SchemaUtil.getColumnIndex(schema, StyleConstants.HALO_COLOR);
+    labelOffsetXIndex = SchemaUtil.getColumnIndex(schema, StyleConstants.LABEL_OFFSET_X);
+    labelOffsetYIndex = SchemaUtil.getColumnIndex(schema, StyleConstants.LABEL_OFFSET_Y);
+    labelRotateIndex = SchemaUtil.getColumnIndex(schema, StyleConstants.LABEL_ROTATE);
+    labelPointIndex = SchemaUtil.getColumnIndex(schema, StyleConstants.LABEL_POINT);
+
     if (! hasColor()) {
       defaultFill = DEFAULT_FILL;
       defaultStroke = DEFAULT_STROKE;
@@ -56,10 +80,26 @@ public class StyleExtracter
     return 1.0;
   }
   
-  public Color stroke(Row row)
-  {
+  public Color stroke(Row row) {
     String lineClrStr = RowUtil.getString(strokeIndex, row, defaultStroke);
     Color clr = ColorUtil.RGBAtoColor(lineClrStr);
     return clr;
+  }
+  
+  public boolean hasLabel() {
+    return labelIndex >= 0;
+  }
+
+  public String label(Row row) {
+    if (labelIndex < 0)
+      return null;
+    return row.getValue(labelIndex).toString();
+  }
+  
+  public Color labelColor(Row row) {
+    String labelClrStr = DEFAULT_LABEL_CLR;
+    if (labelColorIndex >= 0)
+      labelClrStr = (String) row.getValue(labelColorIndex);
+    return ColorUtil.RGBAtoColor(labelClrStr);
   }
 }

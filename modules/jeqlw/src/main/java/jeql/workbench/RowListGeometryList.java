@@ -12,6 +12,7 @@ import jeql.monitor.MonitorRowList;
 import jeql.style.StyleExtracter;
 import jeql.util.ColorUtil;
 import jeql.workbench.ui.geomview.GeometryList;
+import jeql.workbench.ui.geomview.Label;
 import jeql.workbench.ui.geomview.style.BasicStyle;
 import jeql.workbench.ui.geomview.style.Style;
 
@@ -60,6 +61,12 @@ public class RowListGeometryList implements GeometryList
     if (stroke == null)
       stroke = ColorUtil.lighter(Color.BLUE);
     return new BasicStyle(stroke, fill, (float) styler.strokeWidth(row));
+  }
+
+  @Override
+  public Label getLabel(int i) {
+    Row row = (Row) rows.get(i);
+    return new Label(styler.label(row), styler.labelColor(row));
   }
 
 }
