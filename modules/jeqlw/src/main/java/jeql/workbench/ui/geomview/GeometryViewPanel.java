@@ -257,14 +257,14 @@ public class GeometryViewPanel extends JPanel
 
   public Renderer getRenderer()
   {
-  	return new GeometryEditPanelRenderer();
+  	return new GeometryPanelRenderer();
   }
   
-  class GeometryEditPanelRenderer implements Renderer
+  class GeometryPanelRenderer implements Renderer
   {
   	private Renderer currentRenderer = null;
     
-  	public GeometryEditPanelRenderer()
+  	public GeometryPanelRenderer()
   	{
   	}
   	
