@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 import java.awt.geom.Point2D;
 
 import javax.swing.SwingUtilities;
@@ -31,9 +32,9 @@ public class ZoomTool extends BasicTool
 
   private double zoomFactor = 2;
   private Cursor cursor = Cursor.getDefaultCursor();
-  private Point zoomBoxStart = null;
-  private Point zoomBoxEnd = null;
-  private Point2D mouseStartModel;
+  private Point mouseStart = null;
+  private Point mouseEnd = null;
+  private Point2D panStart;
   
   public ZoomTool() { }
 
@@ -47,10 +48,17 @@ public class ZoomTool extends BasicTool
     return cursor;
   }
 
+  public void mouseWheelMoved(MouseWheelEvent e) {
+    double notches = e.getPreciseWheelRotation();
+    double zoomFactor = Math.abs(notches) * 2;
+    if (notches > 0 && zoomFactor > 0) zoomFactor = 1.0 / zoomFactor;
+    panel().zoom(e.getPoint(), zoomFactor);
+  }
+  
   public void mouseClicked(MouseEvent mouseEvent) 
   {
     // determine if zoom in (left) or zoom out (right)
-    double realZoomFactor = isRight(mouseEvent)
+    double realZoomFactor = SwingUtilities.isRightMouseButton(mouseEvent)
          ? (1d / zoomFactor) : zoomFactor;
     Point center = mouseEvent.getPoint();
     panel().zoom(center, realZoomFactor);
@@ -58,12 +66,9 @@ public class ZoomTool extends BasicTool
 
   public void mousePressed(MouseEvent mouseEvent)
   {
-  	zoomBoxStart = mouseEvent.getPoint();
-  	zoomBoxEnd= mouseEvent.getPoint();
-  	mouseStartModel = null;
-  	if (isRight(mouseEvent)) {
-      mouseStartModel = toModel(mouseEvent.getPoint());
-  	}
+  	mouseStart = mouseEvent.getPoint();
+  	mouseEnd= mouseEvent.getPoint();
+    panStart = isPanGesture(mouseEvent) ? toModel(mouseStart) : null;
   }
   
   public void mouseReleased(MouseEvent mouseEvent) {
@@ -73,36 +78,36 @@ public class ZoomTool extends BasicTool
     if (! isSignificantMouseMove())
       return;
 
-    if (! isRight(mouseEvent)) {
+    if (! isPanGesture(mouseEvent)) {
       // left-drag does a zoom
       zoomToBox();
-      return;
     } else {
       // right-drag does a pan
       doPan(mouseEvent);
     }
-
   }
 
   private void doPan(MouseEvent mouseEvent) {
     Point2D mouseEndModel = toModel(mouseEvent.getPoint());
-    double dx = mouseEndModel.getX() - mouseStartModel.getX();
-    double dy = mouseEndModel.getY() - mouseStartModel.getY();
+    double dx = mouseEndModel.getX() - panStart.getX();
+    double dy = mouseEndModel.getY() - panStart.getY();
     panel().zoomPan(dx, dy);
   }
-
-  private boolean isRight(MouseEvent mouseEvent) {
-    return SwingUtilities.isRightMouseButton(mouseEvent);
+  private static boolean isPanGesture(MouseEvent e) {
+    return e.isControlDown() || SwingUtilities.isRightMouseButton(e);
+  }
+  private boolean isPanning() {
+    return panStart != null;
   }
 
   private void zoomToBox() {
     // zoom to extent box
-    int centreX = (zoomBoxEnd.x + zoomBoxStart.x) / 2;
-    int centreY = (zoomBoxEnd.y + zoomBoxStart.y) / 2;
+    int centreX = (mouseEnd.x + mouseStart.x) / 2;
+    int centreY = (mouseEnd.y + mouseStart.y) / 2;
     Point centre = new Point(centreX, centreY);
 
-    int dx = Math.abs(zoomBoxEnd.x - zoomBoxStart.x);
-    int dy = Math.abs(zoomBoxEnd.y - zoomBoxStart.y);
+    int dx = Math.abs(mouseEnd.x - mouseStart.x);
+    int dy = Math.abs(mouseEnd.y - mouseStart.y);
     // ensure deltas are valid
     if (dx <= 0)
       dx = 1;
@@ -128,21 +133,17 @@ public class ZoomTool extends BasicTool
 
   	// draw new band
   	Point currPoint = e.getPoint();
-  	zoomBoxEnd = currPoint;
+  	mouseEnd = currPoint;
     drawBand(g);
   }
   
   private void drawBand(Graphics g) {
-    if (isPan()) {
+    if (isPanning()) {
       drawLine(g);
     }
     else {
       drawRect(g);
     }
-  }
-  
-  private boolean isPan() {
-    return mouseStartModel != null;
   }
 
   public void activate() { }
@@ -151,24 +152,24 @@ public class ZoomTool extends BasicTool
   
   private boolean isSignificantMouseMove()
   {
-  	if (Math.abs(zoomBoxStart.x - zoomBoxEnd.x) < MIN_MOVEMENT)
+  	if (Math.abs(mouseStart.x - mouseEnd.x) < MIN_MOVEMENT)
   		return false;
-  	if (Math.abs(zoomBoxStart.y - zoomBoxEnd.y) < MIN_MOVEMENT)
+  	if (Math.abs(mouseStart.y - mouseEnd.y) < MIN_MOVEMENT)
   		return false;
   	return true;
   }
   
   public void drawRect(Graphics g)
   {
-  	Point base = new Point(Math.min(zoomBoxStart.x, zoomBoxEnd.x),
-  			Math.min(zoomBoxStart.y, zoomBoxEnd.y));
-  	int width = Math.abs(zoomBoxEnd.x - zoomBoxStart.x);
-  	int height = Math.abs(zoomBoxEnd.y - zoomBoxStart.y);
+  	Point base = new Point(Math.min(mouseStart.x, mouseEnd.x),
+  			Math.min(mouseStart.y, mouseEnd.y));
+  	int width = Math.abs(mouseEnd.x - mouseStart.x);
+  	int height = Math.abs(mouseEnd.y - mouseStart.y);
   	g.drawRect(base.x, base.y, width, height);
   }
   public void drawLine(Graphics g)
   {
-    g.drawLine(zoomBoxStart.x, zoomBoxStart.y, zoomBoxEnd.x, zoomBoxEnd.y);
+    g.drawLine(mouseStart.x, mouseStart.y, mouseEnd.x, mouseEnd.y);
   }
   
 }

@@ -11,6 +11,8 @@ import jeql.workbench.ui.geomview.tool.ZoomTool;
 
 public class GeometryViewToolBar extends BaseToolBar
 {
+  private static final String TIP_ZOOM = "<html>Zoom In/Out | Pan<br><br>Zoom In = Left-Btn<br>Zoom Extent = Left-Drag<br>Zoom Out = Right-Btn<br>Pan = Right-Drag | Ctl-Drag</html>";
+  
   private GeometryViewFrame geomViewFrame;
   
   public GeometryViewToolBar(GeometryViewFrame geomViewPanel)
@@ -25,7 +27,7 @@ public class GeometryViewToolBar extends BaseToolBar
   {
     setFloatable(false);
 
-    JToggleButton zoom = addToggleButton("MagnifyCursor.png", "Zoom In/Out", 
+    JToggleButton zoom = addToggleButton("MagnifyCursor.png", TIP_ZOOM, 
         new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent e) {
         geomViewFrame.geomView().setCurrentTool(ZoomTool.getInstance());
@@ -33,13 +35,17 @@ public class GeometryViewToolBar extends BaseToolBar
     });
     zoom.setSelected(true);
     
+    /*
     JToggleButton pan = addToggleButton("Pan.png", "Pan", new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent e) {
         geomViewFrame.geomView().setCurrentTool(PanTool.getInstance());
       }
     });
+*/    
+    
     add(Box.createHorizontalStrut(10), null);
 
+    
     addButton("World.png", "Zoom All", new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent e) {
         geomViewFrame.geomView().zoomToFullExtent();
@@ -56,7 +62,7 @@ public class GeometryViewToolBar extends BaseToolBar
     
     ButtonGroup toolButtonGroup = new ButtonGroup();
     toolButtonGroup.add(zoom);
-    toolButtonGroup.add(pan);
+    //toolButtonGroup.add(pan);
 
   }
 

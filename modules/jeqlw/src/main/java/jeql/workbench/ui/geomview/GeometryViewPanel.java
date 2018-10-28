@@ -178,6 +178,7 @@ public class GeometryViewPanel extends JPanel
     setCursor(currentTool.getCursor());
     addMouseListener(currentTool);
     addMouseMotionListener(currentTool);
+    addMouseWheelListener(currentTool);
   }
 
   public void zoomToGeometry(int i) {
