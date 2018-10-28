@@ -92,7 +92,6 @@ public class GeometryViewPanel extends JPanel
       }
     });
     this.setBackground(Color.white);
-    this.setBorder(BorderFactory.createLoweredBevelBorder());
     this.setLayout(borderLayout1);
     
     setToolTipText("");

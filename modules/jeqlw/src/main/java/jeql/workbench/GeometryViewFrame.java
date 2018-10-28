@@ -60,9 +60,14 @@ public class GeometryViewFrame extends JFrame
     //statusBarPanel.add(lblPrecisionModel);
     statusBarPanel.add(lblMousePos);
 
+    JPanel borderPanel = new JPanel();
+    borderPanel.setBorder(BorderFactory.createLoweredBevelBorder());
+    borderPanel.setLayout(new BorderLayout());
+    borderPanel.add(geomViewPanel, BorderLayout.CENTER);
+    
     setLayout(new BorderLayout());
     add(toolbar, BorderLayout.NORTH);
-    add(geomViewPanel, BorderLayout.CENTER);
+    add(borderPanel, BorderLayout.CENTER);
     add(statusBarPanel, BorderLayout.SOUTH);
     
     getContentPane().setPreferredSize(new Dimension(600, 600));
