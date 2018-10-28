@@ -66,7 +66,9 @@ public class RowListGeometryList implements GeometryList
   @Override
   public Label getLabel(int i) {
     Row row = (Row) rows.get(i);
-    return new Label(styler.label(row), styler.labelColor(row));
+    return new Label(styler.label(row), 
+        styler.labelColor(row),
+        styler.labelSize(row));
   }
 
 }

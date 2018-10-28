@@ -102,4 +102,7 @@ public class StyleExtracter
       labelClrStr = (String) row.getValue(labelColorIndex);
     return ColorUtil.RGBAtoColor(labelClrStr);
   }
+  public int labelSize(Row row) {
+    return RowUtil.getInt(labelSizeIndex, row, DEFAULT_LABEL_SIZE);
+  }
 }

@@ -6,13 +6,12 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
-import jeql.style.StyleExtracter;
-import jeql.workbench.ui.geomview.style.Style;
-
 import com.vividsolutions.jts.awt.FontGlyphReader;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
+
+import jeql.workbench.ui.geomview.style.Style;
 
 public class LayerRenderer implements Renderer
 {
@@ -21,6 +20,7 @@ public class LayerRenderer implements Renderer
   private Viewport viewport;
   private boolean isCancelled = false;
   private List<Label> labels = new ArrayList<Label>();
+  private Font font = null;
 
 	public LayerRenderer(Layer layer, Viewport viewport)
 	{
@@ -99,16 +99,17 @@ public class LayerRenderer implements Renderer
   }
 
   private void renderLabels(Graphics2D g) {
-
-    Font font = new Font(FontGlyphReader.FONT_SANSERIF, Font.PLAIN, StyleExtracter.DEFAULT_LABEL_SIZE);
-    g.setFont(font);
-
     for (Label lbl : labels) {
       renderLabel(lbl, g);
     }
   }
   
   private void renderLabel(Label lbl, Graphics2D g) {
+    if (font == null) {
+      font = new Font(FontGlyphReader.FONT_SANSERIF, Font.PLAIN, lbl.fontSize);
+      g.setFont(font);
+    }
+    
     g.setColor(lbl.color);
     Point2D pt = lbl.getPoint();
     g.drawString(lbl.label, (int) pt.getX(), (int) pt.getY());
