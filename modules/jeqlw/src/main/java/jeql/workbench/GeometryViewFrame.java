@@ -109,6 +109,14 @@ public class GeometryViewFrame extends JFrame
     }
   }
 
+  public void saveImageToClipboard() {
+    try {
+      ImageUtil.saveImageToClipboard(geomViewPanel, ImageUtil.IMAGE_FORMAT_NAME_PNG);
+    } catch (Exception ex) {
+      SwingUtil.reportException(this, ex);
+    }
+  }
+  
   private JFileChooser pngFileChooser;
 
   private void initFileChoosers() {

@@ -6,11 +6,14 @@ import javax.swing.Box;
 import javax.swing.ButtonGroup;
 import javax.swing.JToggleButton;
 
+import jeql.util.SwingUtil;
 import jeql.workbench.ui.geomview.tool.PanTool;
 import jeql.workbench.ui.geomview.tool.ZoomTool;
 
 public class GeometryViewToolBar extends BaseToolBar
 {
+  private static final String TIP_SAVE_IMAGE = "<html>Save Image to File<br><br>Save Image to Clipboard = Ctl-Click</html>";
+
   private static final String TIP_ZOOM = "<html>Zoom In/Out | Pan<br><br>Zoom In = Left-Btn<br>Zoom Extent = Left-Drag<br>Zoom Out = Right-Btn<br>Pan = Right-Drag | Ctl-Drag</html>";
   
   private GeometryViewFrame geomViewFrame;
@@ -54,18 +57,23 @@ public class GeometryViewToolBar extends BaseToolBar
     
     add(Box.createHorizontalStrut(10), null);
 
-    addButton("SaveImage.png", "Save Image", new java.awt.event.ActionListener() {
+    addButton("SaveImage.png", TIP_SAVE_IMAGE, new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        geomViewFrame.saveAsPNG();
+        if ( SwingUtil.isCtlKeyPressed(e)) {
+          geomViewFrame.saveImageToClipboard();
+        } else {
+          geomViewFrame.saveAsPNG();
+        }
       }
+
     });
     
+
     ButtonGroup toolButtonGroup = new ButtonGroup();
     toolButtonGroup.add(zoom);
     //toolButtonGroup.add(pan);
 
   }
-
 
   
 }

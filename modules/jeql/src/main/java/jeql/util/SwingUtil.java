@@ -4,6 +4,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
 import java.io.File;
 
 import javax.swing.ImageIcon;
@@ -149,6 +151,10 @@ public class SwingUtil
     JOptionPane.showMessageDialog(c, StringUtil.wrap(e.toString(), 80), "Exception",
         JOptionPane.ERROR_MESSAGE);
     e.printStackTrace(System.out);
+  }
+
+  public static boolean isCtlKeyPressed(ActionEvent e) {
+    return (e.getModifiers() & InputEvent.CTRL_MASK) == InputEvent.CTRL_MASK;
   }
 
 }
