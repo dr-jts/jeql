@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.vividsolutions.jts.awt.FontGlyphReader;
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
 
@@ -15,6 +16,7 @@ import jeql.workbench.ui.geomview.style.Style;
 
 public class LayerRenderer implements Renderer
 {
+  private static final double MIN_LABELLED_VIEW_SIZE = 20;
   private Layer layer;
   private GeometryList geomCont;
   private Viewport viewport;
@@ -61,7 +63,7 @@ public class LayerRenderer implements Renderer
     if (! viewport.intersectsInModel(geometry.getEnvelopeInternal())) 
       return;
     
-    if (label != null) {
+    if (label != null && label.hasText() && isLabellableSize(geometry, viewport)) {
       label.setPoint( computeLabelPoint(geometry, viewport));
       labels.add(label);
     }   
@@ -72,6 +74,19 @@ public class LayerRenderer implements Renderer
     }
     
     style.paint(geometry, viewport, g);
+  }
+
+  private boolean isLabellableSize(Geometry geometry, Viewport viewport2) {
+    Envelope env = geometry.getEnvelopeInternal();
+    double diagonalDist = diagonalSize(env);
+    double viewSize = viewport.toView(diagonalDist);
+    return viewSize > MIN_LABELLED_VIEW_SIZE;
+  }
+
+  private double diagonalSize(Envelope env) {
+    double h = env.getHeight();
+    double w = env.getWidth();
+    return Math.sqrt(w * w + h * h);
   }
 
   private Point2D computeLabelPoint(Geometry geometry, Viewport viewport) {
@@ -105,6 +120,8 @@ public class LayerRenderer implements Renderer
   }
   
   private void renderLabel(Label lbl, Graphics2D g) {
+    //if (lbl.label == null || lbl.label.length() <= 0) return;
+    
     if (font == null) {
       font = new Font(FontGlyphReader.FONT_SANSERIF, Font.PLAIN, lbl.fontSize);
       g.setFont(font);

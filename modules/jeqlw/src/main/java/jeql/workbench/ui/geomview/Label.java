@@ -23,4 +23,8 @@ public class Label {
   public Point2D getPoint() {
     return pt;
   }
+
+  public boolean hasText() {
+    return label != null && label.length() > 0;
+  }
 }
