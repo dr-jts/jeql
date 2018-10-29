@@ -220,7 +220,7 @@ public class GeometryViewPanel extends JPanel
     viewport.zoom(zoomEnv);
   }
 
-  public void zoom(Point center,
+  public void OLDzoom(Point center,
 			double realZoomFactor) {
 
   	renderMgr.setDirty(true);
@@ -239,6 +239,11 @@ public class GeometryViewPanel extends JPanel
 		viewport.setViewOrigin(bottomLeftOfNewViewAsPerceivedByModel.getX(), bottomLeftOfNewViewAsPerceivedByModel.getY());
 	}
 
+  public void zoom(Point2D zoomPt, double zoomFactor) {
+    double zoomScale = getViewport().getScale() * zoomFactor;
+    viewport.zoom(zoomPt, zoomScale);
+  }
+  
   public void zoomPan(double xDisplacement, double yDisplacement) 
   {
   	renderMgr.setDirty(true);

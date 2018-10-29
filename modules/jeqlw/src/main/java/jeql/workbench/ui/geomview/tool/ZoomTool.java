@@ -57,11 +57,15 @@ public class ZoomTool extends BasicTool
   
   public void mouseClicked(MouseEvent mouseEvent) 
   {
+    // disable double-clicks for now
+    // TODO: Doesn't work!
+    if (mouseEvent.getClickCount() > 1) return;
+    
     // determine if zoom in (left) or zoom out (right)
     double realZoomFactor = SwingUtilities.isRightMouseButton(mouseEvent)
          ? (1d / zoomFactor) : zoomFactor;
-    Point center = mouseEvent.getPoint();
-    panel().zoom(center, realZoomFactor);
+    //Point center = mouseEvent.getPoint();
+    panel().zoom(toModel(mouseEvent.getPoint()), realZoomFactor);
   }
 
   public void mousePressed(MouseEvent mouseEvent)
@@ -120,7 +124,7 @@ public class ZoomTool extends BasicTool
     double zoomFactor = Math.min(widthFactor, heightFactor);
 
     // double zoomFactor = 2;
-    panel().zoom(centre, zoomFactor);
+    panel().zoom(toModel(centre), zoomFactor);
   }
 
   public void mouseDragged(MouseEvent e)

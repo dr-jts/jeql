@@ -1,7 +1,8 @@
 package jeql.workbench.ui.geomview;
 
 import java.awt.*; 
-import java.awt.geom.*; 
+import java.awt.geom.*;
+import java.awt.geom.Point2D.Double;
 import java.text.NumberFormat;
 
 import com.vividsolutions.jts.awt.PointTransformation;
@@ -88,6 +89,11 @@ public class Viewport implements PointTransformation
     update();
   }
 
+  private void setOrigin(double viewOriginX, double viewOriginY) {
+    viewOriginInModel = new Point2D.Double(viewOriginX, viewOriginY);
+    update();
+  }
+  
   public NumberFormat getScaleFormat()
   {
     return scaleFormat;
@@ -253,6 +259,26 @@ public class Viewport implements PointTransformation
         zoomEnv.getMinY() - yCentering);
   }
 
+  /**
+   * Zoom to a point, ensuring that the zoom point remains in the same screen location.
+   * 
+   * @param zoomPt
+   * @param zoomFactor
+   */
+  public void zoom(Point2D zoomPt, double zoomScale) {
+    double originOffsetX = zoomPt.getX() - viewOriginInModel.getX();
+    double originOffsetY = zoomPt.getY() - viewOriginInModel.getY();
+    
+    // set scale first, because it may be snapped
+    double scalePrev = getScale();
+    setScale(zoomScale);
+    
+    double actualZoomFactor = getScale() / scalePrev;
+    double zoomOriginX = zoomPt.getX() - originOffsetX / actualZoomFactor;
+    double zoomOriginY = zoomPt.getY() - originOffsetY / actualZoomFactor;
+    setOrigin(zoomOriginX,  zoomOriginY);
+  }
+  
   public double getWidthInModel() {
     return getUpperRightCornerInModel().getX()
         - getLowerLeftCornerInModel().getX();
