@@ -57,7 +57,6 @@ public class ZoomTool extends BasicTool
   
   public void doClick(MouseEvent mouseEvent) 
   {
-    System.out.println("Clicked: " + mouseEvent );
     // disable double-clicks for now
     //if (mouseEvent.getClickCount() > 1) return;
     
@@ -80,7 +79,6 @@ public class ZoomTool extends BasicTool
    * So handle clicks here rather than in mouseClick code
    */
   public void mouseReleased(MouseEvent mouseEvent) {
-    System.out.println("Released: " + mouseEvent );
     // don't process if mouse was clicked or dragged a very short distance
     if (! isSignificantMouseMove(mouseEvent.getPoint())) {
       doClick(mouseEvent);
