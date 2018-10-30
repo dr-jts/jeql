@@ -55,11 +55,11 @@ public class ZoomTool extends BasicTool
     panel().zoom(e.getPoint(), zoomFactor);
   }
   
-  public void mouseClicked(MouseEvent mouseEvent) 
+  public void doClick(MouseEvent mouseEvent) 
   {
+    System.out.println("Clicked: " + mouseEvent );
     // disable double-clicks for now
-    // TODO: Doesn't work!
-    if (mouseEvent.getClickCount() > 1) return;
+    //if (mouseEvent.getClickCount() > 1) return;
     
     // determine if zoom in (left) or zoom out (right)
     double realZoomFactor = SwingUtilities.isRightMouseButton(mouseEvent)
@@ -75,12 +75,17 @@ public class ZoomTool extends BasicTool
     panStart = isPanGesture(mouseEvent) ? toModel(mouseStart) : null;
   }
   
+  /**
+   * Always called, even on mouse click.
+   * So handle clicks here rather than in mouseClick code
+   */
   public void mouseReleased(MouseEvent mouseEvent) {
-    
-    // don't process this event if the mouse was clicked or dragged a very
-    // short distance
-    if (! isSignificantMouseMove())
+    System.out.println("Released: " + mouseEvent );
+    // don't process if mouse was clicked or dragged a very short distance
+    if (! isSignificantMouseMove(mouseEvent.getPoint())) {
+      doClick(mouseEvent);
       return;
+    }
 
     if (! isPanGesture(mouseEvent)) {
       // left-drag does a zoom
@@ -152,15 +157,14 @@ public class ZoomTool extends BasicTool
 
   public void activate() { }
   
-  private static final int MIN_MOVEMENT = 3;
+  private static final int MIN_MOVEMENT = 5;
   
-  private boolean isSignificantMouseMove()
+  private boolean isSignificantMouseMove(Point p)
   {
-  	if (Math.abs(mouseStart.x - mouseEnd.x) < MIN_MOVEMENT)
-  		return false;
-  	if (Math.abs(mouseStart.y - mouseEnd.y) < MIN_MOVEMENT)
-  		return false;
-  	return true;
+    int delta = Math.abs(mouseStart.x - p.x) + Math.abs(mouseStart.y - p.y);
+    if (delta < MIN_MOVEMENT)
+        return false;
+    return true;
   }
   
   public void drawRect(Graphics g)
