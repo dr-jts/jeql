@@ -129,9 +129,15 @@ public class LayerRenderer implements Renderer
     
     g.setColor(lbl.color);
     Point2D pt = lbl.getPoint();
-    g.drawString(lbl.label, (int) pt.getX(), (int) pt.getY());
+    drawStringMultiLine(g, lbl.label, (int) pt.getX(), (int) pt.getY());
+    //g.drawString(lbl.label, (int) pt.getX(), (int) pt.getY());
   }
 
+  private void drawStringMultiLine(Graphics2D g, String text, int x, int y) {
+    for (String line : text.split("\n"))
+        g.drawString(line, x, y += g.getFontMetrics().getHeight());
+  }
+  
   public void cancel()
 	{
 		isCancelled = true;
