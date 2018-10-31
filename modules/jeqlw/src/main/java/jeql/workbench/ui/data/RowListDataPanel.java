@@ -22,6 +22,7 @@ import javax.swing.table.TableColumn;
 
 import com.vividsolutions.jts.geom.Geometry;
 
+import jeql.api.row.Row;
 import jeql.api.row.RowSchema;
 import jeql.monitor.MonitorItem;
 import jeql.monitor.MonitorRowList;
@@ -54,6 +55,10 @@ public class RowListDataPanel extends JPanel
     return monItem;
   }
 
+  public Row getSelectedRow() {
+    return table.getFocusRow();
+  }
+  
   public void update()
   {
     ((RowListTableModel) table.getModel()).fireTableDataChanged();

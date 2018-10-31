@@ -36,6 +36,13 @@ public class DataToolBar extends BaseToolBar
       }
     });
     
+    addButton("MagnifyCursor.png", "Zoom to Geometry", new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        Workbench.geomView().zoom(dataPanel.getSelectedRow(), 
+            dataPanel.getCurrentItem().getRowList().getSchema());
+      }
+    });
+    
     /*
     // removed, since always showing text in monospace seems like a simpler strategy
     addToggleButton("change_font.png", "Change font", new java.awt.event.ItemListener() {

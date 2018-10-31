@@ -10,6 +10,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import jeql.api.row.Row;
 import jeql.monitor.MonitorItem;
 import jeql.monitor.MonitorModel;
 
@@ -122,5 +123,11 @@ public class DataPanel extends JPanel
     RowListDataPanel panel = (RowListDataPanel) tabPane.getSelectedComponent();
     if (panel == null) return null;
     return panel.getMonitorItem();
+  }
+  
+  public Row getSelectedRow()
+  {
+    RowListDataPanel panel = (RowListDataPanel) tabPane.getSelectedComponent();
+    return panel.getSelectedRow();
   }
 }
