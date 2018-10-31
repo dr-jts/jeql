@@ -12,6 +12,7 @@ import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
 
+import jeql.util.GraphicsUtil;
 import jeql.workbench.ui.geomview.style.Style;
 
 public class LayerRenderer implements Renderer
@@ -129,14 +130,11 @@ public class LayerRenderer implements Renderer
     
     g.setColor(lbl.color);
     Point2D pt = lbl.getPoint();
-    drawStringMultiLine(g, lbl.label, (int) pt.getX(), (int) pt.getY());
+    GraphicsUtil.drawStringMultiLine(g, lbl.label, (int) pt.getX(), (int) pt.getY());
     //g.drawString(lbl.label, (int) pt.getX(), (int) pt.getY());
   }
 
-  private void drawStringMultiLine(Graphics2D g, String text, int x, int y) {
-    for (String line : text.split("\n"))
-        g.drawString(line, x, y += g.getFontMetrics().getHeight());
-  }
+
   
   public void cancel()
 	{
