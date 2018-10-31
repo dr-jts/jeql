@@ -13,7 +13,7 @@ public class Workbench
   public static WorkbenchFrame view() { return WB.wbFrame; }
   public static WorkbenchModel model() { return WB.wbModel; }
   public static WorkbenchController controller() { return WB.controller; }
-  public static GeometryViewPanel geomView() { return view().geomView.geomViewPanel; }
+  public static GeometryViewController geomView() { return WB.geomView; }
   
   public static void main(String[] args) {
     try {
@@ -49,6 +49,7 @@ public class Workbench
   private WorkbenchFrame wbFrame = new WorkbenchFrame();
   private WorkbenchModel wbModel = new WorkbenchModel();
   private WorkbenchController controller = new WorkbenchController();
+  private GeometryViewController geomView = new GeometryViewController(wbFrame.geomViewFrame);
 
   public Workbench()
   {

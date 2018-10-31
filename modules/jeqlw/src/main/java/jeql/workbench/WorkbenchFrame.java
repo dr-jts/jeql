@@ -84,7 +84,7 @@ public class WorkbenchFrame extends JFrame
   MonitorStatusBar monitorStatusBar = new MonitorStatusBar();
 
   HelpFrame helpDlg = new HelpFrame(this);
-  GeometryViewFrame geomView = new GeometryViewFrame(this);
+  GeometryViewFrame geomViewFrame = new GeometryViewFrame(this);
 
   private JFileChooser scriptFileChooser;
 
@@ -201,7 +201,7 @@ public class WorkbenchFrame extends JFrame
 
   public GeometryViewFrame geomView()
   {
-    return geomView;
+    return geomViewFrame;
   }
 
   private void setViewTitle(String scriptFile)

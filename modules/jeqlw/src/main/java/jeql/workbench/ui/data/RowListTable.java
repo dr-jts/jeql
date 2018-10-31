@@ -17,8 +17,10 @@ import javax.swing.event.TableColumnModelListener;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
-import javax.swing.table.TableModel;
 
+import com.vividsolutions.jts.geom.Geometry;
+
+import jeql.api.row.Row;
 import jeql.api.row.RowSchema;
 import jeql.monitor.MonitorRowList;
 import jeql.style.StyleConstants;
@@ -28,9 +30,6 @@ import jeql.util.MethodUtil;
 import jeql.util.SwingUtil;
 import jeql.workbench.Workbench;
 import jeql.workbench.WorkbenchConstants;
-
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.io.WKTWriter;
 
 class RowListTable extends JTable
 {
@@ -74,6 +73,13 @@ class RowListTable extends JTable
   public void setMonospaced(boolean useMonospacedFont)
   {
     this.useMonospacedFont = useMonospacedFont;
+  }
+  
+  public Row getFocusRow() {
+    if (getSelectionModel().isSelectionEmpty()) 
+      return null;
+    int focusRowIndex = getSelectionModel().getLeadSelectionIndex();
+    return ((RowListTableModel) getModel()).getRow(focusRowIndex);
   }
   
   private static final int ROW_NUM_COLUMN_WIDTH = 60;
@@ -133,7 +139,7 @@ class RowListTable extends JTable
              Workbench.controller().inspect(val);
            }
            else if (isZoom) {
-             Workbench.controller().inspectGeomView(val);
+             Workbench.geomView().inspect(val);
            }
         }
       }

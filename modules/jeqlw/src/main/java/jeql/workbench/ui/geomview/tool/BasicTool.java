@@ -73,7 +73,7 @@ public abstract class BasicTool implements Tool
   protected GeometryViewPanel panel()
   {
     // this should probably be passed in during setup
-    return Workbench.geomView();
+    return Workbench.geomView().panel();
   }
     
   private Viewport getViewport()

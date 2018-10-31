@@ -18,12 +18,12 @@ public class GeometryViewToolBar extends BaseToolBar
   
   private GeometryViewFrame geomViewFrame;
   
-  public GeometryViewToolBar(GeometryViewFrame geomViewPanel)
+  public GeometryViewToolBar(GeometryViewFrame geomViewFrame)
   {
     super();
-    this.geomViewFrame = geomViewPanel;
+    this.geomViewFrame = geomViewFrame;
     init();
-    geomViewPanel.geomView().setCurrentTool(ZoomTool.getInstance());
+    geomViewFrame.geomView().setCurrentTool(ZoomTool.getInstance());
   }
 
   private void init()
@@ -39,6 +39,7 @@ public class GeometryViewToolBar extends BaseToolBar
     zoom.setSelected(true);
     
     /*
+     // no longer needed since Zoom tool does panning
     JToggleButton pan = addToggleButton("Pan.png", "Pan", new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent e) {
         geomViewFrame.geomView().setCurrentTool(PanTool.getInstance());

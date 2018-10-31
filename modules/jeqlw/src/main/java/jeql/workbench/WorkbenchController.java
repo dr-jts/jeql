@@ -70,7 +70,7 @@ public class WorkbenchController
   public void inspect(Object obj)
   {
     Workbench.view().inspectText(inspectString(obj));
-    flashGeomView(obj);
+    Workbench.geomView().flash(obj);
   }
   
   private static String inspectString(Object o)
@@ -84,11 +84,12 @@ public class WorkbenchController
     }
     return o.toString();
   }
+  /*
   public void inspectGeomView(Object val)
   {
     if (val instanceof Geometry) {
       Geometry geom = (Geometry) val;
-      Workbench.geomView().inspect(geom);
+      Workbench.geomViewPanel().inspect(geom);
     }
   }
   
@@ -96,10 +97,11 @@ public class WorkbenchController
   {
     if (val instanceof Geometry) {
       Geometry geom = (Geometry) val;
-      Workbench.geomView().flash(geom);
+      Workbench.geomViewPanel().flash(geom);
     }
   }
-
+*/
+  
   public void insertCodeSnippet(CodeSnippet code)
   {
     Workbench.view().insertCodeSnippet(code);
@@ -231,8 +233,8 @@ public class WorkbenchController
       lyrList.add(lyr);
     }
     Workbench.geomView().setSource(lyrList);
-    Workbench.view().geomView.setVisible(true);
-  }
+    Workbench.geomView().setVisible(true);
+   }
 
   public void displaySettings()
   {

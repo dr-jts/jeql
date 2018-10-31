@@ -73,6 +73,11 @@ extends AbstractTableModel
     return type;
   }
   
+  public Row getRow(int row)
+  {
+    return ((Row) rows.get(row));
+  } 
+  
   public Object getRawValueAt(int row, int column)
   {
     return ((Row) rows.get(row)).getValue(column-1);
