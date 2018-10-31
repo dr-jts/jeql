@@ -75,6 +75,13 @@ class RowListTable extends JTable
     this.useMonospacedFont = useMonospacedFont;
   }
   
+  public int getFocusIndex() {
+    if (getSelectionModel().isSelectionEmpty()) 
+      return -1;
+    int focusRowIndex = getSelectionModel().getLeadSelectionIndex();
+    return focusRowIndex;
+  }
+  
   public Row getFocusRow() {
     if (getSelectionModel().isSelectionEmpty()) 
       return null;

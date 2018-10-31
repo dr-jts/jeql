@@ -16,16 +16,15 @@ public class GeometryViewToolBar extends BaseToolBar
 
   private static final String TIP_ZOOM = "<html>Zoom In/Out | Pan<br><br>Zoom In = Left-Btn<br>Zoom Extent = Left-Drag<br>Zoom Out = Right-Btn<br>Pan = Right-Drag | Ctl-Drag</html>";
   
-  private GeometryViewFrame geomViewFrame;
-  
-  public GeometryViewToolBar(GeometryViewFrame geomViewFrame)
+  public GeometryViewToolBar()
   {
     super();
-    this.geomViewFrame = geomViewFrame;
     init();
-    geomViewFrame.geomView().setCurrentTool(ZoomTool.getInstance());
   }
 
+  GeometryViewController geomView() {
+    return Workbench.geomView();
+  }
   private void init()
   {
     setFloatable(false);
@@ -33,7 +32,7 @@ public class GeometryViewToolBar extends BaseToolBar
     JToggleButton zoom = addToggleButton("MagnifyCursor.png", TIP_ZOOM, 
         new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        geomViewFrame.geomView().setCurrentTool(ZoomTool.getInstance());
+        geomView().setCurrentTool(ZoomTool.getInstance());
       }
     });
     zoom.setSelected(true);
@@ -52,7 +51,7 @@ public class GeometryViewToolBar extends BaseToolBar
     
     addButton("World.png", "Zoom All", new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        geomViewFrame.geomView().zoomToFullExtent();
+        geomView().zoomToFullExtent();
       }
     });
     
@@ -61,9 +60,9 @@ public class GeometryViewToolBar extends BaseToolBar
     addButton("SaveImage.png", TIP_SAVE_IMAGE, new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent e) {
         if ( SwingUtil.isCtlKeyPressed(e)) {
-          geomViewFrame.saveImageToClipboard();
+          geomView().saveImageToClipboard();
         } else {
-          geomViewFrame.saveAsPNG();
+          geomView().saveAsPNG();
         }
       }
 

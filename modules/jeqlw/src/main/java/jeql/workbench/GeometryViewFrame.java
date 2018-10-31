@@ -32,7 +32,7 @@ public class GeometryViewFrame extends JFrame
   JLabel lblMousePos = new JLabel();
 
   GeometryViewPanel geomViewPanel = new GeometryViewPanel();
-  GeometryViewToolBar toolbar = new GeometryViewToolBar(this);
+  GeometryViewToolBar toolbar = new GeometryViewToolBar();
 
   String manText;
   
