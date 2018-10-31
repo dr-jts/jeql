@@ -153,8 +153,10 @@ public class SwingUtil
     e.printStackTrace(System.out);
   }
 
+  public static boolean isCtlKeyPressed(InputEvent e) {
+    return (e.getModifiers() & InputEvent.CTRL_MASK) == InputEvent.CTRL_MASK;
+  }
   public static boolean isCtlKeyPressed(ActionEvent e) {
     return (e.getModifiers() & InputEvent.CTRL_MASK) == InputEvent.CTRL_MASK;
   }
-
 }

@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.swing.JLabel;
 import javax.swing.JTable;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.TableColumnModelEvent;
@@ -24,6 +25,7 @@ import jeql.style.StyleConstants;
 import jeql.util.ClassUtil;
 import jeql.util.ColorUtil;
 import jeql.util.MethodUtil;
+import jeql.util.SwingUtil;
 import jeql.workbench.Workbench;
 import jeql.workbench.WorkbenchConstants;
 
@@ -118,33 +120,28 @@ class RowListTable extends JTable
     addMouseListener(new java.awt.event.MouseAdapter() {
       @Override
       public void mouseClicked(java.awt.event.MouseEvent evt) {
-        if (evt.getClickCount() < 2)
-          return;
+        boolean isDblClick = evt.getClickCount() >= 2;
+        boolean isCtlClick = SwingUtil.isCtlKeyPressed(evt);
+        boolean isZoom = evt.isControlDown() && SwingUtilities.isRightMouseButton(evt);
         
-          int row = rowAtPoint(evt.getPoint());
-          int col = columnAtPoint(evt.getPoint());
-          if (row >= 0 && col >= 0) {
-             Object val = ((RowListTableModel) getModel()).getRawValueAt(row, col);
-             //System.out.println(val);
-             
-             Workbench.controller().inspect(inspectString(val));
-          }
+        int row = rowAtPoint(evt.getPoint());
+        int col = columnAtPoint(evt.getPoint());
+        if (row >= 0 && col >= 0) {
+           Object val = ((RowListTableModel) getModel()).getRawValueAt(row, col);
+           //System.out.println(val); 
+           if (isDblClick) {
+             Workbench.controller().inspect(val);
+           }
+           else if (isZoom) {
+             Workbench.controller().inspectGeomView(val);
+           }
+        }
       }
   });
 
   }
 
-  private static String inspectString(Object o)
-  {
-    if (o == null) return "";
-    if (o instanceof Geometry) {
-      WKTWriter writer = new WKTWriter();
-      writer.setMaxCoordinatesPerLine(2);
-      String str = writer.writeFormatted((Geometry) o);
-      return str;
-    }
-    return o.toString();
-  }
+
   
   private void updateColStyle()
   {

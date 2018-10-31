@@ -50,6 +50,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import jeql.workbench.ui.geomview.style.BasicStyle;
 import jeql.workbench.ui.geomview.tool.Tool;
 
 import com.vividsolutions.jts.geom.Envelope;
@@ -303,6 +304,35 @@ public class GeometryViewPanel extends JPanel
   			currentRenderer.cancel();
   	}
 
+  }
+
+  public void inspect(Geometry geom) {
+    zoom(geom);
+  }
+  
+  private static BasicStyle FLASH_STYLE = new BasicStyle(Color.RED, null, 5);
+      
+  public void flash(Geometry g)
+  {
+    Graphics2D gr = (Graphics2D) getGraphics();
+    gr.setXORMode(Color.white);
+    //Stroke stroke = new BasicStroke(5);
+    
+    Geometry flashGeom = g;
+    /*
+    if (g instanceof org.locationtech.jts.geom.Point)
+      flashGeom = flashPointGeom(g);
+    */
+    
+    try {
+      GeometryPainter.paint(flashGeom, viewport, gr, FLASH_STYLE);
+      Thread.sleep(200);
+      GeometryPainter.paint(flashGeom, viewport, gr, FLASH_STYLE);
+    }
+    catch (Exception ex) { 
+      // nothing we can do
+    }
+    gr.setPaintMode();
   }
 }
 

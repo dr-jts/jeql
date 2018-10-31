@@ -7,6 +7,8 @@ import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.Timer;
 
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.io.WKTWriter;
 
 import jeql.api.JeqlRunner;
 import jeql.monitor.Monitor;
@@ -65,11 +67,39 @@ public class WorkbenchController
     Workbench.view().scriptAdd(text);
   }
 
-  public void inspect(String text)
+  public void inspect(Object obj)
   {
-    Workbench.view().inspectText(text);
+    Workbench.view().inspectText(inspectString(obj));
+    flashGeomView(obj);
   }
   
+  private static String inspectString(Object o)
+  {
+    if (o == null) return "";
+    if (o instanceof Geometry) {
+      WKTWriter writer = new WKTWriter();
+      writer.setMaxCoordinatesPerLine(2);
+      String str = writer.writeFormatted((Geometry) o);
+      return str;
+    }
+    return o.toString();
+  }
+  public void inspectGeomView(Object val)
+  {
+    if (val instanceof Geometry) {
+      Geometry geom = (Geometry) val;
+      Workbench.geomView().inspect(geom);
+    }
+  }
+  
+  public void flashGeomView(Object val)
+  {
+    if (val instanceof Geometry) {
+      Geometry geom = (Geometry) val;
+      Workbench.geomView().flash(geom);
+    }
+  }
+
   public void insertCodeSnippet(CodeSnippet code)
   {
     Workbench.view().insertCodeSnippet(code);
