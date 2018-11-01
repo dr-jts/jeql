@@ -146,7 +146,7 @@ public class ConstrainedInteriorPoint {
     double x1 = p1.x;
   
     if (x0 == x1) return x0;
-    double m = (p1.x - p0.y) / (x1 - x0);
+    double m = (p1.y - p0.y) / (x1 - x0);
     double x = ((Y - p0.y) / m) + x0;
     return x;
   }
