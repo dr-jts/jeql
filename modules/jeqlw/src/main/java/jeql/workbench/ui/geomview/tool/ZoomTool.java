@@ -57,7 +57,7 @@ public class ZoomTool extends BasicTool
   
   public void doClick(MouseEvent mouseEvent) 
   {
-    if (mouseEvent.isShiftDown()) {
+    if (mouseEvent.isShiftDown() || mouseEvent.isControlDown()) {
       panel().inspect(mouseEvent.getPoint());
       return;
     }

@@ -16,7 +16,7 @@ public class GeometryViewToolBar extends BaseToolBar
 {
   private static final String TIP_SAVE_IMAGE = "<html>Save Image to File<br><br>Save Image to Clipboard = Ctl-Click</html>";
 
-  private static final String TIP_ZOOM = "<html>Zoom In/Out | Pan<br><br>Zoom In = Left-Btn<br>Zoom Extent = Left-Drag<br>Zoom Out = Right-Btn<br>Pan = Right-Drag | Ctl-Drag</html>";
+  private static final String TIP_ZOOM = "<html>Zoom In/Out | Pan<br><br>Zoom In = Left-Btn<br>Zoom Extent = Left-Drag<br>Zoom Out = Right-Btn<br>Pan = Right-Drag | Ctl-Drag<br>Inspect = Ctl-Click</html>";
   
   public GeometryViewToolBar()
   {
