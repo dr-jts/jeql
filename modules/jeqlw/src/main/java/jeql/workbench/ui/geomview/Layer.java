@@ -2,10 +2,14 @@ package jeql.workbench.ui.geomview;
 
 import java.awt.Color;
 
+import jeql.api.row.Row;
 import jeql.util.ColorUtil;
+import jeql.workbench.RowListGeometryList;
 import jeql.workbench.ui.geomview.style.BasicStyle;
 import jeql.workbench.ui.geomview.style.Style;
 
+import com.vividsolutions.jts.algorithm.PointLocator;
+import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 
@@ -65,4 +69,30 @@ public class Layer
     return env;
   }
   
+  public String locateRowDesc(Coordinate pt) {
+    RowWithSchema row = locateRow(pt);
+    if (row == null) return null;
+    return row.row().getValue(0).toString();
+  }
+  
+  public RowWithSchema locateRow(Coordinate pt) {
+    RowListGeometryList rows = (RowListGeometryList) geomCont;
+    PointLocator locator = new PointLocator();
+    
+    for (int i = 0; i < geomCont.size(); i++) {
+      Geometry geom = geomCont.getGeometry(i);
+      if (geom == null) continue;
+      // check if pt is in Geom
+      boolean isLocated = locator.intersects(pt, geom);
+      if (isLocated)
+        return new RowWithSchema(rows.getRow(i), rows.getSchema());
+    }
+    return null;
+  }
+
+  private boolean locate(Geometry geom, Coordinate pt) {
+    if (! geom.getEnvelopeInternal().contains(pt)) return false;
+    PointLocator locator = new PointLocator();
+    return locator.intersects(pt, geom);
+  }
 }

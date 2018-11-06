@@ -51,6 +51,16 @@ public class RowListGeometryList implements GeometryList
     return (Geometry) row.getValue(geomCol);
   }
 
+  public RowSchema getSchema() {
+    return schema;
+  }
+  
+  public Row getRow(int i)
+  {
+    if (rows.size() <= 0 || geomCol < 0) return null;
+    return (Row) rows.get(i);
+  }
+  
   public Style getStyle(int i)
   {
     Row row = (Row) rows.get(i);
@@ -70,5 +80,7 @@ public class RowListGeometryList implements GeometryList
         styler.labelColor(row),
         styler.labelSize(row));
   }
+
+
 
 }

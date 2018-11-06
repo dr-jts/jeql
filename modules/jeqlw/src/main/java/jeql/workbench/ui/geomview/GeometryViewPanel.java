@@ -43,6 +43,7 @@ import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
 import java.awt.event.ComponentEvent;
+import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.text.NumberFormat;
 
@@ -50,6 +51,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import jeql.workbench.Workbench;
 import jeql.workbench.ui.geomview.style.BasicStyle;
 import jeql.workbench.ui.geomview.tool.Tool;
 
@@ -261,6 +263,9 @@ public class GeometryViewPanel extends JPanel
     + format.format(p.getY());
   }
   
+  public String getToolTipText(MouseEvent event) {
+    return Workbench.geomView().getToolTip(viewport.toModelCoordinate(event.getPoint()) );
+  }
 
   public Renderer getRenderer()
   {
@@ -305,10 +310,6 @@ public class GeometryViewPanel extends JPanel
   	}
 
   }
-
-  public void inspect(Geometry geom) {
-    zoom(geom);
-  }
   
   private static BasicStyle FLASH_STYLE = new BasicStyle(Color.RED, null, 5);
       
@@ -333,6 +334,10 @@ public class GeometryViewPanel extends JPanel
       // nothing we can do
     }
     gr.setPaintMode();
+  }
+
+  public void inspect(Point2D viewPt) {
+    Workbench.geomView().inspect(viewport.toModelCoordinate(viewPt) );
   }
 }
 

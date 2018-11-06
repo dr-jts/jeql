@@ -57,6 +57,10 @@ public class ZoomTool extends BasicTool
   
   public void doClick(MouseEvent mouseEvent) 
   {
+    if (mouseEvent.isShiftDown()) {
+      panel().inspect(mouseEvent.getPoint());
+      return;
+    }
     // disable double-clicks for now
     //if (mouseEvent.getClickCount() > 1) return;
     

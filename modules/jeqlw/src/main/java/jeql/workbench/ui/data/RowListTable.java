@@ -146,7 +146,7 @@ class RowListTable extends JTable
              Workbench.controller().inspect(val);
            }
            else if (isZoom) {
-             Workbench.geomView().inspect(val);
+             Workbench.geomView().zoomObject(val);
            }
         }
       }

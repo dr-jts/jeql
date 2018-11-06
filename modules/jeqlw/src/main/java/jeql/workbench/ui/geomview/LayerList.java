@@ -7,6 +7,8 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 
+import jeql.api.row.Row;
+
 public class LayerList 
 {
   private List<Layer> layers = new ArrayList<Layer>();
@@ -41,4 +43,20 @@ public class LayerList
     return env;
   }
   
+  public String locateRowDesc(Coordinate pt) {
+    for (int i = 0; i < layers.size(); i++) {
+      String desc = layers.get(i).locateRowDesc(pt);
+      if (desc != null) return desc;
+    }
+    return null;
+  }
+
+  public RowWithSchema locateRow(Coordinate pt) {
+    for (int i = 0; i < layers.size(); i++) {
+      RowWithSchema row = layers.get(i).locateRow(pt);
+      if (row != null) return row;
+    }
+    return null;
+  }
+    
 }

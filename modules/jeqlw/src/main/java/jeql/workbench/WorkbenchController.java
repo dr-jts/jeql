@@ -11,6 +11,8 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.WKTWriter;
 
 import jeql.api.JeqlRunner;
+import jeql.api.row.Row;
+import jeql.api.row.RowSchema;
 import jeql.monitor.Monitor;
 import jeql.monitor.MonitorItem;
 import jeql.util.ImageUtil;
@@ -69,21 +71,19 @@ public class WorkbenchController
 
   public void inspect(Object obj)
   {
-    Workbench.view().inspectText(inspectString(obj));
+    Workbench.view().inspectText(Inspector.inspectString(obj));
     Workbench.geomView().flash(obj);
   }
   
-  private static String inspectString(Object o)
+  public void inspect(RowSchema schema, Row row)
   {
-    if (o == null) return "";
-    if (o instanceof Geometry) {
-      WKTWriter writer = new WKTWriter();
-      writer.setMaxCoordinatesPerLine(2);
-      String str = writer.writeFormatted((Geometry) o);
-      return str;
-    }
-    return o.toString();
+    String str = Inspector.inspectString(schema, row);
+    Workbench.view().inspectText(str);
   }
+  
+
+
+
   /*
   public void inspectGeomView(Object val)
   {
