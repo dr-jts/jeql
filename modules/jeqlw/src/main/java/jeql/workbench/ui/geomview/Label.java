@@ -16,6 +16,13 @@ public class Label {
     this.fontSize = fontSize;
   }
 
+  public Label(Label lbl) {
+    this.label = lbl.label;
+    this.color = lbl.color;
+    this.fontSize = lbl.fontSize;
+    this.pt = lbl.pt;
+  }
+
   public void setPoint(Point2D pt) {
     this.pt = pt;
   }
@@ -26,5 +33,9 @@ public class Label {
 
   public boolean hasText() {
     return label != null && label.length() > 0;
+  }
+  
+  public Label copy() {
+    return new Label(this);
   }
 }

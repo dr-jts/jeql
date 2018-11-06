@@ -41,12 +41,22 @@ public class LabelRenderer {
   
   public void add(Geometry geometry, Label label) {
     if (label == null || ! label.hasText()) return;
-    if (! isLabellableSize(geometry, viewport)) return;
     
-    label.setPoint( computeLabelPoint(geometry, viewport));
-    labels.add(label);  
+    if (geometry.getNumGeometries() <= 1) {
+      addLabel(geometry, label);
+      return;
+    }
+    for (int i = 0; i < geometry.getNumGeometries(); i++) {
+      addLabel(geometry.getGeometryN(i), label.copy());
+    }
   }
 
+  private void addLabel(Geometry geometry, Label label) {
+    if (! isLabellableSize(geometry, viewport)) return;
+    label.setPoint( computeLabelPoint(geometry, viewport));
+    labels.add(label); 
+  }
+  
   private Point2D computeLabelPoint(Geometry geometry, Viewport viewport) {
     // TODO: use a better point
     Coordinate labelPt = null;
