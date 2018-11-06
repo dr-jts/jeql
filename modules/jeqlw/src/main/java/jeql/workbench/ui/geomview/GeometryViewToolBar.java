@@ -1,4 +1,4 @@
-package jeql.workbench;
+package jeql.workbench.ui.geomview;
 
 import java.awt.event.ActionEvent;
 
@@ -7,6 +7,8 @@ import javax.swing.ButtonGroup;
 import javax.swing.JToggleButton;
 
 import jeql.util.SwingUtil;
+import jeql.workbench.BaseToolBar;
+import jeql.workbench.Workbench;
 import jeql.workbench.ui.geomview.tool.PanTool;
 import jeql.workbench.ui.geomview.tool.ZoomTool;
 

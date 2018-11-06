@@ -49,6 +49,7 @@ import jeql.workbench.ui.assist.CodeAssistPanel;
 import jeql.workbench.ui.assist.CodeSnippet;
 import jeql.workbench.ui.data.DataPanel;
 import jeql.workbench.ui.data.RowListDataPanel;
+import jeql.workbench.ui.geomview.GeometryViewFrame;
 import jeql.workbench.util.TextAreaWriter;
 
 public class WorkbenchFrame extends JFrame

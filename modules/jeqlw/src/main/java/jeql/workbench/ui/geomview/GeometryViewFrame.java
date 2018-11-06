@@ -1,4 +1,4 @@
-package jeql.workbench;
+package jeql.workbench.ui.geomview;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -23,8 +23,6 @@ import jeql.engine.EngineContext;
 import jeql.man.ManGenerator;
 import jeql.util.ImageUtil;
 import jeql.util.SwingUtil;
-import jeql.workbench.ui.geomview.GeometryViewPanel;
-import jeql.workbench.ui.geomview.LayerList;
 
 public class GeometryViewFrame extends JFrame
 {

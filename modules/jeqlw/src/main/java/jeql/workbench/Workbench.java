@@ -4,6 +4,7 @@ import javax.swing.UIManager;
 
 import jeql.engine.EngineContext;
 import jeql.workbench.model.WorkbenchModel;
+import jeql.workbench.ui.geomview.GeometryViewController;
 import jeql.workbench.ui.geomview.GeometryViewPanel;
 
 public class Workbench

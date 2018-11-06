@@ -1,12 +1,10 @@
-package jeql.workbench;
+package jeql.workbench.ui.geomview;
 
 import com.vividsolutions.jts.geom.Geometry;
 
 import jeql.api.row.Row;
 import jeql.api.row.RowSchema;
 import jeql.api.row.SchemaUtil;
-import jeql.workbench.ui.geomview.GeometryViewPanel;
-import jeql.workbench.ui.geomview.LayerList;
 import jeql.workbench.ui.geomview.tool.Tool;
 import jeql.workbench.ui.geomview.tool.ZoomTool;
 
