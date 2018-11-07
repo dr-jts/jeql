@@ -7,6 +7,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JToggleButton;
 
 import jeql.util.SwingUtil;
+import jeql.workbench.AppStrings;
 import jeql.workbench.BaseToolBar;
 import jeql.workbench.Workbench;
 import jeql.workbench.ui.geomview.tool.PanTool;
@@ -14,10 +15,6 @@ import jeql.workbench.ui.geomview.tool.ZoomTool;
 
 public class GeometryViewToolBar extends BaseToolBar
 {
-  private static final String TIP_SAVE_IMAGE = "<html>Save Image to File<br><br>Save Image to Clipboard = Ctl-Click</html>";
-
-  private static final String TIP_ZOOM = "<html>Zoom In/Out | Pan<br><br>Zoom In = Left-Btn<br>Zoom Extent = Left-Drag<br>Zoom Out = Right-Btn<br>Pan = Right-Drag | Ctl-Drag<br>Inspect = Ctl-Click</html>";
-  
   public GeometryViewToolBar()
   {
     super();
@@ -31,7 +28,7 @@ public class GeometryViewToolBar extends BaseToolBar
   {
     setFloatable(false);
 
-    JToggleButton zoom = addToggleButton("MagnifyCursor.png", TIP_ZOOM, 
+    JToggleButton zoom = addToggleButton("MagnifyCursor.png", AppStrings.TIP_GEOMVIEW_ZOOM, 
         new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent e) {
         geomView().setCurrentTool(ZoomTool.getInstance());
@@ -59,7 +56,7 @@ public class GeometryViewToolBar extends BaseToolBar
     
     add(Box.createHorizontalStrut(10), null);
 
-    addButton("SaveImage.png", TIP_SAVE_IMAGE, new java.awt.event.ActionListener() {
+    addButton("SaveImage.png", AppStrings.TIP_GEOMVIEW_SAVE_IMAGE, new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent e) {
         if ( SwingUtil.isCtlKeyPressed(e)) {
           geomView().saveImageToClipboard();

@@ -6,6 +6,7 @@ import java.awt.event.ItemEvent;
 import com.vividsolutions.jts.geom.Geometry;
 
 import jeql.util.SwingUtil;
+import jeql.workbench.AppStrings;
 import jeql.workbench.BaseToolBar;
 import jeql.workbench.RowListGeometryList;
 import jeql.workbench.Workbench;
@@ -40,7 +41,7 @@ public class DataToolBar extends BaseToolBar
       }
     });
     
-    addButton("MagnifyCursor.png", "Zoom to Geometry", new java.awt.event.ActionListener() {
+    addButton("MagnifyCursor.png", AppStrings.TIP_DATA_ZOOM_TO_GEOMETRY, new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent e) {
         Geometry geom = RowListGeometryList.getGeometry(dataPanel.getSelectedRow(), 
             dataPanel.getCurrentItem().getRowList().getSchema());
