@@ -11,8 +11,10 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import jeql.api.row.Row;
+import jeql.api.row.RowIterator;
 import jeql.monitor.MonitorItem;
 import jeql.monitor.MonitorModel;
+import jeql.monitor.MonitorRowList;
 
 public class DataPanel extends JPanel
 {
@@ -125,9 +127,30 @@ public class DataPanel extends JPanel
     return panel.getMonitorItem();
   }
   
+  public RowListDataPanel getCurrentPanel()
+  {
+    int index = tabPane.getSelectedIndex();
+    return (RowListDataPanel) tabPane.getSelectedComponent();
+  }
+  
   public Row getSelectedRow()
   {
     RowListDataPanel panel = (RowListDataPanel) tabPane.getSelectedComponent();
     return panel.getSelectedRow();
+  }
+  
+  public void setHighlightRow(Row highlightRow) {
+    RowListDataPanel panel = getCurrentPanel();
+    MonitorItem item = getCurrentItem();
+    MonitorRowList monRows = item.getRowList();
+    List rows = monRows.getRows();
+    for (int i = 0; i < rows.size(); i++) {
+      Row row = (Row) rows.get(i);
+      if (row == highlightRow) {
+        panel.setHighlightRow(i);
+        return;
+      }
+    }
+    panel.clearHighlightRow();
   }
 }

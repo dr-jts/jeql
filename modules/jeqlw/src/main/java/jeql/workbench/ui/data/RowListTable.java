@@ -55,6 +55,8 @@ class RowListTable extends JTable
   private boolean[] isColorColumn;
   
   private RowListColumnStyle colStyle;
+
+  private int highlightRow = -1;
   
   public RowListTable(MonitorRowList mrl)
   {
@@ -73,6 +75,18 @@ class RowListTable extends JTable
   public void setMonospaced(boolean useMonospacedFont)
   {
     this.useMonospacedFont = useMonospacedFont;
+  }
+  
+  public void setHighlightRow(int row) {
+    highlightRow = row;
+  }
+  
+  public void clearHighlightRow() {
+    highlightRow = -1;
+  }
+  
+  private boolean isHighlightedRow(int row) {
+    return row == highlightRow;
   }
   
   public int getFocusIndex() {
@@ -190,9 +204,13 @@ class RowListTable extends JTable
     Component c = super.prepareRenderer(renderer, row, col);
     if (getModel().getColumnClass(col) == String.class && useMonospacedFont) 
       c.setFont(WorkbenchConstants.FONT_LUCIDA_CONSOLE);
+    
+    if (isHighlightedRow(row)) c.setBackground(Color.YELLOW);
     return c;
   }
   
+
+
   public TableCellRenderer getCellRenderer(int row, int col)
   {
     // System.out.println(" getCellRenderer  " + row + ", " + column);

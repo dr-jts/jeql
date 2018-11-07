@@ -73,5 +73,16 @@ public class RowListDataPanel extends JPanel
   {
     table.setMonospaced(useMonospacedFont);
   }
+
+  public void setHighlightRow(int i) {
+    table.setHighlightRow(i);
+    update();
+    table.scrollRectToVisible(table.getCellRect(i, 0, true)); 
+  }
+
+  public void clearHighlightRow() {
+    table.clearHighlightRow();
+    update();
+  }
 }
 

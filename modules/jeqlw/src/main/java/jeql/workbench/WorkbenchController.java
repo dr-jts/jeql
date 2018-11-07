@@ -247,7 +247,9 @@ public class WorkbenchController
     Workbench.view().monitorDataPanel.update();
   }
 
-  
+  public void highlightRow(Row row) {
+    Workbench.view().monitorDataPanel.setHighlightRow(row);
+  }
 }
 
 
