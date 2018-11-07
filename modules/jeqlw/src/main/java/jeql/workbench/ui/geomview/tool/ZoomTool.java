@@ -58,7 +58,7 @@ public class ZoomTool extends BasicTool
   public void doClick(MouseEvent mouseEvent) 
   {
     if (mouseEvent.isShiftDown() || mouseEvent.isControlDown()) {
-      panel().inspect(mouseEvent.getPoint());
+      geomView().inspect(toModelCoordinate(mouseEvent.getPoint()));
       return;
     }
     // disable double-clicks for now

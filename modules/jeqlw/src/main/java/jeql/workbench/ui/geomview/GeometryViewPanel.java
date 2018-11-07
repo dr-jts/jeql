@@ -142,24 +142,6 @@ public class GeometryViewPanel extends JPanel
     renderMgr.copyImage(g);
   }
   
-  /*
-  public void flash(Geometry g)
-  {
-    Graphics2D gr = (Graphics2D) getGraphics();
-    gr.setXORMode(Color.white);
-    Stroke stroke = new BasicStroke(5);
-    try {
-      GeometryPainter.paint(g, viewport, gr, Color.RED, null, stroke);
-      Thread.sleep(200);
-      GeometryPainter.paint(g, viewport, gr, Color.RED, null, stroke);
-    }
-    catch (Exception ex) { 
-      // nothing we can do
-    }
-    gr.setPaintMode();
-  }
-    */
-  
   void this_componentResized(ComponentEvent e) {
   	renderMgr.componentResized();
     viewport.update();
@@ -336,9 +318,6 @@ public class GeometryViewPanel extends JPanel
     gr.setPaintMode();
   }
 
-  public void inspect(Point2D viewPt) {
-    Workbench.geomView().inspect(viewport.toModelCoordinate(viewPt) );
-  }
 }
 
 

@@ -8,6 +8,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.geom.Point2D;
 
 import jeql.workbench.Workbench;
+import jeql.workbench.ui.geomview.GeometryViewController;
 import jeql.workbench.ui.geomview.GeometryViewPanel;
 import jeql.workbench.ui.geomview.Viewport;
 
@@ -76,6 +77,12 @@ public abstract class BasicTool implements Tool
     return Workbench.geomView().panel();
   }
     
+  protected GeometryViewController geomView()
+  {
+    // this should probably be passed in during setup
+    return Workbench.geomView();
+  }
+  
   private Viewport getViewport()
   {
     return panel().getViewport();
