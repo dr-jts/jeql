@@ -45,9 +45,11 @@ public class DataToolBar extends BaseToolBar
       public void actionPerformed(ActionEvent e) {
         Geometry geom = RowListGeometryList.getGeometry(dataPanel.getSelectedRow(), 
             dataPanel.getCurrentItem().getRowList().getSchema());
-        Workbench.geomView().zoom(geom);
         if (SwingUtil.isCtlKeyPressed(e)) {
           Workbench.geomView().select(geom);
+        }
+        else {
+          Workbench.geomView().zoom(geom);
         }
       }
     });

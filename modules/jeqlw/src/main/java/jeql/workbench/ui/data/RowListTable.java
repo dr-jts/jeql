@@ -153,7 +153,11 @@ class RowListTable extends JTable
         
         int row = rowAtPoint(evt.getPoint());
         int col = columnAtPoint(evt.getPoint());
-        if (row >= 0 && col >= 0) {
+        
+        // skip row number column
+        if (col <= 0) return;
+        
+        if (row >= 0 && col > 0) {
            Object val = ((RowListTableModel) getModel()).getRawValueAt(row, col);
            //System.out.println(val); 
            if (isDblClick) {

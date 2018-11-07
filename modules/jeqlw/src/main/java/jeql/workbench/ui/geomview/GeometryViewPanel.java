@@ -51,6 +51,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import jeql.util.ColorUtil;
 import jeql.workbench.Workbench;
 import jeql.workbench.ui.geomview.style.BasicStyle;
 import jeql.workbench.ui.geomview.tool.Tool;
@@ -64,6 +65,10 @@ import com.vividsolutions.jts.geom.Geometry;
  */
 public class GeometryViewPanel extends JPanel 
 {
+  private static BasicStyle SELECTED_STYLE = new BasicStyle(Color.YELLOW, ColorUtil.RGBAtoColor("ffff8888"), 2);
+  
+  private static BasicStyle FLASH_STYLE = new BasicStyle(Color.RED, null, 5);
+  
   private LayerList lyrList;
   
   private GridRenderer gridRenderer;
@@ -109,6 +114,7 @@ public class GeometryViewPanel extends JPanel
 
   public void setSelection(Geometry geom) {
     selectedGeom = geom;
+    updateView();
   }
   
   public LayerList getModel() {
@@ -305,9 +311,6 @@ public class GeometryViewPanel extends JPanel
   	}
 
   }
-  private static BasicStyle SELECTED_STYLE = new BasicStyle(Color.YELLOW, null, 2);
-  
-  private static BasicStyle FLASH_STYLE = new BasicStyle(Color.RED, null, 5);
       
   public void flash(Geometry g)
   {
