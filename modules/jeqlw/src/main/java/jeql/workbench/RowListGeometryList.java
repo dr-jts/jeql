@@ -18,8 +18,15 @@ import jeql.workbench.ui.geomview.style.Style;
 
 
 public class RowListGeometryList implements GeometryList
-
 {
+  public static Geometry getGeometry(Row row, RowSchema schema) {
+    if (row == null) return null;
+    int geomCol = SchemaUtil.getColumnWithType(schema, Geometry.class);
+    if (geomCol < 0) return null;
+    Geometry geom = (Geometry) row.getValue(geomCol);
+    return geom;
+  }
+  
   private List rows;
   private RowSchema schema;
   private int geomCol = -1;

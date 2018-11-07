@@ -3,7 +3,11 @@ package jeql.workbench.ui.data;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 
+import com.vividsolutions.jts.geom.Geometry;
+
+import jeql.util.SwingUtil;
 import jeql.workbench.BaseToolBar;
+import jeql.workbench.RowListGeometryList;
 import jeql.workbench.Workbench;
 
 public class DataToolBar extends BaseToolBar
@@ -38,8 +42,12 @@ public class DataToolBar extends BaseToolBar
     
     addButton("MagnifyCursor.png", "Zoom to Geometry", new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        Workbench.geomView().zoom(dataPanel.getSelectedRow(), 
+        Geometry geom = RowListGeometryList.getGeometry(dataPanel.getSelectedRow(), 
             dataPanel.getCurrentItem().getRowList().getSchema());
+        Workbench.geomView().zoom(geom);
+        if (SwingUtil.isCtlKeyPressed(e)) {
+          Workbench.geomView().select(geom);
+        }
       }
     });
     

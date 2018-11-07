@@ -6,6 +6,7 @@ import com.vividsolutions.jts.geom.Geometry;
 import jeql.api.row.Row;
 import jeql.api.row.RowSchema;
 import jeql.api.row.SchemaUtil;
+import jeql.workbench.RowListGeometryList;
 import jeql.workbench.Workbench;
 import jeql.workbench.ui.geomview.tool.Tool;
 import jeql.workbench.ui.geomview.tool.ZoomTool;
@@ -41,13 +42,11 @@ public class GeometryViewController {
     view.zoomToGeometry(i);
   }
   
-  public void zoom(Row row, RowSchema schema) {
-    int geomCol = SchemaUtil.getColumnWithType(schema, Geometry.class);
-    if (geomCol < 0) return;
-    Geometry geom = (Geometry) row.getValue(geomCol);
-    zoomObject(geom);
+  public void zoom(Geometry geom)
+  {
+     view.zoom(geom);
   }
-  
+
   public void zoomObject(Object val)
   {
     if (val instanceof Geometry) {
@@ -64,6 +63,10 @@ public class GeometryViewController {
     }
   }
 
+  public void select(Geometry geom) {
+    view.setSelection(geom);
+  }
+  
   public String getToolTip(Coordinate pt) {
     return lyrList.locateRowDesc(pt);
   }

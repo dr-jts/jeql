@@ -69,7 +69,8 @@ public class GeometryViewPanel extends JPanel
   private GridRenderer gridRenderer;
 
   private Tool currentTool = null;  
-
+  private Geometry selectedGeom;
+  
   private Viewport viewport = new Viewport(this);
 
   private RenderManager renderMgr;
@@ -106,6 +107,10 @@ public class GeometryViewPanel extends JPanel
     this.lyrList = model;
   }
 
+  public void setSelection(Geometry geom) {
+    selectedGeom = geom;
+  }
+  
   public LayerList getModel() {
     return lyrList;
   }
@@ -178,6 +183,7 @@ public class GeometryViewPanel extends JPanel
 
   public void zoom(Geometry geom) 
   {
+    if (geom == null) return;
     zoom(geom.getEnvelopeInternal());
   }
   
@@ -256,6 +262,7 @@ public class GeometryViewPanel extends JPanel
   
   class GeometryPanelRenderer implements Renderer
   {
+    
   	private Renderer currentRenderer = null;
     
   	public GeometryPanelRenderer()
@@ -272,8 +279,14 @@ public class GeometryViewPanel extends JPanel
       
       renderLayers(g2);
       
+      renderSelected(g2);
     }
     
+    private void renderSelected(Graphics2D gr) {
+      if (selectedGeom == null) return;
+      GeometryPainter.paint(selectedGeom, viewport, gr, SELECTED_STYLE);
+    }
+
     public void renderLayers(Graphics2D g)
     {
     	LayerList layerList = getLayerList();
@@ -292,6 +305,7 @@ public class GeometryViewPanel extends JPanel
   	}
 
   }
+  private static BasicStyle SELECTED_STYLE = new BasicStyle(Color.YELLOW, null, 2);
   
   private static BasicStyle FLASH_STYLE = new BasicStyle(Color.RED, null, 5);
       
