@@ -28,7 +28,9 @@ Built-in function libraries include:
 
 * Geometry manipulation
 * String manipulation
-* RegEX matching and extracting
+* RegEx matching and extracting
+
+and many others...
 
 Extensibility
 -------------
