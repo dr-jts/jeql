@@ -12,6 +12,7 @@ import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableColumnModelEvent;
 import javax.swing.event.TableColumnModelListener;
 import javax.swing.table.JTableHeader;
@@ -28,6 +29,7 @@ import jeql.util.ClassUtil;
 import jeql.util.ColorUtil;
 import jeql.util.MethodUtil;
 import jeql.util.SwingUtil;
+import jeql.workbench.RowListGeometryList;
 import jeql.workbench.Workbench;
 import jeql.workbench.WorkbenchConstants;
 
@@ -89,18 +91,19 @@ class RowListTable extends JTable
     return row == highlightRow;
   }
   
-  public int getFocusIndex() {
+  public int getSelectedIndex() {
     if (getSelectionModel().isSelectionEmpty()) 
       return -1;
     int focusRowIndex = getSelectionModel().getLeadSelectionIndex();
     return focusRowIndex;
   }
   
-  public Row getFocusRow() {
+  public Row getSelectedRowValue() {
     if (getSelectionModel().isSelectionEmpty()) 
       return null;
     int focusRowIndex = getSelectionModel().getLeadSelectionIndex();
     return ((RowListTableModel) getModel()).getRow(focusRowIndex);
+
   }
   
   private static final int ROW_NUM_COLUMN_WIDTH = 60;
@@ -168,7 +171,13 @@ class RowListTable extends JTable
            }
         }
       }
-  });
+    });
+    
+    getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+      public void valueChanged(ListSelectionEvent event) {
+        Workbench.controller().selectDataGeometry();
+      }
+    });
 
   }
 

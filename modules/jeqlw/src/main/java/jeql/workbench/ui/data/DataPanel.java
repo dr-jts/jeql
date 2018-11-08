@@ -10,11 +10,16 @@ import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import com.vividsolutions.jts.geom.Geometry;
+
 import jeql.api.row.Row;
 import jeql.api.row.RowIterator;
+import jeql.api.row.RowSchema;
 import jeql.monitor.MonitorItem;
 import jeql.monitor.MonitorModel;
 import jeql.monitor.MonitorRowList;
+import jeql.workbench.RowListGeometryList;
+import jeql.workbench.Workbench;
 
 public class DataPanel extends JPanel
 {
@@ -135,8 +140,14 @@ public class DataPanel extends JPanel
   
   public Row getSelectedRow()
   {
-    RowListDataPanel panel = (RowListDataPanel) tabPane.getSelectedComponent();
-    return panel.getSelectedRow();
+    return getCurrentPanel().getSelectedRow();
+  }
+  
+  public Geometry getSelectedGeometry()
+  {
+    Row row = getSelectedRow();
+    RowSchema schema = getCurrentItem().getRowList().getSchema();
+    return RowListGeometryList.getGeometry(row, schema);
   }
   
   public void setHighlightRow(Row highlightRow) {

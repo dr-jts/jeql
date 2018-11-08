@@ -250,6 +250,10 @@ public class WorkbenchController
   public void highlightRow(Row row) {
     Workbench.view().monitorDataPanel.setHighlightRow(row);
   }
+  
+  public void selectDataGeometry() {
+    Workbench.geomView().select( Workbench.view().monitorDataPanel.getSelectedGeometry() );
+  }
 }
 
 

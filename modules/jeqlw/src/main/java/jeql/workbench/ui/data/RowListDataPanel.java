@@ -56,7 +56,7 @@ public class RowListDataPanel extends JPanel
   }
 
   public Row getSelectedRow() {
-    return table.getFocusRow();
+    return table.getSelectedRowValue();
   }
   
   public void update()
