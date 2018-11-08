@@ -4,6 +4,9 @@ JEQL is a scripting language for spatial processing and ETL, which runs on the J
 
 JEQL is based on the standard and well-known SQL model.  This enables declarative specification of data query and transformation.
 
+SQL support
+-----------
+
 JEQL improves on SQL syntax & semantics by adding:
 
 * a streaming model of computation
@@ -11,6 +14,9 @@ JEQL improves on SQL syntax & semantics by adding:
 * factoring out and naming common subexpressions
 * adding SPLIT BY as the the inverse of GROUP BY
  
+Functions and Commands
+----------------------
+
 JEQL provides an extensive set of commands and functions.
 
 Built-in commands include:
@@ -19,12 +25,28 @@ Built-in commands include:
  
 Built-in function libraries include:
 
-* geometry manipulation
+* Geometry manipulation
 * String manipulation
 * RegEX matching and extracting
 
+Extensibility
+-------------
 
-More information is available on the Tsusiat Software [JEQL Home Page](http://tsusiatsoftware.net/jeql/main.html).
+JEQL is easily extensible, using the dynamic loading and reflection capabilities of the JVM.
+
+* Functions are Java static methods
+* Commands are Java classes implementing a simple interface
+
+Tools
+-----
+JEQL provides the following tools:
+
+* A command-line script runner
+* A Workbench GUI
+  * Edit, run and debug scripts
+  * View script data tables 
+  * View spatial data
+  
 
 
 
