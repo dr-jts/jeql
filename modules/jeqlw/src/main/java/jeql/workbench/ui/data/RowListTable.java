@@ -175,7 +175,7 @@ class RowListTable extends JTable
     
     getSelectionModel().addListSelectionListener(new ListSelectionListener(){
       public void valueChanged(ListSelectionEvent event) {
-        Workbench.controller().selectDataGeometry();
+        Workbench.controller().selectGeometryFromDataRow();
       }
     });
 

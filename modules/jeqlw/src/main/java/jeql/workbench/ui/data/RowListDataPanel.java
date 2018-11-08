@@ -74,7 +74,7 @@ public class RowListDataPanel extends JPanel
     table.setMonospaced(useMonospacedFont);
   }
 
-  public void setHighlightRow(int i) {
+  public void setSelectedRow(int i) {
     table.setRowSelectionInterval(i, i);
     /*
     table.setHighlightRow(i);
@@ -83,7 +83,7 @@ public class RowListDataPanel extends JPanel
     table.scrollRectToVisible(table.getCellRect(i, 0, true)); 
   }
 
-  public void clearHighlightRow() {
+  public void clearSelection() {
     table.clearSelection();
     //table.clearHighlightRow();
     update();

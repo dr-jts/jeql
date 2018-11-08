@@ -86,11 +86,11 @@ public class GeometryViewController {
   public void inspect(Coordinate pt) {
     RowWithSchema row = lyrList.locateRow(pt);
     if (row == null) {
-      Workbench.controller().highlightRow(null);
+      Workbench.controller().selectDataRow(null);
       return;
     }
     Workbench.controller().inspect(row.schema(), row.row());
-    Workbench.controller().highlightRow(row.row());
+    Workbench.controller().selectDataRow(row.row());
 
   }
 }

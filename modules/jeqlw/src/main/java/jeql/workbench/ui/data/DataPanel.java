@@ -150,7 +150,7 @@ public class DataPanel extends JPanel
     return RowListGeometryList.getGeometry(row, schema);
   }
   
-  public void setHighlightRow(Row highlightRow) {
+  public void setSelectedRow(Row highlightRow) {
     RowListDataPanel panel = getCurrentPanel();
     MonitorItem item = getCurrentItem();
     MonitorRowList monRows = item.getRowList();
@@ -158,10 +158,10 @@ public class DataPanel extends JPanel
     for (int i = 0; i < rows.size(); i++) {
       Row row = (Row) rows.get(i);
       if (row == highlightRow) {
-        panel.setHighlightRow(i);
+        panel.setSelectedRow(i);
         return;
       }
     }
-    panel.clearHighlightRow();
+    panel.clearSelection();
   }
 }
