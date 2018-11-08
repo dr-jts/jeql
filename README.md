@@ -11,9 +11,9 @@ SQL support
 JEQL improves on SQL syntax & semantics by adding:
 
 * a streaming model of computation
-* factoring of complex SQL queries into a chain of simpler queries
-* factoring out and naming common subexpressions
-* adding SPLIT BY as the the inverse of GROUP BY
+* factoring complex SQL queries into a chain of simpler queries
+* defining named expressions for SELECT lists
+* providing SPLIT BY as the the inverse of GROUP BY
  
 Functions and Commands
 ----------------------
