@@ -23,6 +23,8 @@ JEQL provides an extensive set of commands and functions.
 Built-in commands include:
 
 * Readers and Writers for many textual and spatial formats
+* Readers and Writers for JDBC databases
+* A Reader supporting Postgres/PostGIS native spatial datatypes
  
 Built-in function libraries include:
 
