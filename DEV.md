@@ -1,7 +1,10 @@
 # JEQL Development
 ==================
 
-## Run
+## Run 
+
+
+## Eclipse Setup
 
 * JEQL Workbench
   * Class: jeql.workbench.Workbench
