@@ -6,8 +6,13 @@
 
 ## Eclipse Setup
 
+* JEQL Command
+  * Class: `jeql.JeqlCmd`
+  * Program Arguments: <script name>
+  * Working directory: ( e.g. <home>/script/unitTest )
+
 * JEQL Workbench
-  * Class: jeql.workbench.Workbench
+  * Class: `jeql.workbench.Workbench`
   * VM Args: -Xmx1000M
-  * Set working directory ( e.g. <home>/script/unitTest )
+  * Working directory: ( e.g. <home>/script/unitTest )
   
