@@ -59,9 +59,9 @@ public class GeometryViewToolBar extends BaseToolBar
     addButton("SaveImage.png", AppStrings.TIP_GEOMVIEW_SAVE_IMAGE, new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent e) {
         if ( SwingUtil.isCtlKeyPressed(e)) {
-          geomView().saveImageToClipboard();
-        } else {
           geomView().saveAsPNG();
+        } else {
+          geomView().saveImageToClipboard();
         }
       }
 
