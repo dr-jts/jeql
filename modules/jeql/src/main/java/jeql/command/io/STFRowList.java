@@ -26,20 +26,26 @@ public class STFRowList
 {
   private static String parseColName(String line)
   {
-    int sepPos = line.indexOf('>');
-    if (sepPos == -1)
+    int sepPos = line.indexOf(':');
+    boolean hasColon = sepPos > 0;
+    // check for following blank
+    boolean hasFollowingBlank = line.charAt(sepPos + 1) == ' ';
+    
+    boolean isValidPrefix = hasColon && hasFollowingBlank;
+    if (! isValidPrefix)
       throw new IllegalArgumentException("Invalid column name format in line: " 
           + line);
-    String colName = line.substring(1, sepPos).trim();
+
+    String colName = line.substring(0, sepPos).trim();
     return colName;
   }
   
   private static String parseColValue(String line)
   {
-    int sepPos = line.indexOf('>');
+    int sepPos = line.indexOf(':');
     if (sepPos == -1)
       return "";
-    String val = line.substring(sepPos + 1).trim();
+    String val = line.substring(sepPos + 2).trim();
     return val;
   }
   

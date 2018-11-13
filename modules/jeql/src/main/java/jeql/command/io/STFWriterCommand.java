@@ -50,9 +50,8 @@ public class STFWriterCommand
   throws IOException 
   {
     for (int i = 0; i < row.size(); i++) {
-      writer.write("<");
       writer.write(schema.getName(i));
-      writer.write("> ");
+      writer.write(": ");
       writer.write(row.getValue(i).toString());
       writer.write("\n");
     }
