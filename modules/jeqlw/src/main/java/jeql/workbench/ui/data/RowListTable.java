@@ -101,8 +101,9 @@ class RowListTable extends JTable
   public Row getSelectedRowValue() {
     if (getSelectionModel().isSelectionEmpty()) 
       return null;
-    int focusRowIndex = getSelectionModel().getLeadSelectionIndex();
-    return ((RowListTableModel) getModel()).getRow(focusRowIndex);
+    int selectedRowIndex = getSelectionModel().getLeadSelectionIndex();
+    int modelRowIndex = convertRowIndexToModel(selectedRowIndex);
+    return ((RowListTableModel) getModel()).getRow(modelRowIndex);
 
   }
   
@@ -161,7 +162,8 @@ class RowListTable extends JTable
         if (col <= 0) return;
         
         if (row >= 0 && col > 0) {
-           Object val = ((RowListTableModel) getModel()).getRawValueAt(row, col);
+          int modelRow = convertRowIndexToModel(row);
+           Object val = ((RowListTableModel) getModel()).getRawValueAt(modelRow, col);
            //System.out.println(val); 
            if (isDblClick) {
              Workbench.controller().inspect(val);

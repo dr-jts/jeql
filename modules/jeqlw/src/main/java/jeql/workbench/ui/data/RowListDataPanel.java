@@ -75,12 +75,13 @@ public class RowListDataPanel extends JPanel
   }
 
   public void setSelectedRow(int i) {
-    table.setRowSelectionInterval(i, i);
+    int tableIndex = table.convertRowIndexToView(i);
+    table.setRowSelectionInterval(tableIndex, tableIndex);
     /*
     table.setHighlightRow(i);
     update();
     */
-    table.scrollRectToVisible(table.getCellRect(i, 0, true)); 
+    table.scrollRectToVisible(table.getCellRect(tableIndex, 0, true)); 
   }
 
   public void clearSelection() {
