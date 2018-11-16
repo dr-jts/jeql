@@ -231,6 +231,7 @@ class RowListTable extends JTable
     // System.out.println(" getCellRenderer  " + row + ", " + column);
     JLabel renderer = (JLabel) super.getCellRenderer(row, col);
     
+    int modelRow = convertRowIndexToModel(row);
     //-------- Row striping
     if (col == 0) {
       // row number column
@@ -255,7 +256,7 @@ class RowListTable extends JTable
       renderer.setForeground(WorkbenchConstants.CLR_DARK_GREEN);
     }
     if (col > 0 && isColorColumn[col - 1]) {
-      Color clr = ColorUtil.RGBAtoColor((String) getModel().getValueAt(row, col));
+      Color clr = ColorUtil.RGBAtoColor((String) getModel().getValueAt(modelRow, col));
       if (clr == null) {
         clr = Color.white;
       }
