@@ -296,6 +296,7 @@ class RowListTable extends JTable
       setColorCol(StyleConstants.COLOR, schema, isColorColumn);
       setColorCol(StyleConstants.STROKE, schema, isColorColumn);
       setColorCol(StyleConstants.FONT_COLOR, schema, isColorColumn);
+      setColorCol(StyleConstants.LABEL_COLOR, schema, isColorColumn);
       setColorCol(StyleConstants.HALO_COLOR, schema, isColorColumn);
       setColorCol(StyleConstants.FILL, schema, isColorColumn);
       setColorCol(StyleConstants.COL_MARKER_COLOR, schema, isColorColumn);
