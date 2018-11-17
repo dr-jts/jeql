@@ -23,20 +23,20 @@ HUE = Color.getH(Color.cssNameToRGB("blue"));
 tplot = select 	box,
 		"000000" styleStroke,
 		Color.toRGBfromHSV(hue, 1.0, S) styleFill
-	with {
-		isShrink = (i + j) % 2 == 0;
-		size = isShrink ? boxSize * BOX_SHRINK_FACTOR : boxSize;
+	let
+		isShrink = (i + j) % 2 == 0,
+		size = isShrink ? boxSize * BOX_SHRINK_FACTOR : boxSize,
 
 		box = Geom.createBoxCenter(
 			cellSize * (i + 0.5), cellSize * (j + 0.5), 
-			size, size);
+			size, size),
 		
-		radius = Geom.distance(Geom.centroid(box), plotCentrePt);
-		radiusFrac = radius / plotCentre;
-		S = 1.0 - DECAY_FACTOR * radiusFrac;
+		radius = Geom.distance(Geom.centroid(box), plotCentrePt),
+		radiusFrac = radius / plotCentre,
+		S = 1.0 - DECAY_FACTOR * radiusFrac,
 
-		hue = isShrink ? Color.getH(Color.cssNameToRGB("red")) : Color.getH(Color.cssNameToRGB("blue"));
-	}
+		hue = isShrink ? Color.getH(Color.cssNameToRGB("red")) : Color.getH(Color.cssNameToRGB("blue"))
+	
 	from Generate.grid(0, BOX_COUNT-1, 0, BOX_COUNT-1);
 
 Plot	data: tplot

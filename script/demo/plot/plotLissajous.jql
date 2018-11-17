@@ -1,0 +1,25 @@
+/*=========================================================
+
+Plots a Lissajous curve
+
+=========================================================*/
+
+A = 1.1;
+B = 2.5;
+
+D =  0.9999;
+
+t: select i,
+ 	x: Math.sin( A * r ),
+        y: Math.cos( B * r )
+	let 
+		r = i / 100.0
+        from Generate.sequence( 1, 10000 );
+
+t: select i, x, y, x2: prev(x), y2: prev(y) from t;
+t: select i, Geom.createLine(x, y, x2, y2), 
+	styleStroke: Color.interpolate(#ff0000, #00ff00, #ff0000, (i % 1000) / 1000.0),
+	styleStrokeWidth: 2
+	from t where x2 != null;
+
+Mem t;

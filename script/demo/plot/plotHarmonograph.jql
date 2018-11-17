@@ -1,0 +1,30 @@
+/*=========================================================
+
+Plots a Harmongraph curve
+
+=========================================================*/
+
+F1 = 1;
+F2 = 6;
+F3 = 4;
+F4 = 5;
+P1 = 0.5 * Math.pi();
+P2 = 0 * Math.pi();
+P3 = 1.5 * Math.pi();
+
+D =  0.9999;
+
+t: select i,
+ 	x: Math.pow( D, i) 	* ( Math.sin( F1*r + P1 ) + Math.sin( F2*r + P2 ) ),
+        y: Math.pow( D, i) 	* ( Math.sin( F3*r + P3 ) + Math.sin( F4*r )  )
+	let 
+		r = i / 100.0
+        from Generate.sequence( 1, 10000 );
+
+t: select i, x, y, x2: prev(x), y2: prev(y) from t;
+t: select i, Geom.createLine(x, y, x2, y2), 
+	styleStroke: Color.interpolate(#ff0000, #00ff00, (i % 1000) / 1000.0),
+	styleStrokeWidth: 2
+	from t where x2 != null;
+
+Mem t;
