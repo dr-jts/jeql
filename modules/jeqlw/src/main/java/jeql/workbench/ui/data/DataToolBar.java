@@ -37,7 +37,7 @@ public class DataToolBar extends BaseToolBar
     
     addButton("World.png", "Show Geometry", new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        Workbench.controller().viewGeoms(dataPanel.getCurrentItem());
+        Workbench.controller().viewGeoms();
       }
     });
     

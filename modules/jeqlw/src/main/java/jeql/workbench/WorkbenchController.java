@@ -223,8 +223,12 @@ public class WorkbenchController
     Workbench.view().helpDlg.setVisible(true);
   }
 
-  public void viewGeoms(MonitorItem monitorItem)
+  public void viewGeoms()
   {
+    Workbench.view().monitorDataPanel.clearIcon();
+    Workbench.view().monitorDataPanel.showIconWorld(AppIcons.WORLD);
+    MonitorItem monitorItem = Workbench.view().monitorDataPanel.getCurrentItem();
+    
     LayerList lyrList = new LayerList();
     if (monitorItem != null) {
       GeometryList geomCont = new RowListGeometryList(monitorItem.getRowList());

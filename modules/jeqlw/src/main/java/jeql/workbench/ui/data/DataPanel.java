@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.util.ConcurrentModificationException;
 import java.util.List;
 
+import javax.swing.Icon;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
@@ -18,6 +19,7 @@ import jeql.api.row.RowSchema;
 import jeql.monitor.MonitorItem;
 import jeql.monitor.MonitorModel;
 import jeql.monitor.MonitorRowList;
+import jeql.workbench.AppIcons;
 import jeql.workbench.RowListGeometryList;
 import jeql.workbench.Workbench;
 
@@ -163,5 +165,15 @@ public class DataPanel extends JPanel
       }
     }
     panel.clearSelection();
+  }
+
+  public void clearIcon() {
+    for (int i = 0; i < tabPane.getTabCount(); i++) {
+      tabPane.setIconAt(i, null);
+    }
+  }
+  public void showIconWorld(Icon icon) {
+    int index = tabPane.getSelectedIndex();
+    tabPane.setIconAt(index, icon);
   }
 }
