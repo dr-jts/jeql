@@ -58,5 +58,14 @@ public class LayerList
     }
     return null;
   }
+
+  public String getName() {
+    String name = "";
+    for (int i = 0; i < layers.size(); i++) {
+      if (i > 0) name += ",";
+      name += layers.get(i).getName();
+    }
+    return name;
+  }
     
 }

@@ -28,6 +28,7 @@ public class GeometryViewController {
   
   public void setSource(LayerList lyrList) {
     this.lyrList = lyrList;
+    frame.setTitleName(lyrList.getName());
     view.setSource(lyrList);
   }
   

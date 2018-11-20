@@ -26,6 +26,7 @@ import jeql.util.SwingUtil;
 
 public class GeometryViewFrame extends JFrame
 {
+  private static final String GEOMETRY_VIEW_TITLE = "Geometry Viewer";
   JPanel statusBarPanel = new JPanel();
   JLabel lblMousePos = new JLabel();
 
@@ -36,7 +37,7 @@ public class GeometryViewFrame extends JFrame
   
   public GeometryViewFrame(Frame frame)
   {
-    super("Geometry Viewer");
+    super(GEOMETRY_VIEW_TITLE);
     try {
       initUI();
       pack();
@@ -124,6 +125,14 @@ public class GeometryViewFrame extends JFrame
       pngFileChooser.setDialogTitle("Save PNG");
       pngFileChooser.setSelectedFile(new File("image.png"));
     }
+  }
+
+  public void setTitleName(String name) {
+    String title = GEOMETRY_VIEW_TITLE;
+    if (name != null && name.length() > 0) {
+      title += " - " + name;
+    }
+    setTitle(title);
   }
 
 }
