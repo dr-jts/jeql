@@ -20,7 +20,7 @@ t = select i,
 	//styleLabelOffsetY: 1,
 	styleFontSize: 40,
 	styleHaloRadius: 2,
-	styleHaloColor: #ffffff,
+	styleHaloColor: #ffffffcc,
 
 	geom: Geom.buffer(Geom.createPoint(x, y), 0.4 * radius)
 	let

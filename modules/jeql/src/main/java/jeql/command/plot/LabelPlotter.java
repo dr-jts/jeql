@@ -148,19 +148,13 @@ public class LabelPlotter
       Coordinate centroidPt = lblPoint.getCoordinate();
       Coordinate labelPt = new Coordinate(centroidPt.x + offsetX, centroidPt.y  + offsetY);
       Point2D p = plot.convert(labelPt);
-      //AffineTransform oldTransform = graphics.getTransform();
-      AffineTransform trans = AffineTransform.getTranslateInstance(
-          p.getX(), p.getY());
-      graphics.setTransform(trans);
-      
-      if (rotate > 0) {
-        graphics.rotate(-Math.toRadians(rotate));
-      }
+
+      AffineTransform oldTrans = PlotUtil.transform(graphics, p, 0);
  //System.out.println(label + "  " + p);
  
       if (haloSize > 0) {
         graphics.setColor(ColorUtil.RGBAtoColor(haloClrStr));
-        PlotUtil.drawHalo(label, haloSize, p, font, graphics);
+        PlotUtil.drawHalo(graphics, label, haloSize, font);
       }
       
       Color clr = ColorUtil.RGBAtoColor(labelClrStr);
@@ -168,6 +162,7 @@ public class LabelPlotter
 
       graphics.drawString(label, 0, 0);
       //graphics.drawString(label, (int) p.getX() + 5, (int) p.getY());
+      graphics.setTransform(oldTrans);
     }  
   }
     

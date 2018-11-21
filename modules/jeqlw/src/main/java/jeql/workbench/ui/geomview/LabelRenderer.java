@@ -1,7 +1,10 @@
 package jeql.workbench.ui.geomview;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.Shape;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
@@ -89,8 +92,10 @@ public class LabelRenderer {
     Point2D pt = lbl.getPoint();
     if (lbl.hasHalo()) {
       g.setColor(lbl.haloColor);
+      AffineTransform oldTrans = PlotUtil.transform(g, pt, 0);
       // TODO: handle multiline better (perhaps skip halo?)
-      PlotUtil.drawHalo(lbl.label, lbl.haloSize, pt, font, g);
+      PlotUtil.drawHalo(g, lbl.label, lbl.haloSize, font);
+      g.setTransform(oldTrans);
     }
     
     g.setColor(lbl.color);
