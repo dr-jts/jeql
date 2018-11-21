@@ -1,9 +1,7 @@
 package jeql.workbench.ui.geomview;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -15,7 +13,6 @@ import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Polygon;
 
-import jeql.command.plot.PlotUtil;
 import jeql.jts.geom.util.ConstrainedInteriorPoint;
 import jeql.util.GraphicsUtil;
 
@@ -92,9 +89,9 @@ public class LabelRenderer {
     Point2D pt = lbl.getPoint();
     if (lbl.hasHalo()) {
       g.setColor(lbl.haloColor);
-      AffineTransform oldTrans = PlotUtil.transform(g, pt, 0);
+      AffineTransform oldTrans = GraphicsUtil.transform(g, pt, 0);
       // TODO: handle multiline better (perhaps skip halo?)
-      PlotUtil.drawHalo(g, lbl.label, lbl.haloSize, font);
+      GraphicsUtil.drawHalo(g, lbl.label, lbl.haloSize, font);
       g.setTransform(oldTrans);
     }
     

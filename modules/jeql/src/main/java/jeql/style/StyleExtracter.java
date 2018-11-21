@@ -15,8 +15,6 @@ public class StyleExtracter
   public static final String DEFAULT_STROKE = "0000ffff";
   public static final String DEFAULT_LABEL_CLR = "000000"; //"80ff80";
   public static final int DEFAULT_LABEL_SIZE = 12;
-  public static final String DEFAULT_HALO_CLR = "ffffff"; 
-  public static final int DEFAULT_HALO_SIZE = 0;
 
   private int strokeIndex;
   private int strokeWidthIndex;
@@ -24,7 +22,7 @@ public class StyleExtracter
   private int labelIndex = -1;
   private int labelColorIndex = -1;
   private int labelSizeIndex = -1;
-  private int labelHaloSizeIndex = -1;
+  private int labelHaloRadiusIndex = -1;
   private int labelHaloColorIndex = -1;
   private int labelRotateIndex = -1;
   private int labelOffsetXIndex = -1;
@@ -44,7 +42,7 @@ public class StyleExtracter
     labelIndex = SchemaUtil.getColumnIndex(schema, StyleConstants.LABEL);
     labelColorIndex = SchemaUtil.getColumnIndex(schema, StyleConstants.LABEL_COLOR);
     labelSizeIndex = SchemaUtil.getColumnIndex(schema, StyleConstants.FONT_SIZE);
-    labelHaloSizeIndex = SchemaUtil.getColumnIndex(schema, StyleConstants.HALO_RADIUS);
+    labelHaloRadiusIndex = SchemaUtil.getColumnIndex(schema, StyleConstants.HALO_RADIUS);
     labelHaloColorIndex = SchemaUtil.getColumnIndex(schema, StyleConstants.HALO_COLOR);
     labelOffsetXIndex = SchemaUtil.getColumnIndex(schema, StyleConstants.LABEL_OFFSET_X);
     labelOffsetYIndex = SchemaUtil.getColumnIndex(schema, StyleConstants.LABEL_OFFSET_Y);
@@ -103,14 +101,23 @@ public class StyleExtracter
       labelClrStr = (String) row.getValue(labelColorIndex);
     return ColorUtil.RGBAtoColor(labelClrStr);
   }
+  
   public int labelSize(Row row) {
     return RowUtil.getInt(labelSizeIndex, row, DEFAULT_LABEL_SIZE);
   }
+  
   public Color labelHaloColor(Row row) {
-    String clr = RowUtil.getString(labelHaloColorIndex, row, DEFAULT_HALO_CLR);
+    if (isNoHalo()) return null;
+    String clr = RowUtil.getString(labelHaloColorIndex, row, StyleConstants.DEFAULT_HALO_CLR);
     return ColorUtil.RGBAtoColor(clr);
   }
-  public int labelHaloSize(Row row) {
-    return RowUtil.getInt(labelHaloSizeIndex, row, DEFAULT_HALO_SIZE);
+  
+  private boolean isNoHalo() {
+    return labelHaloColorIndex < 0 && labelHaloRadiusIndex < 0;
+  }
+
+  public int labelHaloRadius(Row row) {
+    if (isNoHalo()) return 0;
+    return RowUtil.getInt(labelHaloRadiusIndex, row, StyleConstants.DEFAULT_HALO_RADIUS);
   }
 }

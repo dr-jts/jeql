@@ -23,5 +23,10 @@ public class StyleConstants
   
   public static final String COL_MARKER = "styleMarker";
   public static final String COL_MARKER_COLOR = "styleMarkerColor";
+
+  public static final String DEFAULT_LABEL_CLR = "000000"; //"80ff80";
+
+  public static final String DEFAULT_HALO_CLR = "ffffffaa"; //"ff6060";
+  public static final int DEFAULT_HALO_RADIUS = 2; //"ff6060";
   
 }

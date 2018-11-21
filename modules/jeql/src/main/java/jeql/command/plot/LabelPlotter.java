@@ -30,6 +30,7 @@ import jeql.api.table.Table;
 import jeql.awt.geom.Java2DConverter;
 import jeql.style.StyleConstants;
 import jeql.util.ColorUtil;
+import jeql.util.GraphicsUtil;
 import jeql.util.ImageUtil;
 import jeql.util.TypeUtil;
 
@@ -98,9 +99,6 @@ public class LabelPlotter
     }
   }
 
-  private static final String DEFAULT_LABEL_CLR = "000000"; //"80ff80";
-  private static final String DEFAULT_HALO_CLR = null; //"ff6060";
-  
   private Font font;
 
   private void plot(Row row, Graphics2D graphics)
@@ -115,7 +113,7 @@ public class LabelPlotter
     // only use default colours if none are specified
     String labelClrStr = null;    
     if (! hasColor) {
-      labelClrStr = DEFAULT_LABEL_CLR;    
+      labelClrStr = StyleConstants.DEFAULT_LABEL_CLR;    
     }
     if (labelColorIndex >= 0) 
       labelClrStr = (String) row.getValue(labelColorIndex);
@@ -127,9 +125,9 @@ public class LabelPlotter
     }
     
     int haloSize = RowUtil.getInt(labelHaloSizeIndex, row, 0);
-    String haloClrStr  = RowUtil.getString(labelHaloColorIndex, row, DEFAULT_HALO_CLR);
+    String haloClrStr  = RowUtil.getString(labelHaloColorIndex, row, StyleConstants.DEFAULT_HALO_CLR);
     // if halo clr is specified, make sure halo is visible even if size was omitted
-    if (haloClrStr != null && labelHaloSizeIndex < 0) {
+    if (labelHaloColorIndex >= 0 && labelHaloSizeIndex < 0) {
       haloSize = 1;
     }
     
@@ -149,12 +147,12 @@ public class LabelPlotter
       Coordinate labelPt = new Coordinate(centroidPt.x + offsetX, centroidPt.y  + offsetY);
       Point2D p = plot.convert(labelPt);
 
-      AffineTransform oldTrans = PlotUtil.transform(graphics, p, 0);
+      AffineTransform oldTrans = GraphicsUtil.transform(graphics, p, 0);
  //System.out.println(label + "  " + p);
  
       if (haloSize > 0) {
         graphics.setColor(ColorUtil.RGBAtoColor(haloClrStr));
-        PlotUtil.drawHalo(graphics, label, haloSize, font);
+        GraphicsUtil.drawHalo(graphics, label, haloSize, font);
       }
       
       Color clr = ColorUtil.RGBAtoColor(labelClrStr);

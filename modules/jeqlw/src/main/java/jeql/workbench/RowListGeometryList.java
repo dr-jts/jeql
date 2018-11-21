@@ -87,7 +87,7 @@ public class RowListGeometryList implements GeometryList
         styler.labelColor(row),
         styler.labelSize(row),
         styler.labelHaloColor(row),
-        styler.labelHaloSize(row)
+        styler.labelHaloRadius(row)
         );
   }
 
