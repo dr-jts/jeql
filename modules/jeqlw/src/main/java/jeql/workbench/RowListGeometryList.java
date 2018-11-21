@@ -85,7 +85,10 @@ public class RowListGeometryList implements GeometryList
     Row row = (Row) rows.get(i);
     return new Label(styler.label(row), 
         styler.labelColor(row),
-        styler.labelSize(row));
+        styler.labelSize(row),
+        styler.labelHaloColor(row),
+        styler.labelHaloSize(row)
+        );
   }
 
 

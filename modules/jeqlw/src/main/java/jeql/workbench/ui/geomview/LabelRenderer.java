@@ -12,6 +12,7 @@ import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Polygon;
 
+import jeql.command.plot.PlotUtil;
 import jeql.jts.geom.util.ConstrainedInteriorPoint;
 import jeql.util.GraphicsUtil;
 
@@ -78,14 +79,21 @@ public class LabelRenderer {
   
   private void renderLabel(Label lbl, Graphics2D g) {
     //if (lbl.label == null || lbl.label.length() <= 0) return;
+
     
     if (font == null) {
       font = new Font(FontGlyphReader.FONT_SANSERIF, Font.PLAIN, lbl.fontSize);
       g.setFont(font);
     }
     
-    g.setColor(lbl.color);
     Point2D pt = lbl.getPoint();
+    if (lbl.hasHalo()) {
+      g.setColor(lbl.haloColor);
+      // TODO: handle multiline better (perhaps skip halo?)
+      PlotUtil.drawHalo(lbl.label, lbl.haloSize, pt, font, g);
+    }
+    
+    g.setColor(lbl.color);
     GraphicsUtil.drawStringMultiLine(g, lbl.label, (int) pt.getX(), (int) pt.getY());
     //g.drawString(lbl.label, (int) pt.getX(), (int) pt.getY());
   }

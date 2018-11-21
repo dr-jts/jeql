@@ -14,8 +14,9 @@ public class StyleExtracter
   public static final String DEFAULT_FILL = "5555ff80";
   public static final String DEFAULT_STROKE = "0000ffff";
   public static final String DEFAULT_LABEL_CLR = "000000"; //"80ff80";
-  public static final String DEFAULT_HALO_CLR = null; //"ff6060";
   public static final int DEFAULT_LABEL_SIZE = 12;
+  public static final String DEFAULT_HALO_CLR = "ffffff"; 
+  public static final int DEFAULT_HALO_SIZE = 0;
 
   private int strokeIndex;
   private int strokeWidthIndex;
@@ -104,5 +105,12 @@ public class StyleExtracter
   }
   public int labelSize(Row row) {
     return RowUtil.getInt(labelSizeIndex, row, DEFAULT_LABEL_SIZE);
+  }
+  public Color labelHaloColor(Row row) {
+    String clr = RowUtil.getString(labelHaloColorIndex, row, DEFAULT_HALO_CLR);
+    return ColorUtil.RGBAtoColor(clr);
+  }
+  public int labelHaloSize(Row row) {
+    return RowUtil.getInt(labelHaloSizeIndex, row, DEFAULT_HALO_SIZE);
   }
 }
