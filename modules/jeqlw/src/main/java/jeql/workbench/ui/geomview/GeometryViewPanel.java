@@ -65,7 +65,7 @@ import com.vividsolutions.jts.geom.Geometry;
  */
 public class GeometryViewPanel extends JPanel 
 {
-  private static BasicStyle SELECTED_STYLE = new BasicStyle(Color.YELLOW, ColorUtil.RGBAtoColor("ffff8888"), 2);
+  private static BasicStyle SELECTED_STYLE = new BasicStyle(Color.YELLOW, ColorUtil.RGBAtoColor("ffff8888"), 2, new float[] {6, 3});
   
   private static BasicStyle FLASH_STYLE = new BasicStyle(Color.RED, null, 5);
   
