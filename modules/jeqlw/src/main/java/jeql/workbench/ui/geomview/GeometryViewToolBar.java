@@ -45,7 +45,7 @@ public class GeometryViewToolBar extends BaseToolBar
     });
 */    
     
-    add(Box.createHorizontalStrut(10), null);
+    addGap(10);
 
     
     addButton("World.png", "Zoom All", new java.awt.event.ActionListener() {
@@ -54,7 +54,15 @@ public class GeometryViewToolBar extends BaseToolBar
       }
     });
     
-    add(Box.createHorizontalStrut(10), null);
+    addGap(10);
+
+    addButton("PasteSelection.png", AppStrings.TIP_GEOMVIEW_PASTE_SELECTION, new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+          geomView().pasteSelectionFromWKT();
+      }
+    });
+    
+    addGap(10);
 
     addButton("SaveImage.png", AppStrings.TIP_GEOMVIEW_SAVE_IMAGE, new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent e) {

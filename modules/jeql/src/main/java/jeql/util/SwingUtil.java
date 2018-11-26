@@ -4,6 +4,9 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.io.File;
@@ -158,5 +161,30 @@ public class SwingUtil
   }
   public static boolean isCtlKeyPressed(ActionEvent e) {
     return (e.getModifiers() & InputEvent.CTRL_MASK) == InputEvent.CTRL_MASK;
+  }
+
+  public static Object getFromClipboard() {
+    Transferable transferable = getContents(Toolkit.getDefaultToolkit().getSystemClipboard());
+
+    try {
+      /*
+      if (transferable.isDataFlavorSupported(GeometryTransferable.GEOMETRY_FLAVOR)) {
+        return transferable.getTransferData(GeometryTransferable.GEOMETRY_FLAVOR);
+      }
+      */
+      // attempt to read as string
+      return transferable.getTransferData(DataFlavor.stringFlavor);
+    } catch (Exception ex) {
+      // eat exception, since there isn't anything we can do
+    }
+    return null;
+  }
+  
+  public static Transferable getContents(Clipboard clipboard) {
+    try {
+        return clipboard.getContents(null);
+    } catch (Throwable t) {
+        return null;
+    }
   }
 }

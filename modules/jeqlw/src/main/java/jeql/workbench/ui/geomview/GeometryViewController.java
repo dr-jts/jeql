@@ -2,10 +2,13 @@ package jeql.workbench.ui.geomview;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.io.ParseException;
 
 import jeql.api.row.Row;
 import jeql.api.row.RowSchema;
 import jeql.api.row.SchemaUtil;
+import jeql.std.geom.GeomFunction;
+import jeql.util.SwingUtil;
 import jeql.workbench.RowListGeometryList;
 import jeql.workbench.Workbench;
 import jeql.workbench.ui.geomview.tool.Tool;
@@ -93,5 +96,27 @@ public class GeometryViewController {
     Workbench.controller().inspect(row.schema(), row.row());
     Workbench.controller().selectDataRow(row.row());
 
+  }
+
+  public void pasteSelectionFromWKT() {
+    Object obj = SwingUtil.getFromClipboard();
+    Geometry g = null;
+    if (obj instanceof String) {
+        g = readGeometryText((String) obj);
+    }
+    else {
+        g = (Geometry) obj;
+    }
+    select(g);
+    zoom(g);
+  }
+
+  private Geometry readGeometryText(String wkt) {
+    try {
+      return GeomFunction.fromWKT(wkt);
+    } catch (ParseException e) {
+      // can't do much here
+    }
+    return null;
   }
 }

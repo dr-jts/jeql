@@ -1,5 +1,6 @@
 package jeql.workbench;
 
+import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JToggleButton;
@@ -21,6 +22,10 @@ public class BaseToolBar extends JToolBar
     super();
   }
 
+  protected void addGap(int width) {
+    add(Box.createHorizontalStrut(width), null);
+  };
+  
   protected JButton addButton(String iconFile, String tooltip, java.awt.event.ActionListener action)
   {
     JButton btn = SwingUtil.createIconButton(IconLoader.createIcon(iconFile), 28, tooltip, action);
