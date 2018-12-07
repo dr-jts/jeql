@@ -8,7 +8,9 @@ for use in subsequent records.
 	
 ================================*/
 
-
+//-----------------------------------
+// Keep with a conditional expression
+//-----------------------------------
 in1 = select * from table (
 ( 1, "a" ),
 ( 2, "b" ),
@@ -36,6 +38,38 @@ tExp1 = select * from table (
 ( 9, 9 ),
 ( 10, 9 ) );
 
-
 AssertEqual t1 expected: tExp1;
+
+//---------------------------------------------------
+// KEEP with no condition - keeps non-null values
+//---------------------------------------------------
+
+in2 = select * from table (
+( 1 ),
+( null ),
+( 3 ),
+( null ),
+( null ),
+( 6 ),
+( 7 ),
+( 8 ),
+( 9 ),
+( null ) ) t(a);
+
+t2 = select a, keep(a) from in2;
+//Print t2;
+
+tExp2 = select * from table ( 
+( 1, 1 )
+( null, 1 )
+( 3, 3 )
+( null, 3 )
+( null, 3 )
+( 6, 6 )
+( 7, 7 )
+( 8, 8 )
+( 9, 9 )
+( null, 9 ) );
+
+AssertEqual t2 expected: tExp2;
 

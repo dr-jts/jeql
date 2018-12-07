@@ -56,16 +56,19 @@ public class KeepFunctionEvaluator
        qScope.setValue(this, initValue); 
      }
      
-     // compute new possible result, and save if condition is true
-     Object result = null;
-     if (isCondTrue(scope)) {
-       result = valueExpr.eval(scope);
-       qScope.setValue(this, result);
+     Object keepValue = qScope.getValue(this);
+     // if cond is present and false, use old value
+     if (! isCondTrue(scope)) {
+       return keepValue;
      }
-     else {
-       result = qScope.getValue(this);
+     Object exprValue = valueExpr.eval(scope);
+     // if cond is missing and expr is null, use old value
+     if (condExpr == null && exprValue == null) {
+       return keepValue;
      }
-     return result;
+     // Keep the new value
+     qScope.setValue(this, exprValue);
+     return exprValue;
    }
    
    private boolean isCondTrue(Scope scope)
