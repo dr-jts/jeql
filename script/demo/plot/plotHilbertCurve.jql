@@ -1,0 +1,25 @@
+import jeql.std.function.HashFunction;
+
+hilbertOrder = 4;
+side = Val.toInt( Math.pow(2, hilbertOrder) );
+count = side * side;
+
+radius = 1;
+
+t = select * from Generate.sequence( 0, count-2 );
+
+t = select i, geom: Geom.buffer(hilbertEdge, 0.4)
+	let 
+		hilbertPt1 = HashFunction.hilbertPoint(hilbertOrder, i),
+		hilbertPt2 = HashFunction.hilbertPoint(hilbertOrder, i+1),
+		hilbertEdge = Geom.createLineFromPoints( hilbertPt1, hilbertPt2 )
+	from t;
+
+t1 = select *,
+	styleFill: clr, styleStroke: clr, styleStrokeWidth: 1
+	let
+		clr = Color.toRGBfromHSV(Val.toDouble(i) / count, 1, 1)
+	from t;
+Mem t1;
+
+
