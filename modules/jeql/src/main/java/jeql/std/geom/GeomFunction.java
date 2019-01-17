@@ -1,23 +1,8 @@
 package jeql.std.geom;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
-
-import jeql.api.function.FunctionClass;
-import jeql.jts.geom.util.GeometricShapeFactoryExt;
-import jeql.jts.geom.util.ShapeUtil;
-
-
-
-
-
-
 
 import com.vividsolutions.jts.algorithm.MinimumBoundingCircle;
 import com.vividsolutions.jts.algorithm.MinimumDiameter;
@@ -53,6 +38,10 @@ import com.vividsolutions.jts.operation.linemerge.LineSequencer;
 import com.vividsolutions.jts.simplify.DouglasPeuckerSimplifier;
 import com.vividsolutions.jts.simplify.TopologyPreservingSimplifier;
 import com.vividsolutions.jts.util.GeometricShapeFactory;
+
+import jeql.api.function.FunctionClass;
+import jeql.jts.geom.util.GeometricShapeFactoryExt;
+import jeql.jts.geom.util.ShapeUtil;
 
 public class GeomFunction 
 implements FunctionClass
