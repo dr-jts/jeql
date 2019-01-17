@@ -1,10 +1,12 @@
 import jeql.std.function.HashFunction;
 
-gridSize = 7;
-count = Math.pow(gridSize + 1, 2);
+hilbertOrder = 4;
+side = Val.toInt( Math.pow(2, hilbertOrder) );
+count = side * side;
+
 radius = 1;
 
-t = select * from Generate.grid( 0, gridSize, 0 ,gridSize );
+t = select * from Generate.grid( 0, side-1, 0 ,side-1 );
 
 t = select i, j, 
 	//geom: Geom.buffer(Geom.createPoint(i, j), 0.4 * radius),
@@ -18,7 +20,7 @@ t1 = select *,
 Mem t1;
 
 t2 = select *,
-	styleFill: Color.interpolate("ff0000", "00ff00", "0000ff", Val.toDouble(i * gridSize + j) / count )
+	styleFill: Color.interpolate("ff0000", "00ff00", "0000ff", Val.toDouble(i * side + j) / count )
 	from t;
 Mem t2;
 
