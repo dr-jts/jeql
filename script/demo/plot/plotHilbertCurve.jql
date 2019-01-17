@@ -1,10 +1,11 @@
 import jeql.std.function.HashFunction;
 
 PLOT_SIZE = 1000;
-HILBERT_ORDER = 5;
+HILBERT_ORDER = 4;
 
 side = Val.toInt( Math.pow(2, HILBERT_ORDER) );
 count = side * side;
+
 
 radius = 1;
 
@@ -17,10 +18,21 @@ t = select i, geom: Geom.buffer(hilbertEdge, 0.4)
 		hilbertEdge = Geom.createLineFromPoints( hilbertPt1, hilbertPt2 )
 	from t;
 
+CLR_RUN_SIZE = count / 4;
+
 tplot = select *,
-	styleFill: clr, styleStroke: clr, styleStrokeWidth: 1
+	styleFill: clr, styleStroke: clrStroke, 
+	styleStrokeWidth: widthStroke
 	let
-		clr = Color.toRGBfromHSV(0.8 * Val.toDouble(i) / count, 1, 1)
+		clrIndex = Val.toDouble( i % CLR_RUN_SIZE ) / CLR_RUN_SIZE,
+
+		clr = Color.toRGBfromHSV( 0.8 * Val.toDouble(i) / count, 1, 1),
+		//clr = Color.toRGBfromHSV(clrIndex, 1, 1),
+		//clr = Color.toRGBfromHSV(0.4 * clrIndex, 1, 1),
+		//clr = Color.interpolate(#ff0000, #0000ff, #ff0000, clrIndex),
+
+		//clrStroke = clr, widthStroke = 1
+		clrStroke = #000000, widthStroke = 5
 	from t;
 Mem tplot;
 
