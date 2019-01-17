@@ -1,0 +1,28 @@
+import jeql.std.function.HashFunction;
+
+gridSize = 7;
+count = Math.pow(gridSize + 1, 2);
+radius = 1;
+
+t = select * from Generate.grid( 0, gridSize, 0 ,gridSize );
+
+t = select i, j, 
+	//geom: Geom.buffer(Geom.createPoint(i, j), 0.4 * radius),
+	geom: Geom.createBoxCenter(i, j, radius, radius),
+	hilbert: HashFunction.hilbertIndex(4, i, j)
+	from t;
+
+t1 = select *,
+	styleFill: Color.interpolate("ff0000", "00ff00", "0000ff", Val.toDouble(hilbert) / count )
+	from t;
+Mem t1;
+
+t2 = select *,
+	styleFill: Color.interpolate("ff0000", "00ff00", "0000ff", Val.toDouble(i * gridSize + j) / count )
+	from t;
+Mem t2;
+
+tpt = select i, j, hilbert, pt: Geom.createPoint(i, j) from t order by hilbert;
+tline = select geomConnect(pt) from tpt;
+Mem tline;
+
