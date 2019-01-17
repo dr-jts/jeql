@@ -1,7 +1,9 @@
 import jeql.std.function.HashFunction;
 
-hilbertOrder = 4;
-side = Val.toInt( Math.pow(2, hilbertOrder) );
+PLOT_SIZE = 1000;
+HILBERT_ORDER = 5;
+
+side = Val.toInt( Math.pow(2, HILBERT_ORDER) );
 count = side * side;
 
 radius = 1;
@@ -10,16 +12,22 @@ t = select * from Generate.sequence( 0, count-2 );
 
 t = select i, geom: Geom.buffer(hilbertEdge, 0.4)
 	let 
-		hilbertPt1 = HashFunction.hilbertPoint(hilbertOrder, i),
-		hilbertPt2 = HashFunction.hilbertPoint(hilbertOrder, i+1),
+		hilbertPt1 = HashFunction.hilbertPoint(HILBERT_ORDER, i),
+		hilbertPt2 = HashFunction.hilbertPoint(HILBERT_ORDER, i+1),
 		hilbertEdge = Geom.createLineFromPoints( hilbertPt1, hilbertPt2 )
 	from t;
 
-t1 = select *,
+tplot = select *,
 	styleFill: clr, styleStroke: clr, styleStrokeWidth: 1
 	let
-		clr = Color.toRGBfromHSV(Val.toDouble(i) / count, 1, 1)
+		clr = Color.toRGBfromHSV(0.8 * Val.toDouble(i) / count, 1, 1)
 	from t;
-Mem t1;
+Mem tplot;
+
+Plot	data: tplot
+	size: PLOT_SIZE
+	extent: Geom.createBox(-1, -1, side, side)
+	background: #000000
+	file: "hilbert.png";
 
 
