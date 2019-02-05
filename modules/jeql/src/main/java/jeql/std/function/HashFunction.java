@@ -132,4 +132,13 @@ public class HashFunction implements FunctionClass {
     return ord;
   }
 
+  public static Point mortonPoint(int i) {
+    long x = deinterleave(i);
+    long y = deinterleave(i >> 1);
+    
+    return GeomFunction.geomFactory.createPoint(new Coordinate(x, y));
+  }
+ 
+
+
 }

@@ -11,11 +11,11 @@ radius = 1;
 
 t = select * from Generate.sequence( 0, count-2 );
 
-t = select i, geom: Geom.buffer(hilbertEdge, 0.4)
+t = select i, geom: Geom.buffer(edge, 0.4)
 	let 
-		hilbertPt1 = HashFunction.hilbertPoint(HILBERT_ORDER, i),
-		hilbertPt2 = HashFunction.hilbertPoint(HILBERT_ORDER, i+1),
-		hilbertEdge = Geom.createLineFromPoints( hilbertPt1, hilbertPt2 )
+		p1 = HashFunction.hilbertPoint(HILBERT_ORDER, i),
+		p22 = HashFunction.hilbertPoint(HILBERT_ORDER, i+1),
+		edge = Geom.createLineFromPoints( p1, p2 )
 	from t;
 
 CLR_RUN_SIZE = count / 4;
