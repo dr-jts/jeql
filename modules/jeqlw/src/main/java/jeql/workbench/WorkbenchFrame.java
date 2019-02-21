@@ -35,7 +35,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import com.vividsolutions.jts.util.Memory;
+import org.locationtech.jts.util.Memory;
 
 import jeql.engine.EngineContext;
 import jeql.monitor.MonitorModel;

@@ -1,6 +1,6 @@
 package jeql.std.function.geommatch;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 
 public class GeomMatchFunction 
 {

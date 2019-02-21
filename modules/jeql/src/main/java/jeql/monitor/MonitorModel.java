@@ -5,7 +5,7 @@ import java.util.List;
 
 import jeql.monitor.MonitorRowList.MonitorRowIterator;
 
-import com.vividsolutions.jts.util.Stopwatch;
+import org.locationtech.jts.util.Stopwatch;
 
 public class MonitorModel
 {  

@@ -8,8 +8,8 @@ import java.util.Date;
 import jeql.api.error.ExecutionException;
 import jeql.std.function.StringFunction;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.io.WKTWriter;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.io.WKTWriter;
 
 public class TypeUtil 
 {

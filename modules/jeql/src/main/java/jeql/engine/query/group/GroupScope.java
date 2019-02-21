@@ -13,7 +13,7 @@ import jeql.engine.Scope;
 import jeql.engine.query.QueryScope;
 import jeql.syntax.TableColumnNode;
 
-import com.vividsolutions.jts.util.Assert;
+import org.locationtech.jts.util.Assert;
 
 public class GroupScope
   implements QueryScope

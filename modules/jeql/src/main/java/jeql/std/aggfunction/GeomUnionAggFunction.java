@@ -5,7 +5,7 @@ import jeql.api.function.AggregateFunction;
 import jeql.api.function.Aggregator;
 import jeql.engine.Scope;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 
 
 public class GeomUnionAggFunction 

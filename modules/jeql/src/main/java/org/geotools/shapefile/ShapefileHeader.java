@@ -12,8 +12,8 @@ import java.io.IOException;
 import jeql.io.EndianDataInputStream;
 import jeql.io.EndianDataOutputStream;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.GeometryCollection;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.GeometryCollection;
 
 /**
  * 

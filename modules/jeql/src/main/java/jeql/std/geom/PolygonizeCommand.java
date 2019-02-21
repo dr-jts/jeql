@@ -13,8 +13,8 @@ import jeql.api.row.SchemaUtil;
 import jeql.api.table.Table;
 import jeql.engine.Scope;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.operation.polygonize.Polygonizer;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.operation.polygonize.Polygonizer;
 
 public class PolygonizeCommand 
   implements Command

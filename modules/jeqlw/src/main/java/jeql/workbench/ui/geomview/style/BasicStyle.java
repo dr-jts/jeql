@@ -6,7 +6,7 @@ import jeql.workbench.ui.geomview.AppConstants;
 import jeql.workbench.ui.geomview.GeometryPainter;
 import jeql.workbench.ui.geomview.Viewport;
 
-import com.vividsolutions.jts.geom.*;
+import org.locationtech.jts.geom.*;
 
 public class BasicStyle implements Style
 {

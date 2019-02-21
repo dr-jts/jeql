@@ -7,8 +7,8 @@ import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.Timer;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.io.WKTWriter;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.io.WKTWriter;
 
 import jeql.api.JeqlRunner;
 import jeql.api.row.Row;

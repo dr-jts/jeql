@@ -1,6 +1,6 @@
 package jeql.workbench.ui.data;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 
 import jeql.api.row.RowSchema;
 

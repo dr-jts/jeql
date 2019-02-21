@@ -8,8 +8,8 @@ import jeql.api.row.RowSchema;
 import jeql.api.table.Table;
 import jeql.util.IOUtil;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * A writer which writes a {@link Table} to a shapefile (which consists of a

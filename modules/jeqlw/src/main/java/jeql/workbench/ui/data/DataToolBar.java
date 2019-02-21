@@ -3,7 +3,7 @@ package jeql.workbench.ui.data;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 
 import jeql.util.SwingUtil;
 import jeql.workbench.AppStrings;

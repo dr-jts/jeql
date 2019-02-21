@@ -4,7 +4,7 @@ import jeql.api.function.FunctionClass;
 import ca.bc.coordsys.Reprojector;
 import ca.bc.coordsys.impl.BCStandardCoordinateSystems;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 
 public class BCCoordSys 
 implements FunctionClass

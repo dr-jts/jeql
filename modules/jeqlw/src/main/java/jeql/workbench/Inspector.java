@@ -1,7 +1,7 @@
 package jeql.workbench;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.io.WKTWriter;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.io.WKTWriter;
 
 import jeql.api.row.Row;
 import jeql.api.row.RowSchema;

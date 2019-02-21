@@ -12,8 +12,8 @@ import jeql.command.io.IOConstants;
 import jeql.command.io.TableFileWriterCmd;
 import jeql.engine.Scope;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.io.gml2.GMLWriter;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.io.gml2.GMLWriter;
 
 // TODO: allow output of nested column values (using _ as tag sep)
 

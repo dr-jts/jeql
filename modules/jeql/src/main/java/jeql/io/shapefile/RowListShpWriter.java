@@ -4,7 +4,7 @@ import jeql.api.row.Row;
 import jeql.api.row.RowIterator;
 import jeql.api.row.RowList;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 
 public class RowListShpWriter 
 {

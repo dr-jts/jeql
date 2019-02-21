@@ -16,7 +16,7 @@ import jeql.command.io.TextFileReaderCmd;
 import jeql.engine.Scope;
 import jeql.io.InputSource;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 
 public class KMLReaderCommand 
 extends TextFileReaderCmd

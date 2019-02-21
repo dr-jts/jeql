@@ -4,7 +4,7 @@ import jeql.api.command.Command;
 import jeql.api.table.Table;
 import jeql.engine.Scope;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 
 public class PlotCommand 
 implements Command 

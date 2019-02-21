@@ -6,16 +6,16 @@ import jeql.*;
 import jeql.api.JeqlOptions;
 import jeql.api.JeqlRunner;
 import test.jeql.util.*;
-import com.vividsolutions.jts.util.*;
+import org.locationtech.jts.util.*;
 
 public class TestUnit 
 {
   static final String BASE = ".";
   
   String[] dirs = {
-      BASE + "/script/unitTest",
-      BASE + "/script/unitTest/io",
-      BASE + "/script/unitTest/geom"
+      BASE + "/unitTest",
+      BASE + "/unitTest/io",
+      BASE + "/unitTest/geom"
   };
     
   public static void main(String args[])

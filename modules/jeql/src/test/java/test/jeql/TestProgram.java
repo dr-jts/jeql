@@ -4,7 +4,7 @@ import jeql.api.JeqlOptions;
 import jeql.api.JeqlRunner;
 import jeql.engine.*;
 import jeql.util.*;
-import com.vividsolutions.jts.util.*;
+import org.locationtech.jts.util.*;
 
 /**
  * Reads a JQL program from a file and runs it

@@ -2,7 +2,7 @@ package jeql.awt.geom;
 
 import java.awt.geom.Point2D;
 
-import com.vividsolutions.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Coordinate;
 
 public class DefaultPointConverter
 implements PointConverter

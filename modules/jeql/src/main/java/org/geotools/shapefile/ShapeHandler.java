@@ -2,8 +2,8 @@ package org.geotools.shapefile;
 import jeql.io.EndianDataInputStream;
 import jeql.io.EndianDataOutputStream;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
 
 public interface ShapeHandler {
     public int getShapeType();

@@ -8,10 +8,10 @@ import jeql.workbench.RowListGeometryList;
 import jeql.workbench.ui.geomview.style.BasicStyle;
 import jeql.workbench.ui.geomview.style.Style;
 
-import com.vividsolutions.jts.algorithm.PointLocator;
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.algorithm.PointLocator;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
 
 public class Layer 
 {

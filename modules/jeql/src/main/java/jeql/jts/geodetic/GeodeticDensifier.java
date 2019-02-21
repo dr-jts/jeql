@@ -2,9 +2,9 @@ package jeql.jts.geodetic;
 
 import jeql.std.function.MathFunction;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.CoordinateList;
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.CoordinateList;
+import org.locationtech.jts.geom.Geometry;
 
 public class GeodeticDensifier
 {

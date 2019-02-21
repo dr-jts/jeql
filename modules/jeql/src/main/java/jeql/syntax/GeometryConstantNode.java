@@ -2,7 +2,7 @@ package jeql.syntax;
 
 import jeql.engine.Scope;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 
 
 

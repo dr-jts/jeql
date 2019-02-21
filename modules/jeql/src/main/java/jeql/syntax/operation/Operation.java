@@ -8,7 +8,7 @@ import jeql.engine.Scope;
 import jeql.syntax.ParseTreeNode;
 import jeql.util.ClassUtil;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 
 public abstract class Operation 
 {

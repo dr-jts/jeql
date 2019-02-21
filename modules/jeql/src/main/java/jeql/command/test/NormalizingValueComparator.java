@@ -4,7 +4,7 @@ import java.util.Comparator;
 
 import jeql.util.TypeUtil;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * Compares {@link Geometry} objects using their normalized value.

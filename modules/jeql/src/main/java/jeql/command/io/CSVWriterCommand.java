@@ -11,7 +11,7 @@ import jeql.util.NumberUtil;
 import jeql.util.SystemUtil;
 import jeql.util.TypeUtil;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 
 public class CSVWriterCommand 
 extends TableFileWriterCmd 

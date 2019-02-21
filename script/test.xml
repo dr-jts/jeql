@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doc xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+  <collection>
+    <entry>
+      <item>
+        <name><![CDATA[Feature <1>]]></name>
+        <geom>
+          POINT (-123 49)
+        </geom>
+        <folderName>Folder1</folderName>
+        <folderVis>0</folderVis>
+        <open>1</open>
+      </item>
+    </entry>
+    <entry>
+      <item>
+        <name><![CDATA[Feature& 2]]></name>
+        <geom>
+          POINT (-123 50)
+        </geom>
+        <folderName>Folder1</folderName>
+        <folderVis>0</folderVis>
+        <open>1</open>
+      </item>
+    </entry>
+    <entry>
+      <item>
+        <name><![CDATA[Feature]]&gt; 3]]></name>
+        <geom>
+          POINT (-123 51)
+        </geom>
+        <folderName>Folder2</folderName>
+        <folderVis>0</folderVis>
+        <open>0</open>
+      </item>
+    </entry>
+    <entry>
+      <item>
+        <name>Feature 4</name>
+        <geom>
+          POINT (-123.123123123 51.99999999999)
+        </geom>
+        <folderName>Folder2</folderName>
+        <folderVis>0</folderVis>
+        <open>0</open>
+      </item>
+    </entry>
+  </collection>
+</doc>

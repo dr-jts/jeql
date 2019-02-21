@@ -7,7 +7,7 @@ import jeql.api.row.RowList;
 import jeql.engine.query.SelectEvaluator;
 import jeql.engine.query.Tuple;
 
-import com.vividsolutions.jts.util.Assert;
+import org.locationtech.jts.util.Assert;
 
 /**
  * An abstract base class for builders which 

@@ -13,8 +13,8 @@ import org.geotools.shapefile.PointHandler;
 import org.geotools.shapefile.ShapeHandler;
 import org.geotools.shapefile.ShapefileHeader;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * Writes a stream of geometries to a .shp file. 

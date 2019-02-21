@@ -5,7 +5,7 @@ import ca.bc.coordsys.Planar;
 import ca.bc.coordsys.Projection;
 import ca.bc.coordsys.Spheroid;
 
-import com.vividsolutions.jts.util.Assert;
+import org.locationtech.jts.util.Assert;
 
 /**
  * Implements the Universal Transverse Mercator Projection.

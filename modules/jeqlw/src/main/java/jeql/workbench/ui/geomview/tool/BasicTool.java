@@ -12,9 +12,9 @@ import jeql.workbench.ui.geomview.GeometryViewController;
 import jeql.workbench.ui.geomview.GeometryViewPanel;
 import jeql.workbench.ui.geomview.Viewport;
 
-//import com.vividsolutions.jts.awt.FontGlyphReader;
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.PrecisionModel;
+//import org.locationtech.jts.awt.FontGlyphReader;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.PrecisionModel;
 
 
 public abstract class BasicTool implements Tool

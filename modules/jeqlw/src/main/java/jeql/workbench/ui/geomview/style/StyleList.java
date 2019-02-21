@@ -5,7 +5,7 @@ import java.awt.Graphics2D;
 
 import jeql.workbench.ui.geomview.Viewport;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 
 
 /**

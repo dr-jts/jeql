@@ -1,6 +1,6 @@
 package jeql.api.row;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 
 import jeql.engine.TypeConversionException;
 

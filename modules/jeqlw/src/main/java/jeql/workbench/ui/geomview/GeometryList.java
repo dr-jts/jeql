@@ -2,7 +2,7 @@ package jeql.workbench.ui.geomview;
 
 import jeql.workbench.ui.geomview.style.Style;
 
-import com.vividsolutions.jts.geom.*;
+import org.locationtech.jts.geom.*;
 
 public interface GeometryList 
 {

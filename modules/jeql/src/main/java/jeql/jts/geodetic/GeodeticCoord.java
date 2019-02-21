@@ -2,7 +2,7 @@ package jeql.jts.geodetic;
 
 import jeql.std.function.MathFunction;
 
-import com.vividsolutions.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Coordinate;
 
 public class GeodeticCoord {
 

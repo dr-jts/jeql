@@ -9,7 +9,7 @@ import jeql.api.row.RowList;
 import jeql.api.row.RowSchema;
 import jeql.std.function.StringFunction;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 
 public class MonitorRowList 
 implements RowList

@@ -1,7 +1,7 @@
 package ca.bc.coordsys;
 
 
-import com.vividsolutions.jts.util.Assert;
+import org.locationtech.jts.util.Assert;
 
 /** 
  * This class represents a coordinate system.

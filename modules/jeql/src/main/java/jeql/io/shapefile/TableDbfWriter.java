@@ -15,7 +15,7 @@ import org.geotools.dbffile.DbfFile;
 import org.geotools.dbffile.DbfFileException;
 import org.geotools.dbffile.DbfFileWriter;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 
 class TableDbfWriter {
   public TableDbfWriter() {

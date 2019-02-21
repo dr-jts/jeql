@@ -5,7 +5,7 @@ import java.util.List;
 import jeql.engine.Scope;
 import jeql.util.TypeUtil;
 
-import com.vividsolutions.jts.util.Assert;
+import org.locationtech.jts.util.Assert;
 
 public class CaseNode 
   extends ParseTreeNode

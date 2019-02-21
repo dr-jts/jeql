@@ -56,8 +56,8 @@ import jeql.workbench.Workbench;
 import jeql.workbench.ui.geomview.style.BasicStyle;
 import jeql.workbench.ui.geomview.tool.Tool;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
 /**
  * Panel which displays rendered geometries.
  * 

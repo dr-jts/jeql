@@ -1,7 +1,7 @@
 package jeql.std.geom;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Geometry;
 
 import jeql.api.function.FunctionClass;
 

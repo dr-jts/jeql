@@ -13,7 +13,7 @@ import javax.swing.SwingConstants;
 
 import jeql.monitor.MonitorModel;
 
-import com.vividsolutions.jts.util.Memory;
+import org.locationtech.jts.util.Memory;
 
 public class MonitorStatusBar extends JPanel
 {

@@ -3,7 +3,7 @@ package jeql.workbench;
 import java.awt.Color;
 import java.util.List;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 
 import jeql.api.row.Row;
 import jeql.api.row.RowSchema;

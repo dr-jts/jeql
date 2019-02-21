@@ -18,7 +18,7 @@ import jeql.util.CmdArgParser;
 import jeql.util.ExceptionUtil;
 import jeql.util.FileUtil;
 
-import com.vividsolutions.jts.util.Stopwatch;
+import org.locationtech.jts.util.Stopwatch;
 
 public class JeqlCmd 
 {

@@ -15,8 +15,8 @@ import jeql.util.TypeUtil;
 
 import org.geotools.dbffile.DbfFile;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
 
 /**
  * ShapefileRowInputStream reads Shapefiles.

@@ -42,8 +42,8 @@ import java.text.NumberFormat;
 
 import jeql.util.ColorUtil;
 
-import com.vividsolutions.jts.geom.*;
-import com.vividsolutions.jts.math.MathUtil;
+import org.locationtech.jts.geom.*;
+import org.locationtech.jts.math.MathUtil;
 
 
 public class GridRenderer {

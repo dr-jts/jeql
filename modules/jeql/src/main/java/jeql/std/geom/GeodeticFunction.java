@@ -4,7 +4,7 @@ import jeql.api.function.FunctionClass;
 import jeql.jts.geodetic.GeodeticDensifier;
 import jeql.jts.geodetic.GeodeticSplitter;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 
 public class GeodeticFunction 
 implements FunctionClass

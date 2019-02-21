@@ -5,13 +5,13 @@ import java.util.List;
 
 import jeql.api.function.FunctionClass;
 
-import com.vividsolutions.jts.dissolve.LineDissolver;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.PrecisionModel;
-import com.vividsolutions.jts.geom.util.LineStringExtracter;
-import com.vividsolutions.jts.noding.snapround.GeometryNoder;
-import com.vividsolutions.jts.operation.polygonize.Polygonizer;
-import com.vividsolutions.jts.precision.GeometryPrecisionReducer;
+import org.locationtech.jts.dissolve.LineDissolver;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.PrecisionModel;
+import org.locationtech.jts.geom.util.LineStringExtracter;
+import org.locationtech.jts.noding.snapround.GeometryNoder;
+import org.locationtech.jts.operation.polygonize.Polygonizer;
+import org.locationtech.jts.precision.GeometryPrecisionReducer;
 
 public class GeomProcFunction implements FunctionClass {
 

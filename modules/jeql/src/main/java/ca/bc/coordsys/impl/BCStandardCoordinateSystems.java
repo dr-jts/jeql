@@ -6,7 +6,7 @@ import ca.bc.coordsys.CoordinateSystem;
 import ca.bc.coordsys.Radius;
 import ca.bc.coordsys.Spheroid;
 
-import com.vividsolutions.jts.util.Assert;
+import org.locationtech.jts.util.Assert;
 
 
 /**

@@ -7,8 +7,8 @@ import jeql.api.function.Aggregator;
 import jeql.engine.Scope;
 import jeql.std.geom.GeomFunction;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
 
 public class GeomCollectAggFunction 
   implements AggregateFunction

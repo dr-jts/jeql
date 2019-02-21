@@ -24,7 +24,7 @@ import jeql.engine.EngineContext;
 import jeql.engine.Scope;
 import jeql.util.StringUtil;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 
 public class KMLWriterCommand implements Command
 {

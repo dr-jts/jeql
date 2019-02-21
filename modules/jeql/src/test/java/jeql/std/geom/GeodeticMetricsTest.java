@@ -2,7 +2,7 @@ package jeql.std.geom;
 
 import jeql.jts.geodetic.GeodeticMetrics;
 
-import com.vividsolutions.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Coordinate;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;

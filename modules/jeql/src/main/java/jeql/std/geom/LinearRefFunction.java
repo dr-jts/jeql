@@ -2,8 +2,8 @@ package jeql.std.geom;
 
 import jeql.api.annotation.Metadata;
 
-import com.vividsolutions.jts.geom.*;
-import com.vividsolutions.jts.linearref.LengthIndexedLine;
+import org.locationtech.jts.geom.*;
+import org.locationtech.jts.linearref.LengthIndexedLine;
 
 @Metadata (
     description = "Functions for Linear Referencing"

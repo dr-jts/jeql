@@ -1,6 +1,6 @@
 package jeql.std.function.geommatch;
 
-import com.vividsolutions.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Coordinate;
 
 /**
  * Contains a pair of points and the distance between them.

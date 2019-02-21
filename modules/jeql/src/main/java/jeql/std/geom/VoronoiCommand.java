@@ -15,10 +15,10 @@ import jeql.api.row.SchemaUtil;
 import jeql.api.table.Table;
 import jeql.engine.Scope;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.CoordinateList;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.triangulate.VoronoiDiagramBuilder;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.CoordinateList;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.triangulate.VoronoiDiagramBuilder;
 
 public class VoronoiCommand 
   implements Command
