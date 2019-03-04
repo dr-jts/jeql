@@ -8,12 +8,16 @@ import java.sql.SQLException;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKBReader;
+import org.locationtech.jts.io.WKBWriter;
 import org.locationtech.jts.io.WKTReader;
 
 public class PostgisRowMapper
 extends JdbcRowMapper
 {
-  private final WKBReader wkbReader = new WKBReader();
+  private static final String DB_TYPE_BYTEA = "bytea";
+  private static final String DB_TYPE_GEOMETRY = "geometry";
+
+	private final WKBReader wkbReader = new WKBReader();
   private final WKTReader wktReader = new WKTReader();
   
 	public PostgisRowMapper()
@@ -32,8 +36,8 @@ extends JdbcRowMapper
 		throws SQLException
 	{
     String dbTypeName = rsm.getColumnTypeName(columnIndex);
-    if (dbTypeName.equalsIgnoreCase("geometry")
-    		|| dbTypeName.equalsIgnoreCase("bytea"))
+    if (dbTypeName.equalsIgnoreCase(DB_TYPE_GEOMETRY)
+    		|| dbTypeName.equalsIgnoreCase(DB_TYPE_BYTEA))
         return Geometry.class;
     if (dbTypeName.equalsIgnoreCase("text"))
         return String.class;
@@ -47,13 +51,17 @@ extends JdbcRowMapper
 		if (destType == Geometry.class) {
 			// MD- should do some caching here for efficiency
 			ResultSetMetaData rsm = rs.getMetaData();
-	    String dbTypeName = rsm.getColumnTypeName(columnIndex);
-	    if (dbTypeName.equalsIgnoreCase("geometry")) {
-	    	return convertWKBHex(rs.getObject(columnIndex));
-	    }
-	    if (dbTypeName.equalsIgnoreCase("bytea")) {
-	    	return convertWKB(rs.getObject(columnIndex));
-	    }
+		    String dbTypeName = rsm.getColumnTypeName(columnIndex);
+		    if (dbTypeName.equalsIgnoreCase(DB_TYPE_GEOMETRY)) {
+		    	return convertWKBHex(rs.getObject(columnIndex));
+		    }
+		    /**
+		     * This is much faster than reading WKBHex.
+		     * But need to use ST_AsBinary in PG query to force binary in result column
+		     */
+		    if (dbTypeName.equalsIgnoreCase(DB_TYPE_BYTEA)) {
+		    	return convertWKB(rs.getObject(columnIndex));
+		    }
 		}
 		return super.mapColumnValue(rs, columnIndex, destType);
 	}
@@ -79,7 +87,6 @@ extends JdbcRowMapper
 		if (obj == null) return null;
 		String hex = obj.toString();
 		Geometry geom = wkbReader.read(WKBReader.hexToBytes(hex));
-//		Geometry geom = wkbReader.read(new HexStringInStream(hex));
 		return geom;
 	}
 }
